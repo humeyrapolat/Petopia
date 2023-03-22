@@ -67,8 +67,8 @@ class _MainScreenState extends State<MainScreen> {
       ),
       body: PageView(
         controller: pageController,
-        children: const [HomePage(), MatchPage(), AdoptionPage(), Profile()],
         onPageChanged: onPageChanged,
+        children: const [HomePage(), MatchPage(), AdoptionPage(), Profile()],
       ),
     );
   }

@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:petopia/features/presentation/page/credential/sign_in.dart';
 
 import '../../../../util/consts.dart';
 import '../../widgets/button_container_widget.dart';
 import '../../widgets/form_container_widget.dart';
-
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -19,14 +18,14 @@ class SignUpPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Flexible(
-              child: Container(),
               flex: 2,
+              child: Container(),
             ),
             // Center(
             //   child: Image.asset("assets/profile_default.png"),
 
             // ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             Expanded(
               child: Center(
                 child: Stack(
@@ -35,8 +34,7 @@ class SignUpPage extends StatelessWidget {
                       width: 60,
                       height: 60,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30)
-                      ),
+                          borderRadius: BorderRadius.circular(30)),
                       child: Image.asset("assets/profile_default.png"),
                     ),
                     Positioned(
@@ -44,52 +42,62 @@ class SignUpPage extends StatelessWidget {
                       bottom: -15,
                       child: IconButton(
                         onPressed: () {},
-                        icon: Icon(Icons.add_a_photo, color: black,),
+                        icon: const Icon(
+                          Icons.add_a_photo,
+                          color: black,
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 30),
-            FormContainerWidget(
+            const SizedBox(height: 30),
+            const FormContainerWidget(
               hintText: "Username",
             ),
-            SizedBox(height: 15),
-            FormContainerWidget(
+            const SizedBox(height: 15),
+            const FormContainerWidget(
               hintText: "Email",
             ),
-            SizedBox(height: 15),
-            FormContainerWidget(
+            const SizedBox(height: 15),
+            const FormContainerWidget(
               hintText: "Password",
               isPasswordField: true,
             ),
-            SizedBox(height: 15),
-            FormContainerWidget(
+            const SizedBox(height: 15),
+            const FormContainerWidget(
               hintText: "Bio",
             ),
-            SizedBox(height: 15),
+            const SizedBox(height: 15),
             ButtonContainerWidget(
               color: darkBlueColor,
               text: "Sign Up",
               onTapListener: () {},
             ),
             Flexible(
-              child: Container(),
               flex: 2,
+              child: Container(),
             ),
-            Divider(
+            const Divider(
               color: darkBlueColor,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Already have an account? ", style: TextStyle(color: black),),
+                const Text(
+                  "Already have an account? ",
+                  style: TextStyle(color: black),
+                ),
                 InkWell(
                   onTap: () {
-                 //   Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SignInPage()), (route) => false);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const SignInPage()),
+                        (route) => false);
                   },
-                  child:  Text(
+                  child: const Text(
                     "Sign In.",
                     style: TextStyle(fontWeight: FontWeight.bold, color: black),
                   ),

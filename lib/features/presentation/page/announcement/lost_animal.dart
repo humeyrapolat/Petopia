@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 class LostAnimalPage extends StatelessWidget {
   const LostAnimalPage({super.key});
@@ -9,7 +7,7 @@ class LostAnimalPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Lost Animal"),
+        title: const Text("Lost Animal"),
       ),
     );
   }

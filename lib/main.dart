@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:petopia/features/presentation/page/credential/sign_up_page.dart';
 
-import 'features/presentation/page/main_screen/main_screen.dart';
-
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +14,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: "Instagram Clone",
       darkTheme: ThemeData.dark(),
-      home: SignUpPage(),//MainScreen(),
+      home: const SignUpPage(), //MainScreen(),
     );
   }
 }

@@ -6,7 +6,7 @@ import 'package:petopia/features/presentation/page/credential/sign_up_page.dart'
 import 'package:petopia/features/presentation/page/home_page/chat/chat.dart';
 import 'package:petopia/features/presentation/page/home_page/home_page.dart';
 import 'package:petopia/features/presentation/page/home_page/post/comments/comments.dart';
-import 'package:petopia/features/presentation/page/home_page/post/updatePostPage.dart';
+import 'package:petopia/features/presentation/page/home_page/post/update_post_page.dart';
 import 'package:petopia/features/presentation/page/home_page/search/search.dart';
 import 'package:petopia/features/presentation/page/match/match.dart';
 import 'package:petopia/features/presentation/page/profile/activity/acitivity.dart';

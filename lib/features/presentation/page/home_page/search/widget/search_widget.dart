@@ -1,6 +1,3 @@
-
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:petopia/util/consts.dart';
 
@@ -19,15 +16,16 @@ class SearchWidget extends StatelessWidget {
       ),
       child: TextFormField(
         controller: controller,
-        style: TextStyle(color: lightBlueColor),
-        decoration: InputDecoration(
+        style: const TextStyle(color: lightBlueColor),
+        decoration: const InputDecoration(
             border: InputBorder.none,
-            prefixIcon: Icon(Icons.search, color: lightBlueColor,),
+            prefixIcon: Icon(
+              Icons.search,
+              color: lightBlueColor,
+            ),
             hintText: "Search",
-            hintStyle: TextStyle(color: lightBlueColor, fontSize: 15)
-        ),
+            hintStyle: TextStyle(color: lightBlueColor, fontSize: 15)),
       ),
-    )
-    ;
+    );
   }
 }

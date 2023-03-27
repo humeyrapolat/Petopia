@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:petopia/features/presentation/page/credential/sign_up_page.dart';
 import 'package:petopia/features/presentation/widgets/button_container_widget.dart';
 import 'package:petopia/features/presentation/widgets/form_container_widget.dart';
 import 'package:petopia/util/consts.dart';

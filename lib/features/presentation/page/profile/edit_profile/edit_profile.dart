@@ -11,16 +11,16 @@ class EditProfilePage extends StatelessWidget {
       backgroundColor: darkBlueColor,
       appBar: AppBar(
         backgroundColor: darkBlueColor,
-        title: Text("Edit Profile"),
+        title: const Text("Edit Profile"),
         leading: GestureDetector(
             onTap: () => Navigator.pop(context),
-            child: Icon(
+            child: const Icon(
               Icons.close,
               size: 32,
             )),
-        actions: [
+        actions: const [
           Padding(
-            padding: const EdgeInsets.only(right: 10.0),
+            padding: EdgeInsets.only(right: 10.0),
             child: Icon(
               Icons.done,
               color: darkBlueColor,
@@ -45,20 +45,23 @@ class EditProfilePage extends StatelessWidget {
                 ),
               ),
               sizeVertical(15),
-              Center(
+              const Center(
                 child: Text(
                   "Change profile photo",
-                  style: TextStyle(color: darkBlueColor, fontSize: 20, fontWeight: FontWeight.w400),
+                  style: TextStyle(
+                      color: darkBlueColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w400),
                 ),
               ),
               sizeVertical(15),
-              ProfileFormWidget(title: "Name"),
+              const ProfileFormWidget(title: "Name"),
               sizeVertical(15),
-              ProfileFormWidget(title: "Username"),
+              const ProfileFormWidget(title: "Username"),
               sizeVertical(15),
-              ProfileFormWidget(title: "Website"),
+              const ProfileFormWidget(title: "Website"),
               sizeVertical(15),
-              ProfileFormWidget(title: "Bio"),
+              const ProfileFormWidget(title: "Bio"),
             ],
           ),
         ),

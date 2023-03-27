@@ -11,11 +11,15 @@ class UpdatePostPage extends StatelessWidget {
       backgroundColor: darkBlueColor,
       appBar: AppBar(
         backgroundColor: darkBlueColor,
-        title: Text("Edit Post"),
-        actions: [
+        title: const Text("Edit Post"),
+        actions: const [
           Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: Icon(Icons.done, color: lightBlueColor, size: 28,),
+            padding: EdgeInsets.only(right: 10.0),
+            child: Icon(
+              Icons.done,
+              color: lightBlueColor,
+              size: 28,
+            ),
           )
         ],
       ),
@@ -27,23 +31,25 @@ class UpdatePostPage extends StatelessWidget {
               Container(
                 width: 100,
                 height: 100,
-                decoration: BoxDecoration(
-                    color: lightBlueColor,
-                    shape: BoxShape.circle
-                ),
+                decoration: const BoxDecoration(
+                    color: lightBlueColor, shape: BoxShape.circle),
               ),
               sizeVertical(10),
-              Text("Username", style: TextStyle(color: lightBlueColor, fontSize: 16, fontWeight: FontWeight.bold),),
+              const Text(
+                "Username",
+                style: TextStyle(
+                    color: lightBlueColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold),
+              ),
               sizeVertical(10),
               Container(
                 width: double.infinity,
                 height: 200,
-                decoration: BoxDecoration(
-                    color: lightBlueColor
-                ),
+                decoration: const BoxDecoration(color: lightBlueColor),
               ),
               sizeVertical(10),
-              ProfileFormWidget(
+              const ProfileFormWidget(
                 title: "Description",
               )
             ],

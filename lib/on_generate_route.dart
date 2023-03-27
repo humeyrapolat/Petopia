@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:petopia/features/data/data_sources/adoption.dart';
 import 'package:petopia/features/presentation/page/announcement/emergency_call.dart';
 import 'package:petopia/features/presentation/page/announcement/lost_animal.dart';
 import 'package:petopia/features/presentation/page/credential/sign_in.dart';
@@ -7,7 +6,6 @@ import 'package:petopia/features/presentation/page/credential/sign_up_page.dart'
 import 'package:petopia/features/presentation/page/home_page/chat/chat.dart';
 import 'package:petopia/features/presentation/page/home_page/home_page.dart';
 import 'package:petopia/features/presentation/page/home_page/post/comments/comments.dart';
-import 'package:petopia/features/presentation/page/home_page/post/post.dart';
 import 'package:petopia/features/presentation/page/home_page/post/updatePostPage.dart';
 import 'package:petopia/features/presentation/page/home_page/search/search.dart';
 import 'package:petopia/features/presentation/page/match/match.dart';
@@ -15,6 +13,8 @@ import 'package:petopia/features/presentation/page/profile/activity/acitivity.da
 import 'package:petopia/features/presentation/page/profile/edit_profile/edit_profile.dart';
 import 'package:petopia/features/presentation/page/profile/profile.dart';
 import 'package:petopia/util/consts.dart';
+
+import 'features/presentation/page/announcement/adoption.dart';
 
 class OnGenerateRoute {
   static Route<dynamic>? route(RouteSettings settings) {
@@ -58,12 +58,7 @@ class OnGenerateRoute {
             const ChatPage(),
           );
         }
-      case PageConsts.postPage:
-        {
-          return routeBuilder(
-            const PostPage(),
-          );
-        }
+
       case PageConsts.updatePostPage:
         {
           return routeBuilder(

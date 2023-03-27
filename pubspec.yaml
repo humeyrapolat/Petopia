@@ -38,10 +38,10 @@ dependencies:
   equatable: ^2.0.3
   flutter_icons_null_safety: ^1.1.0
   #Firebase
-  cloud_firestore: ^3.1.10
-  firebase_storage: ^10.2.9
-  firebase_auth: ^3.3.11
-  firebase_core: ^1.13.1
+  cloud_firestore: ^4.4.5
+  firebase_storage: ^11.0.16
+  firebase_auth: ^4.3.0
+  firebase_core: ^2.8.0
   #Service Locator
   get_it: ^7.2.0
 
@@ -62,6 +62,8 @@ dependencies:
   cupertino_icons: ^1.0.5
   toast: ^0.3.0
   flutter_launcher_icons: ^0.11.0
+  flutter_lints: ^2.0.0
+
 
 
 
@@ -76,7 +78,6 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

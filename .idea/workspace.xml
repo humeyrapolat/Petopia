@@ -5,12 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="108c588c-1608-4045-baf1-f3f0c676e263" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/main.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/main.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia.iml" beforeDir="false" afterPath="$PROJECT_DIR$/petopia.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pubspec.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/page/announcement/emergency_call.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/page/announcement/emergency_call.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/page/home_page/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/page/home_page/home_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/page/home_page/post/comments/comments.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/page/home_page/post/comments/comments.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/page/home_page/search/search.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/page/home_page/search/search.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/page/main_screen/main_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/page/main_screen/main_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/page/profile/edit_profile/edit_profile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/page/profile/edit_profile/edit_profile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/page/profile/profile.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/page/profile/profile.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/on_generate_route.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/on_generate_route.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/util/consts.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/util/consts.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +30,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="2NKv0nt8FOlTZ8llWzM7LYm3qUD" />
   <component name="ProjectView">
@@ -45,11 +57,13 @@
     <property name="dart.analysis.tool.window.force.activate" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/assests" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/features/presentation/page/home_page/search/widget" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Petopia\lib\features\presentation\page\home_page\search\widget" />
+      <recent name="D:\Petopia\lib\features\presentation\page\profile\widget" />
       <recent name="D:\Petopia\assests" />
     </key>
   </component>

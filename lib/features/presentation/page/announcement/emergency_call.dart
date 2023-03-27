@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class EmergencyCall extends StatelessWidget {
-  const EmergencyCall({super.key});
+class EmergencyCallPage extends StatelessWidget {
+  const EmergencyCallPage({super.key});
 
   @override
   Widget build(BuildContext context) {

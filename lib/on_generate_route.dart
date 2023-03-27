@@ -8,6 +8,7 @@ import 'package:petopia/features/presentation/page/home_page/chat/chat.dart';
 import 'package:petopia/features/presentation/page/home_page/home_page.dart';
 import 'package:petopia/features/presentation/page/home_page/post/comments/comments.dart';
 import 'package:petopia/features/presentation/page/home_page/post/post.dart';
+import 'package:petopia/features/presentation/page/home_page/post/updatePostPage.dart';
 import 'package:petopia/features/presentation/page/home_page/search/search.dart';
 import 'package:petopia/features/presentation/page/match/match.dart';
 import 'package:petopia/features/presentation/page/profile/activity/acitivity.dart';
@@ -41,7 +42,7 @@ class OnGenerateRoute {
       case PageConsts.emergencyCallPage:
         {
           return routeBuilder(
-            const EmergencyCall(),
+            const EmergencyCallPage(),
           );
         }
 
@@ -61,6 +62,12 @@ class OnGenerateRoute {
         {
           return routeBuilder(
             const PostPage(),
+          );
+        }
+      case PageConsts.updatePostPage:
+        {
+          return routeBuilder(
+            const UpdatePostPage(),
           );
         }
       case PageConsts.searchPage:
@@ -93,7 +100,7 @@ class OnGenerateRoute {
       case PageConsts.profilePage:
         {
           return routeBuilder(
-            const Profile(),
+            const ProfilePage(),
           );
         }
       case PageConsts.activityPage:

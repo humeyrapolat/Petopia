@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 import 'package:petopia/features/presentation/page/announcement/adoption.dart';
 import 'package:petopia/features/presentation/page/home_page/home_page.dart';
+import 'package:petopia/features/presentation/page/home_page/post/comments/comments.dart';
+import 'package:petopia/features/presentation/page/home_page/post/upload_post_page.dart';
+import 'package:petopia/features/presentation/page/home_page/search/search.dart';
 import 'package:petopia/features/presentation/page/match/match.dart';
 import 'package:petopia/features/presentation/page/profile/profile.dart';
 import 'package:petopia/util/consts.dart';
@@ -68,7 +71,7 @@ class _MainScreenState extends State<MainScreen> {
       body: PageView(
         controller: pageController,
         onPageChanged: onPageChanged,
-        children: const [HomePage(), MatchPage(), AdoptionPage(), Profile()],
+        children: const [HomePage(), SearchPage(), CommentPage(), ProfilePage()],
       ),
     );
   }

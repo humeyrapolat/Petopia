@@ -41,6 +41,7 @@ class PageConsts {
   //home page
   static const String chatPage = "chatPage";
   static const String postPage = "postPage";
+  static const String updatePostPage = "updatePostPage";
   static const String searchPage = "searchPage";
   static const String homePage = "homePage";
   static const String commentPage = "commentPage";

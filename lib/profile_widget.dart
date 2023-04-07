@@ -23,6 +23,9 @@ Widget profileWidget({String? imageUrl, File? image}) {
         ),
       );
   } else {
-    return Image.file(image, fit: BoxFit.cover,);
+    return Image.file(
+      image,
+      fit: BoxFit.cover,
+    );
   }
 }

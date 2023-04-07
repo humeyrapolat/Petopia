@@ -14,13 +14,16 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   FirebaseAuth auth;
   FirebaseStorage firebaseStorage;
 
-  FirebaseRemoteDataSourceImpl({ required this.firestore, required this.auth, required this.firebaseStorage});
+  FirebaseRemoteDataSourceImpl(
+      {required this.firestore,
+      required this.auth,
+      required this.firebaseStorage});
 
   @override
   Future<void> createUserWithImage(UserEntity user, String profileUrl) async {
     final userCollection = firestore.collection(FirebaseConsts.users);
     final uid = await getCurrentUid();
-    userCollection.doc(uid).get().then((userDoc){
+    userCollection.doc(uid).get().then((userDoc) {
       final newUser = UserModel(
         uid: uid,
         name: user.name,
@@ -142,11 +145,12 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
               email: user.email!, password: user.password!)
           .then((currentUser) async {
         if (currentUser.user?.uid != null) {
-          if(user.imageFile != null){
-            uploadImageToStorage(user.imageFile, false, "profileImages").then((profileUrl){
+          if (user.imageFile != null) {
+            uploadImageToStorage(user.imageFile, false, "profileImages")
+                .then((profileUrl) {
               createUserWithImage(user, profileUrl);
             });
-          }else{
+          } else {
             createUserWithImage(user, "");
           }
         }
@@ -179,7 +183,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       userInformation["website"] = user.website;
     }
     if (user.profileUrl != "" && user.profileUrl != null) {
-      userInformation["profileImageUrl"] = user.profileUrl;
+      userInformation["profileUrl"] = user.profileUrl;
     }
     if (user.followers != null) {
       userInformation["followers"] = user.followers;
@@ -201,14 +205,17 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   }
 
   @override
-  Future<String> uploadImageToStorage(File? file, bool isPost, String childName) async {
-    Reference ref = firebaseStorage.ref().child(childName).child(auth.currentUser!.uid);
-    if(isPost){
+  Future<String> uploadImageToStorage(
+      File? file, bool isPost, String childName) async {
+    Reference ref =
+        firebaseStorage.ref().child(childName).child(auth.currentUser!.uid);
+    if (isPost) {
       String id = Uuid().v1();
       ref = ref.child(id);
     }
     final uploadTask = ref.putFile(file!);
-    final imageUrl = (await uploadTask.whenComplete((){})).ref.getDownloadURL();
+    final imageUrl =
+        (await uploadTask.whenComplete(() {})).ref.getDownloadURL();
 
     return await imageUrl;
   }

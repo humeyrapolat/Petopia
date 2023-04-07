@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/features/presentation/cubit/auth/auth_cubit.dart';
+import 'package:petopia/profile_widget.dart';
 import 'package:petopia/util/consts.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -11,12 +12,12 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: darkBlueColor,
+        backgroundColor: backGroundColor,
         appBar: AppBar(
-          backgroundColor: darkBlueColor,
+          backgroundColor: backGroundColor,
           title: Text(
-            '${currentUser.username}',
-            style: const TextStyle(color: lightBlueColor),
+            "${currentUser.username}",
+            style: const TextStyle(color: darkOrangeColor),
           ),
           actions: [
             Padding(
@@ -27,7 +28,7 @@ class ProfilePage extends StatelessWidget {
                   },
                   child: const Icon(
                     Icons.menu,
-                    color: lightBlueColor,
+                    color: darkOrangeColor,
                   )),
             )
           ],
@@ -44,57 +45,69 @@ class ProfilePage extends StatelessWidget {
                     Container(
                       width: 80,
                       height: 80,
-                      decoration: const BoxDecoration(
-                          color: lightBlueColor, shape: BoxShape.circle),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(40),
+                        child: profileWidget(imageUrl: currentUser.profileUrl),
+                      ),
                     ),
                     Row(
                       children: [
                         Column(
                           children: [
                             Text(
-                              '${currentUser.totalPosts}',
+                              "${currentUser.totalPosts}",
                               style: const TextStyle(
-                                  color: lightBlueColor,
+                                  color: darkOrangeColor,
                                   fontWeight: FontWeight.bold),
                             ),
                             sizeVertical(8),
                             const Text(
                               "Posts",
-                              style: TextStyle(color: lightBlueColor),
+                              style: TextStyle(color: darkOrangeColor),
                             )
                           ],
                         ),
                         sizeHorizontal(25),
-                        Column(
-                          children: [
-                            Text(
-                              '${currentUser.totalFollowers}',
-                              style: const TextStyle(
-                                  color: lightBlueColor,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            sizeVertical(8),
-                            const Text(
-                              "Followers",
-                              style: TextStyle(color: lightBlueColor),
-                            )
-                          ],
+                        GestureDetector(
+                          onTap: () {
+                            // Navigator.pushNamed(context, PageConsts.f, arguments: widget.currentUser);
+                          },
+                          child: Column(
+                            children: [
+                              Text(
+                                "${currentUser.totalFollowers}",
+                                style: const TextStyle(
+                                    color: darkOrangeColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              sizeVertical(8),
+                              const Text(
+                                "Followers",
+                                style: TextStyle(color: darkOrangeColor),
+                              )
+                            ],
+                          ),
                         ),
                         sizeHorizontal(25),
-                        Column(
-                          children: [
-                            Text(
-                              '${currentUser.totalFollowing}',
-                              style: const TextStyle(
-                                  color: lightBlueColor,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            sizeVertical(8),
-                            const Text(
-                              "Following",
-                              style: TextStyle(color: lightBlueColor),
-                            )
-                          ],
+                        GestureDetector(
+                          onTap: () {
+                            // Navigator.pushNamed(context, PageConst.followingPage, arguments: widget.currentUser);
+                          },
+                          child: Column(
+                            children: [
+                              Text(
+                                "${currentUser.totalFollowing}",
+                                style: const TextStyle(
+                                    color: darkOrangeColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              sizeVertical(8),
+                              const Text(
+                                "Following",
+                                style: TextStyle(color: darkOrangeColor),
+                              )
+                            ],
+                          ),
                         )
                       ],
                     )
@@ -102,14 +115,14 @@ class ProfilePage extends StatelessWidget {
                 ),
                 sizeVertical(10),
                 Text(
-                  '${currentUser.name == "" ? currentUser.username : currentUser.name}',
+                  "${currentUser.name == "" ? currentUser.username : currentUser.name}",
                   style: const TextStyle(
-                      color: lightBlueColor, fontWeight: FontWeight.bold),
+                      color: darkOrangeColor, fontWeight: FontWeight.bold),
                 ),
                 sizeVertical(10),
                 Text(
-                  '${currentUser.bio}',
-                  style: const TextStyle(color: lightBlueColor),
+                  "${currentUser.bio}",
+                  style: const TextStyle(color: darkOrangeColor),
                 ),
                 sizeVertical(10),
                 GridView.builder(
@@ -122,12 +135,17 @@ class ProfilePage extends StatelessWidget {
                             crossAxisSpacing: 5,
                             mainAxisSpacing: 5),
                     itemBuilder: (context, index) {
-                      return Container(
-                        width: 100,
-                        height: 100,
-                        color: lightBlueColor,
+                      return GestureDetector(
+                        onTap: () {
+                          //  Navigator.pushNamed(context, PageConst.postDetailPage, arguments: posts[index].postId);
+                        },
+                        child: Container(
+                          width: 20,
+                          height: 20,
+                          color: Colors.red,
+                        ),
                       );
-                    })
+                    }),
               ],
             ),
           ),
@@ -154,7 +172,7 @@ class ProfilePage extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
-                            color: lightBlueColor),
+                            color: darkOrangeColor),
                       ),
                     ),
                     const SizedBox(
@@ -162,7 +180,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                     const Divider(
                       thickness: 1,
-                      color: lightBlueColor,
+                      color: darkOrangeColor,
                     ),
                     const SizedBox(
                       height: 8,
@@ -172,23 +190,23 @@ class ProfilePage extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(
-                              context, PageConsts.editProfilePage);
-
-                          //  Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
+                              context, PageConsts.editProfilePage,
+                              arguments: currentUser);
+                          // Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
                         },
                         child: const Text(
                           "Edit Profile",
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
-                              color: lightBlueColor),
+                              color: darkOrangeColor),
                         ),
                       ),
                     ),
                     sizeVertical(7),
                     const Divider(
                       thickness: 1,
-                      color: lightBlueColor,
+                      color: darkOrangeColor,
                     ),
                     sizeVertical(7),
                     Padding(
@@ -204,7 +222,7 @@ class ProfilePage extends StatelessWidget {
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
-                              color: backGroundColor),
+                              color: darkOrangeColor),
                         ),
                       ),
                     ),

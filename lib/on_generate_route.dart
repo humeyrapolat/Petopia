@@ -113,9 +113,11 @@ class OnGenerateRoute {
         }
       case PageConsts.editProfilePage:
         {
-          return routeBuilder(
-            const EditProfilePage(),
-          );
+          if(args is UserEntity){
+            return routeBuilder(EditProfilePage(currentUser: args,));
+          }else{
+            return routeBuilder(NoPageFound());
+          }
         }
 
       default:

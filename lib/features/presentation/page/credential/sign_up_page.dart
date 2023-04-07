@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/features/presentation/cubit/auth/auth_cubit.dart';
 import 'package:petopia/features/presentation/cubit/credential/credential_cubit.dart';
 import 'package:petopia/features/presentation/page/main_screen/main_screen.dart';
+import 'package:petopia/profile_widget.dart';
 
 import '../../../../util/consts.dart';
 import '../../widgets/button_container_widget.dart';
@@ -23,6 +27,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _bioController = TextEditingController();
 
   bool _isSigningUp = false;
+  bool _isUploading = false;
 
   @override
   void dispose() {
@@ -32,6 +37,23 @@ class _SignUpPageState extends State<SignUpPage> {
     _bioController.dispose();
     super.dispose();
   }
+  File? _image;
+
+  Future selectImage() async {
+    try{
+      final pickedFile = await ImagePicker.platform.getImage(source: ImageSource.gallery);
+      setState(() {
+        if(pickedFile != null) {
+          _image = File(pickedFile.path);
+        }else{
+          print("no image has been selected");
+        }
+      });
+    }catch(e){
+      toast("some error occured $e");
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -90,13 +112,14 @@ class _SignUpPageState extends State<SignUpPage> {
                     height: 60,
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(30)),
-                    child: Image.asset("assets/profile_default.png"),
+                      child: ClipRRect(borderRadius: BorderRadius.circular(30),child: profileWidget(image: _image))
+
                   ),
                   Positioned(
                     right: -10,
                     bottom: -15,
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: selectImage,
                       icon: const Icon(
                         Icons.add_a_photo,
                         color: black,
@@ -133,12 +156,11 @@ class _SignUpPageState extends State<SignUpPage> {
             color: darkBlueColor,
             text: "Sign Up",
             onTapListener: () {
-              _signUp();
+              _signUpUser();
             },
           ),
           sizeVertical(10),
-          _isSigningUp == true
-              ? Row(
+          _isSigningUp == true || _isUploading == true ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
@@ -187,7 +209,7 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  void _signUp() {
+  Future<void> _signUpUser() async {
     setState(() {
       _isSigningUp = true;
     });
@@ -205,6 +227,7 @@ class _SignUpPageState extends State<SignUpPage> {
             website: "",
             following: [],
             name: "",
+            imageFile: _image,
           ),
         )
         .then((value) => _clearControllers());

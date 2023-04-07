@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:petopia/features/data/data_sources/remote_data_source/remote_data_source.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/features/domain/repo/firebase_repository.dart';
@@ -40,4 +42,9 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
   @override
   Stream<List<UserEntity>> getSingleUsers(String uid) =>
       remoteDataSource.getSingleUser(uid);
+
+  @override
+  Future<String> uploadImageToStorage(File? file, bool isPost, String childName) async =>
+      remoteDataSource.uploadImageToStorage(file, isPost, childName);
+
 }

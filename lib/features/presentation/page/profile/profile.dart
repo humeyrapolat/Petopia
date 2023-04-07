@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/features/presentation/cubit/auth/auth_cubit.dart';
+import 'package:petopia/profile_widget.dart';
 import 'package:petopia/util/consts.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -42,10 +43,10 @@ class ProfilePage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Container(
-                      width: 80,
-                      height: 80,
-                      decoration: const BoxDecoration(
-                          color: lightBlueColor, shape: BoxShape.circle),
+                        width: 80,
+                        height: 80,
+                        child:ClipRRect(borderRadius:  BorderRadius.circular(40),
+                          child: profileWidget(imageUrl: currentUser.profileUrl),)
                     ),
                     Row(
                       children: [
@@ -172,7 +173,7 @@ class ProfilePage extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(
-                              context, PageConsts.editProfilePage);
+                              context, PageConsts.editProfilePage, arguments: currentUser);
 
                           //  Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
                         },

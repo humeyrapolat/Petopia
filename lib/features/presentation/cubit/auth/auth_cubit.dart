@@ -11,7 +11,7 @@ class AuthCubit extends Cubit<AuthState> {
   final SignOutUseCase signOutUseCase;
   final IsSignInUseCase isSignInUseCase;
   final GetCurrentUidUseCase getCurrentUidUseCase;
-  AuthCubit(this.signOutUseCase, this.isSignInUseCase, this.getCurrentUidUseCase) : super(AuthInitial());
+  AuthCubit({required this.signOutUseCase,required this.isSignInUseCase, required this.getCurrentUidUseCase}) : super(AuthInitial());
 
 
   Future<void> appStarted(BuildContext context) async {

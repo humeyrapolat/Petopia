@@ -2,10 +2,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:petopia/features/presentation/page/main_screen/main_screen.dart';
 import 'package:petopia/on_generate_route.dart';
+import 'injection_container.dart' as di;
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await di.init();
   runApp(const MyApp());
 }
 

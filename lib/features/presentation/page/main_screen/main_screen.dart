@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
+import 'package:petopia/features/presentation/cubit/user/get_single_user/get_single_user_cubit.dart';
 import 'package:petopia/features/presentation/page/home_page/home_page.dart';
 import 'package:petopia/features/presentation/page/home_page/post/comments/comments.dart';
 import 'package:petopia/features/presentation/page/home_page/search/search.dart';
@@ -8,7 +10,8 @@ import 'package:petopia/features/presentation/page/profile/profile.dart';
 import 'package:petopia/util/consts.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  final String uid;
+  const MainScreen({Key? key, required this.uid}) : super(key: key);
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -21,6 +24,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
+    BlocProvider.of<GetSingleUserCubit>(context).getSingleUser(uid: widget.uid);
     pageController = PageController();
     super.initState();
   }
@@ -43,38 +47,50 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: backGroundColor,
-      bottomNavigationBar: CupertinoTabBar(
-        backgroundColor: darkOrangeColor,
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(MaterialCommunityIcons.home_variant,
-                  color: lightBlueGreenColor),
-              label: ""),
-          BottomNavigationBarItem(
-              icon: Icon(Ionicons.md_search, color: lightBlueGreenColor),
-              label: ""),
-          BottomNavigationBarItem(
-              icon: Icon(Ionicons.ios_paw, color: lightBlueGreenColor),
-              label: ""),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle_outlined,
-                  color: lightBlueGreenColor),
-              label: ""),
-        ],
-        onTap: navigationTapped,
-      ),
-      body: PageView(
-        controller: pageController,
-        onPageChanged: onPageChanged,
-        children: const [
-          HomePage(),
-          SearchPage(),
-          CommentPage(),
-          ProfilePage()
-        ],
-      ),
+    return BlocBuilder<GetSingleUserCubit, GetSingleUserState>(
+      builder: (context, getSingleUserState) {
+        if (getSingleUserState is GetSingleUserLoaded) {
+          final currentUser = getSingleUserState.user;
+          return Scaffold(
+              backgroundColor: black,
+              bottomNavigationBar: CupertinoTabBar(
+                backgroundColor: black,
+                activeColor: Colors.white,
+                inactiveColor: Colors.white,
+                items: const [
+                  BottomNavigationBarItem(
+                      icon: Icon(MaterialCommunityIcons.home_variant,
+                          color: lightBlueGreenColor),
+                      label: ""),
+                  BottomNavigationBarItem(
+                      icon:
+                          Icon(Ionicons.md_search, color: lightBlueGreenColor),
+                      label: ""),
+                  BottomNavigationBarItem(
+                      icon: Icon(Ionicons.ios_paw, color: lightBlueGreenColor),
+                      label: ""),
+                  BottomNavigationBarItem(
+                      icon: Icon(Icons.account_circle_outlined,
+                          color: lightBlueGreenColor),
+                      label: ""),
+                ],
+                onTap: navigationTapped,
+              ),
+              body: PageView(
+                controller: pageController,
+                onPageChanged: onPageChanged,
+                children: [
+                  const HomePage(),
+                  const SearchPage(),
+                  const CommentPage(),
+                  ProfilePage(currentUser: currentUser),
+                ],
+              ));
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 }

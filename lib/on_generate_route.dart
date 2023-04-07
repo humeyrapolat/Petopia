@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/features/presentation/page/announcement/emergency_call.dart';
 import 'package:petopia/features/presentation/page/announcement/lost_animal.dart';
 import 'package:petopia/features/presentation/page/credential/sign_in.dart';
@@ -94,9 +95,15 @@ class OnGenerateRoute {
 
       case PageConsts.profilePage:
         {
-          return routeBuilder(
-            const ProfilePage(),
-          );
+          if (args is UserEntity) {
+            return routeBuilder(
+              ProfilePage(currentUser: args),
+            );
+          } else {
+            return routeBuilder(
+              const NoPageFound(),
+            );
+          }
         }
       case PageConsts.activityPage:
         {

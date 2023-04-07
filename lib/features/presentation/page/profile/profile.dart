@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/presentation/cubit/auth/auth_cubit.dart';
 import 'package:petopia/util/consts.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key? key}) : super(key: key);
+  final UserEntity currentUser;
+  const ProfilePage({super.key, required this.currentUser});
 
   @override
   Widget build(BuildContext context) {
@@ -10,9 +14,9 @@ class ProfilePage extends StatelessWidget {
         backgroundColor: darkBlueColor,
         appBar: AppBar(
           backgroundColor: darkBlueColor,
-          title: const Text(
-            "Username",
-            style: TextStyle(color: lightBlueColor),
+          title: Text(
+            '${currentUser.username}',
+            style: const TextStyle(color: lightBlueColor),
           ),
           actions: [
             Padding(
@@ -47,9 +51,9 @@ class ProfilePage extends StatelessWidget {
                       children: [
                         Column(
                           children: [
-                            const Text(
-                              "0",
-                              style: TextStyle(
+                            Text(
+                              '${currentUser.totalPosts}',
+                              style: const TextStyle(
                                   color: lightBlueColor,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -63,9 +67,9 @@ class ProfilePage extends StatelessWidget {
                         sizeHorizontal(25),
                         Column(
                           children: [
-                            const Text(
-                              "54",
-                              style: TextStyle(
+                            Text(
+                              '${currentUser.totalFollowers}',
+                              style: const TextStyle(
                                   color: lightBlueColor,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -79,9 +83,9 @@ class ProfilePage extends StatelessWidget {
                         sizeHorizontal(25),
                         Column(
                           children: [
-                            const Text(
-                              "123",
-                              style: TextStyle(
+                            Text(
+                              '${currentUser.totalFollowing}',
+                              style: const TextStyle(
                                   color: lightBlueColor,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -97,15 +101,15 @@ class ProfilePage extends StatelessWidget {
                   ],
                 ),
                 sizeVertical(10),
-                const Text(
-                  "Name",
-                  style: TextStyle(
+                Text(
+                  '${currentUser.name == "" ? currentUser.username : currentUser.name}',
+                  style: const TextStyle(
                       color: lightBlueColor, fontWeight: FontWeight.bold),
                 ),
                 sizeVertical(10),
-                const Text(
-                  "The bio of user",
-                  style: TextStyle(color: lightBlueColor),
+                Text(
+                  '${currentUser.bio}',
+                  style: const TextStyle(color: lightBlueColor),
                 ),
                 sizeVertical(10),
                 GridView.builder(
@@ -187,14 +191,21 @@ class ProfilePage extends StatelessWidget {
                       color: lightBlueColor,
                     ),
                     sizeVertical(7),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 10.0),
-                      child: Text(
-                        "Logout",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                            color: lightBlueColor),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: InkWell(
+                        onTap: () {
+                          BlocProvider.of<AuthCubit>(context).loggedOut();
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, PageConsts.signInPage, (route) => false);
+                        },
+                        child: const Text(
+                          "Logout",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16,
+                              color: backGroundColor),
+                        ),
                       ),
                     ),
                     sizeVertical(7),

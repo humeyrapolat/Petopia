@@ -190,8 +190,11 @@ class ProfilePage extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(
-                              context, PageConsts.editProfilePage,
-                              arguments: currentUser);
+                                  context, PageConsts.editProfilePage,
+                                  arguments: currentUser)
+                              .whenComplete(() {
+                            Navigator.pop(context);
+                          });
                           // Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
                         },
                         child: const Text(

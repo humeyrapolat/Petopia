@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:petopia/features/data/data_sources/remote_data_source/remote_data_source.dart';
+import 'package:petopia/features/domain/entities/post/post_entity.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/features/domain/repo/firebase_repository.dart';
 
@@ -46,5 +47,20 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
   @override
   Future<String> uploadImageToStorage(File? file, bool isPost, String childName) async =>
       remoteDataSource.uploadImageToStorage(file, isPost, childName);
+
+  @override
+  Future<void> createPost(PostEntity post) async => remoteDataSource.createPost(post);
+
+  @override
+  Future<void> deletePost(PostEntity post) async => remoteDataSource.deletePost(post);
+
+  @override
+  Future<void> likePost(PostEntity post)  async => remoteDataSource.deletePost(post);
+
+  @override
+  Stream<List<PostEntity>> readPost(PostEntity post) => remoteDataSource.readPost(post);
+
+  @override
+  Future<void> updatePost(PostEntity post) async => remoteDataSource.updatePost(post);
 
 }

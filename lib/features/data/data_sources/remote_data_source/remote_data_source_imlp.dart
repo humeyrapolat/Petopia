@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:petopia/features/data/data_sources/remote_data_source/remote_data_source.dart';
 import 'package:petopia/features/data/models/user/user_model.dart';
+import 'package:petopia/features/domain/entities/post/post_entity.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/util/consts.dart';
 import 'package:uuid/uuid.dart';
@@ -218,5 +219,35 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         (await uploadTask.whenComplete(() {})).ref.getDownloadURL();
 
     return await imageUrl;
+  }
+
+  @override
+  Future<void> createPost(PostEntity post) {
+    // TODO: implement createPost
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deletePost(PostEntity post) {
+    // TODO: implement deletePost
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> likePost(PostEntity post) {
+    // TODO: implement likePost
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<List<PostEntity>> readPost(PostEntity post) {
+    // TODO: implement readPost
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updatePost(PostEntity post) {
+    // TODO: implement updatePost
+    throw UnimplementedError();
   }
 }

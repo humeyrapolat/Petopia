@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:petopia/features/domain/entities/post/post_entity.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
 
 abstract class FirebaseRemoteDataSource {
@@ -18,4 +19,11 @@ abstract class FirebaseRemoteDataSource {
 
   //Cloud Storage
   Future<String> uploadImageToStorage(File? file, bool isPost, String childName);
+
+  //Post
+  Future<void> createPost(PostEntity post);
+  Stream<List<PostEntity>> readPost(PostEntity post);
+  Future<void> updatePost(PostEntity post);
+  Future<void> deletePost(PostEntity post);
+  Future<void> likePost(PostEntity post);
 }

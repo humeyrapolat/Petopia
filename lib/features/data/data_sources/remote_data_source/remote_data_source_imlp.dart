@@ -36,6 +36,10 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         website: user.website,
         profileUrl: profileUrl,
         followers: user.followers,
+        type: user.type,
+        gender: user.gender,
+        breed: user.breed,
+        birthdate: user.birthdate,
         totalFollowers: user.totalFollowers,
         totalFollowing: user.totalFollowing,
         totalPosts: user.totalPosts,
@@ -68,6 +72,10 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         following: user.following,
         website: user.website,
         username: user.username,
+        type: user.type,
+        gender: user.gender,
+        breed: user.breed,
+        birthdate: user.birthdate,
         totalFollowers: user.totalFollowers,
         totalFollowing: user.totalFollowing,
         totalPosts: user.totalPosts,
@@ -201,6 +209,18 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     }
     if (user.totalPosts != null) {
       userInformation["totalPosts"] = user.totalPosts;
+    }
+    if (user.type != null) {
+      userInformation["type"] = user.type;
+    }
+    if (user.gender != null) {
+      userInformation["gender"] = user.gender;
+    }
+    if (user.breed != null) {
+      userInformation["breed"] = user.breed;
+    }
+    if (user.birthdate != null) {
+      userInformation["birthdate"] = user.birthdate;
     }
 
     userCollection.doc(user.uid).update(userInformation);

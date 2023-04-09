@@ -8,9 +8,10 @@ class UserModel extends UserEntity {
   final String? bio;
   final String? website;
   final String? email;
-  final DateTime? birthdate;
+  final String? birthdate;
   final String? breed;
   final String? gender;
+  final String? type;
   final String? profileUrl;
   final List? followers;
   final List? following;
@@ -28,6 +29,7 @@ class UserModel extends UserEntity {
       this.birthdate,
       this.breed,
       this.gender,
+      this.type,
       this.profileUrl,
       this.followers,
       this.following,
@@ -44,6 +46,7 @@ class UserModel extends UserEntity {
           birthdate: birthdate,
           breed: breed,
           gender: gender,
+          type: type,
           profileUrl: profileUrl,
           followers: followers,
           following: following,
@@ -65,6 +68,7 @@ class UserModel extends UserEntity {
         birthdate: snapshot['birthdate'],
         breed: snapshot['breed'],
         gender: snapshot['gender'],
+        type: snapshot['type'],
         profileUrl: snapshot['profileUrl'],
         followers: List.from(snap.get('followers')),
         following: List.from(snap.get('following')),
@@ -84,6 +88,7 @@ class UserModel extends UserEntity {
       'birthdate': birthdate,
       'breed': breed,
       'gender': gender,
+      'type': type,
       'profileUrl': profileUrl,
       'followers': followers,
       'following': following,

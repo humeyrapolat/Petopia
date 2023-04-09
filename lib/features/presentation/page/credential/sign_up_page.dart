@@ -68,6 +68,10 @@ class _SignUpPageState extends State<SignUpPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _nameController.dispose();
+    _breedController.dispose();
+    _dateController.dispose();
+    _genderController.dispose();
+    _typeController.dispose();
     super.dispose();
   }
 
@@ -652,6 +656,10 @@ class _SignUpPageState extends State<SignUpPage> {
             bio: "",
             username: _usernameController.text,
             totalPosts: 0,
+            birthdate: _dateController.text,
+            type: _typeController.text,
+            gender: _genderController.text,
+            breed: _breedController.text,
             totalFollowing: 0,
             followers: [],
             totalFollowers: 0,
@@ -670,6 +678,10 @@ class _SignUpPageState extends State<SignUpPage> {
       _emailController.clear();
       _passwordController.clear();
       _nameController.clear();
+      _breedController.clear();
+      _dateController.clear();
+      _genderController.clear();
+      _typeController.clear();
       _isSigningUp = false;
     });
   }

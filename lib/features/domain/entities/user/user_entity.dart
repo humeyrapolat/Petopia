@@ -9,6 +9,9 @@ class UserEntity extends Equatable {
   final String? bio;
   final String? website;
   final String? email;
+  final DateTime? birthdate;
+  final String? breed;
+  final String? gender;
   final String? profileUrl;
   final List? followers;
   final List? following;
@@ -28,6 +31,9 @@ class UserEntity extends Equatable {
     this.bio,
     this.website,
     this.email,
+    this.birthdate,
+    this.breed,
+    this.gender,
     this.profileUrl,
     this.followers,
     this.following,
@@ -47,6 +53,9 @@ class UserEntity extends Equatable {
         bio,
         website,
         email,
+        birthdate,
+        breed,
+        gender,
         profileUrl,
         followers,
         following,

@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:calendar_date_picker2/calendar_date_picker2.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/features/presentation/cubit/auth/auth_cubit.dart';
@@ -10,8 +13,6 @@ import 'package:petopia/features/presentation/page/main_screen/main_screen.dart'
 import 'package:petopia/profile_widget.dart';
 
 import '../../../../util/consts.dart';
-import '../../widgets/button_container_widget.dart';
-import '../../widgets/form_container_widget.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -24,41 +25,74 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
-  final TextEditingController _bioController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _breedController = TextEditingController();
+  final TextEditingController _typeController = TextEditingController();
+  final TextEditingController _genderController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
+
+  DateTime _dateTime = DateTime.now();
 
   bool _isSigningUp = false;
-  bool _isUploading = false;
+
+  final List<String> genderItems = [
+    'Male',
+    'Female',
+  ];
+
+  final List<String> typeItems = [
+    'Cat',
+    'Dog',
+  ];
+
+  final List<String> breedItems = [
+    "Labrador Retriever",
+    "German Shepherd",
+    "Bulldog",
+    "Poodle",
+    "Golden Retriever",
+    "Siamese",
+    "Persian",
+    "Maine Coon",
+    "Bengal",
+    "Sphynx",
+  ];
+
+  String? selectedValue;
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
     _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _bioController.dispose();
+    _nameController.dispose();
     super.dispose();
   }
+
   File? _image;
 
   Future selectImage() async {
-    try{
-      final pickedFile = await ImagePicker.platform.getImage(source: ImageSource.gallery);
+    try {
+      final pickedFile =
+          await ImagePicker.platform.getImage(source: ImageSource.gallery);
       setState(() {
-        if(pickedFile != null) {
+        if (pickedFile != null) {
           _image = File(pickedFile.path);
-        }else{
+        } else {
           print("no image has been selected");
         }
       });
-    }catch(e){
+    } catch (e) {
       toast("some error occured $e");
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: backGroundColor,
+      backgroundColor: lightOrangeColor,
       body: BlocConsumer<CredentialCubit, CredentialState>(
         listener: (context, credentialState) {
           if (credentialState is CredentialSuccess) {
@@ -98,23 +132,18 @@ class _SignUpPageState extends State<SignUpPage> {
             flex: 2,
             child: Container(),
           ),
-          // Center(
-          //   child: Image.asset("assets/profile_default.png"),
-
-          // ),
-          const SizedBox(height: 15),
           Expanded(
             child: Center(
               child: Stack(
                 children: [
                   Container(
-                    width: 60,
-                    height: 60,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(30)),
-                      child: ClipRRect(borderRadius: BorderRadius.circular(30),child: profileWidget(image: _image))
-
-                  ),
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30)),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(30),
+                          child: profileWidget(image: _image))),
                   Positioned(
                     right: -10,
                     bottom: -15,
@@ -131,36 +160,344 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           const SizedBox(height: 30),
-          FormContainerWidget(
-            controller: _usernameController,
-            hintText: "Username",
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                width: 150,
+                height: 50,
+                child: TextFormField(
+                  controller: _usernameController,
+                  cursorColor: lightOrangeColor,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 20,
+                    ),
+                    hintText: 'Username.',
+                    hintStyle: const TextStyle(fontSize: 14),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                ),
+              ),
+              sizeHorizontal(50),
+              SizedBox(
+                width: 150,
+                height: 50,
+                child: TextFormField(
+                  controller: _nameController,
+                  decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 20,
+                    ),
+                    hintText: 'Name.',
+                    hintStyle: const TextStyle(fontSize: 14),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          sizeVertical(20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                width: 150,
+                height: 50,
+                child: DropdownButtonFormField2(
+                  decoration: InputDecoration(
+                    //Add isDense true and zero Padding.
+                    //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    //Add more decoration as you want here
+                    //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
+                  ),
+                  isExpanded: true,
+                  hint: const Text(
+                    'Type',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  items: typeItems
+                      .map((item) => DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(
+                              item,
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select type.';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) {
+                    //Do something when changing the item if you want.
+                    _typeController.text = value.toString();
+                  },
+                  onSaved: (value) {
+                    selectedValue = value.toString();
+                  },
+                  buttonStyleData: const ButtonStyleData(
+                    height: 60,
+                    padding: EdgeInsets.only(left: 20, right: 10),
+                  ),
+                  iconStyleData: const IconStyleData(
+                    icon: Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black45,
+                    ),
+                    iconSize: 30,
+                  ),
+                  dropdownStyleData: DropdownStyleData(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                ),
+              ),
+              sizeHorizontal(50),
+              Container(
+                width: 150,
+                height: 50,
+                child: DropdownButtonFormField2(
+                  decoration: InputDecoration(
+                    //Add isDense true and zero Padding.
+                    //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    //Add more decoration as you want here
+                    //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
+                  ),
+                  isExpanded: true,
+                  hint: const Text(
+                    'Gender',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  items: genderItems
+                      .map((item) => DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(
+                              item,
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select gender.';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) {
+                    //Do something when changing the item if you want.
+                    _genderController.text = value.toString();
+                  },
+                  onSaved: (value) {
+                    selectedValue = value.toString();
+                  },
+                  buttonStyleData: const ButtonStyleData(
+                    height: 60,
+                    padding: EdgeInsets.only(left: 20, right: 10),
+                  ),
+                  iconStyleData: const IconStyleData(
+                    icon: Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black45,
+                    ),
+                    iconSize: 30,
+                  ),
+                  dropdownStyleData: DropdownStyleData(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 15),
-          FormContainerWidget(
-            controller: _emailController,
-            hintText: "Email",
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Container(
+                width: 150,
+                height: 50,
+                child: DropdownButtonFormField2(
+                  decoration: InputDecoration(
+                    //Add isDense true and zero Padding.
+                    //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
+                    isDense: true,
+                    contentPadding: EdgeInsets.zero,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    //Add more decoration as you want here
+                    //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
+                  ),
+                  isExpanded: true,
+                  hint: const Text(
+                    "Breed",
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  items: breedItems
+                      .map((item) => DropdownMenuItem<String>(
+                            value: item,
+                            child: Text(
+                              item,
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Please select breed .';
+                    }
+                    return null;
+                  },
+                  onChanged: (value) {
+                    //Do something when changing the item if you want.
+                    _breedController.text = value.toString();
+                  },
+                  onSaved: (value) {
+                    selectedValue = value.toString();
+                  },
+                  buttonStyleData: const ButtonStyleData(
+                    height: 60,
+                    padding: EdgeInsets.only(left: 20, right: 10),
+                  ),
+                  iconStyleData: const IconStyleData(
+                    icon: Icon(
+                      Icons.arrow_drop_down,
+                      color: Colors.black45,
+                    ),
+                    iconSize: 30,
+                  ),
+                  dropdownStyleData: DropdownStyleData(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                ),
+              ),
+              sizeHorizontal(26),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Date",
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                  sizeHorizontal(8),
+                  Text(_dateTime.toString().substring(0, 10),
+                      style: const TextStyle(
+                          fontSize: 15, fontWeight: FontWeight.w500)),
+                  sizeHorizontal(1),
+                  IconButton(
+                    onPressed: () {
+                      DatePicker.showDatePicker(context,
+                          showTitleActions: true,
+                          minTime: DateTime(2018, 3, 5),
+                          maxTime: DateTime(2050, 12, 31), onChanged: (date) {
+                        setState(() {
+                          _dateTime = date;
+                          _dateController.text =
+                              date.toString().substring(0, 10);
+                        });
+                      }, onConfirm: (date) {
+                        _dateTime = date;
+                      }, currentTime: _dateTime, locale: LocaleType.tr);
+                    },
+                    icon: const Icon(Icons.calendar_today),
+                  ),
+                ],
+              ),
+            ],
           ),
           const SizedBox(height: 15),
-          FormContainerWidget(
-            controller: _passwordController,
-            hintText: "Password",
-            isPasswordField: true,
+          SizedBox(
+            width: 365,
+            height: 50,
+            child: TextFormField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 20,
+                ),
+                hintText: 'Email',
+                hintStyle: const TextStyle(fontSize: 14),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+            ),
+          ),
+          sizeVertical(15),
+          SizedBox(
+            width: 365,
+            height: 50,
+            child: TextFormField(
+              controller: _passwordController,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 20,
+                ),
+                hintText: 'password',
+                hintStyle: const TextStyle(fontSize: 14),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+            ),
           ),
           const SizedBox(height: 15),
-          FormContainerWidget(
-            controller: _bioController,
-            hintText: "Bio",
-          ),
-          const SizedBox(height: 15),
-          ButtonContainerWidget(
-            color: darkBlueColor,
-            text: "Sign Up",
-            onTapListener: () {
+          ElevatedButton(
+            onPressed: () {
               _signUpUser();
             },
+            style: ButtonStyle(
+              elevation: MaterialStateProperty.all<double>(5),
+              backgroundColor:
+                  MaterialStateProperty.all<Color>(darkOrangeColor),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+            ),
+            child: const Text(
+              "Sign Up",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
           sizeVertical(10),
-          _isSigningUp == true || _isUploading == true ? Row(
+          _isSigningUp == true
+              ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
@@ -174,7 +511,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     const CircularProgressIndicator()
                   ],
                 )
-              : Container(
+              : const SizedBox(
                   width: 0,
                   height: 0,
                 ),
@@ -209,6 +546,100 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  dropBody() {
+    return Form(
+      key: _formKey,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 80),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            TextFormField(
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 20,
+                ),
+                hintText: 'Enter Your Full Name.',
+                hintStyle: const TextStyle(fontSize: 14),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+            ),
+            const SizedBox(height: 30),
+            DropdownButtonFormField2(
+              decoration: InputDecoration(
+                //Add isDense true and zero Padding.
+                //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
+                isDense: true,
+                contentPadding: EdgeInsets.zero,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                //Add more decoration as you want here
+                //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
+              ),
+              isExpanded: true,
+              hint: const Text(
+                'Select Your Gender',
+                style: TextStyle(fontSize: 14),
+              ),
+              items: genderItems
+                  .map((item) => DropdownMenuItem<String>(
+                        value: item,
+                        child: Text(
+                          item,
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ))
+                  .toList(),
+              validator: (value) {
+                if (value == null) {
+                  return 'Please select gender.';
+                }
+                return null;
+              },
+              onChanged: (value) {
+                //Do something when changing the item if you want.
+              },
+              onSaved: (value) {
+                selectedValue = value.toString();
+              },
+              buttonStyleData: const ButtonStyleData(
+                height: 60,
+                padding: EdgeInsets.only(left: 20, right: 10),
+              ),
+              iconStyleData: const IconStyleData(
+                icon: Icon(
+                  Icons.arrow_drop_down,
+                  color: Colors.black45,
+                ),
+                iconSize: 30,
+              ),
+              dropdownStyleData: DropdownStyleData(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+            ),
+            const SizedBox(height: 30),
+            TextButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
+                }
+              },
+              child: const Text('Submit Button'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Future<void> _signUpUser() async {
     setState(() {
       _isSigningUp = true;
@@ -218,7 +649,7 @@ class _SignUpPageState extends State<SignUpPage> {
           UserEntity(
             email: _emailController.text,
             password: _passwordController.text,
-            bio: _bioController.text,
+            bio: "",
             username: _usernameController.text,
             totalPosts: 0,
             totalFollowing: 0,
@@ -238,7 +669,7 @@ class _SignUpPageState extends State<SignUpPage> {
       _usernameController.clear();
       _emailController.clear();
       _passwordController.clear();
-      _bioController.clear();
+      _nameController.clear();
       _isSigningUp = false;
     });
   }

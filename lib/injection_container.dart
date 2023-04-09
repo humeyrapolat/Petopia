@@ -21,13 +21,12 @@ import 'package:petopia/features/presentation/cubit/credential/credential_cubit.
 import 'package:petopia/features/presentation/cubit/user/get_single_user/get_single_user_cubit.dart';
 import 'package:petopia/features/presentation/cubit/user/user_cubit.dart';
 
-
 final sl = GetIt.instance;
 
 Future<void> init() async {
   // Cubits
   sl.registerFactory(
-        () => AuthCubit(
+    () => AuthCubit(
       signOutUseCase: sl.call(),
       isSignInUseCase: sl.call(),
       getCurrentUidUseCase: sl.call(),
@@ -35,21 +34,18 @@ Future<void> init() async {
   );
 
   sl.registerFactory(
-        () => CredentialCubit(
+    () => CredentialCubit(
       signUpUserUseCase: sl.call(),
       signInUserUseCase: sl.call(),
     ),
   );
 
   sl.registerFactory(
-        () => UserCubit(
-        updateUserUseCase: sl.call(),
-        getUsersUseCase: sl.call()
-    ),
+    () => UserCubit(updateUserUseCase: sl.call(), getUsersUseCase: sl.call()),
   );
 
   sl.registerFactory(
-        () => GetSingleUserCubit(
+    () => GetSingleUserCubit(
       getSingleUserUseCase: sl.call(),
     ),
   );
@@ -66,24 +62,26 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetSingleUserUseCase(repository: sl.call()));
 
   //Cloud Storage
-  sl.registerLazySingleton(() => UploadImageToStorageUseCase(repository: sl.call()));
-
+  sl.registerLazySingleton(
+      () => UploadImageToStorageUseCase(repository: sl.call()));
 
   // Repository
-  sl.registerLazySingleton<FirebaseRepository>(() => FirebaseRepositoryImpl(remoteDataSource: sl.call()));
+  sl.registerLazySingleton<FirebaseRepository>(
+      () => FirebaseRepositoryImpl(remoteDataSource: sl.call()));
 
   // Remote Data Source
-  sl.registerLazySingleton<FirebaseRemoteDataSource>(() => FirebaseRemoteDataSourceImpl(firestore: sl.call(), auth: sl.call(), firebaseStorage: sl.call() ));
-
+  sl.registerLazySingleton<FirebaseRemoteDataSource>(() =>
+      FirebaseRemoteDataSourceImpl(
+          firebaseFirestore: sl.call(),
+          firebaseAuth: sl.call(),
+          firebaseStorage: sl.call()));
 
   // Externals
   final firebaseFirestore = FirebaseFirestore.instance;
   final firebaseAuth = FirebaseAuth.instance;
   final firebaseStorage = FirebaseStorage.instance;
 
-
   sl.registerLazySingleton(() => firebaseFirestore);
   sl.registerLazySingleton(() => firebaseAuth);
   sl.registerLazySingleton(() => firebaseStorage);
-
 }

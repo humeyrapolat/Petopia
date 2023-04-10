@@ -19,7 +19,7 @@ const darkYellowColor = Color(0xfffed36d);
 const lightOrangeColor = Color(0xffffded7);
 const darkOrangeColor = Color(0xffff805d);
 
-const lightPinkColor = Color(0xfff6e0e3);
+const lightPinkColor = Color.fromARGB(255, 252, 237, 239);
 const darkPinkColor = Color(0xffe08594);
 
 Widget sizeVertical(double height) {

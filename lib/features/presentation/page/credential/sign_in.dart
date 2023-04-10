@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:petopia/features/presentation/cubit/auth/auth_cubit.dart';
 import 'package:petopia/features/presentation/cubit/credential/credential_cubit.dart';
 import 'package:petopia/features/presentation/page/main_screen/main_screen.dart';
-import 'package:petopia/features/presentation/widgets/button_container_widget.dart';
 import 'package:petopia/features/presentation/widgets/form_container_widget.dart';
 import 'package:petopia/util/consts.dart';
 
@@ -30,7 +29,7 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: white,
+      backgroundColor: lightPinkColor,
       body: BlocConsumer<CredentialCubit, CredentialState>(
         listener: (context, credentialState) {
           if (credentialState is CredentialSuccess) {
@@ -70,7 +69,9 @@ class _SignInPageState extends State<SignInPage> {
           const Text(
             'Petopia',
             style: TextStyle(
-                color: black, fontSize: 30, fontWeight: FontWeight.bold),
+                color: darkPinkColor,
+                fontSize: 30,
+                fontWeight: FontWeight.bold),
           ),
           sizeVertical(30),
           FormContainerWidget(
@@ -85,16 +86,29 @@ class _SignInPageState extends State<SignInPage> {
             isPasswordField: true,
           ),
           sizeVertical(15),
-          ButtonContainerWidget(
-            color: darkBlueColor,
-            text: 'Sign In',
-            onTapListener: () {
-              _signIn();
-            },
+          ElevatedButton(
+            onPressed: () => _isSignIn,
+            style: ButtonStyle(
+              elevation: MaterialStateProperty.all<double>(5),
+              backgroundColor: MaterialStateProperty.all<Color>(darkPinkColor),
+              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+            ),
+            child: const Text(
+              "Sign In",
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
           Flexible(flex: 2, child: Container()),
           const Divider(
-            color: black,
+            color: darkPinkColor,
+            thickness: 1,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -109,8 +123,10 @@ class _SignInPageState extends State<SignInPage> {
                       context, PageConsts.signUpPage, (route) => false);
                 },
                 child: const Text(" Sign Up",
-                    style:
-                        TextStyle(color: black, fontWeight: FontWeight.bold)),
+                    style: TextStyle(
+                      color: darkPinkColor,
+                      fontWeight: FontWeight.bold,
+                    )),
               ),
             ],
           ),

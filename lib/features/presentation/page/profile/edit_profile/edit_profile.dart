@@ -52,7 +52,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
     "Sphynx",
   ];
 
-
   @override
   void initState() {
     _nameController = TextEditingController(text: widget.currentUser.name);
@@ -93,10 +92,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
       backgroundColor: lightBlueGreenColor,
       appBar: AppBar(
         backgroundColor: darkBlueGreenColor,
-        title: Text("Edit Profile"),
+        title: const Text("Edit Profile"),
         leading: GestureDetector(
             onTap: () => Navigator.pop(context),
-            child: Icon(
+            child: const Icon(
               Icons.close,
               size: 32,
             )),
@@ -105,7 +104,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
             padding: const EdgeInsets.only(right: 10.0),
             child: GestureDetector(
               onTap: _updateUserProfileData,
-              child: Icon(
+              child: const Icon(
                 Icons.done,
                 color: white,
                 size: 32,
@@ -134,7 +133,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               Center(
                 child: GestureDetector(
                   onTap: selectImage,
-                  child: Text(
+                  child: const Text(
                     "Change profile photo",
                     style: TextStyle(
                         color: black,
@@ -168,12 +167,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           "Please wait...",
                           style: TextStyle(color: Colors.white),
                         ),
                         sizeHorizontal(10),
-                        CircularProgressIndicator()
+                        const CircularProgressIndicator()
                       ],
                     )
                   : Container(

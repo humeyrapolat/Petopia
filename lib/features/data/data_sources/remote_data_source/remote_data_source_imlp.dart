@@ -21,7 +21,6 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       required this.firebaseAuth,
       required this.firebaseStorage});
 
-  @override
   Future<void> createUserWithImage(UserEntity user, String profileUrl) async {
     final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
     final uid = await getCurrentUid();
@@ -210,16 +209,16 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     if (user.totalPosts != null) {
       userInformation["totalPosts"] = user.totalPosts;
     }
-    if (user.type != "" && user.type != null) {
+    if (user.type != null) {
       userInformation["type"] = user.type;
     }
-    if (user.gender != "" && user.gender != null) {
+    if (user.gender != null) {
       userInformation["gender"] = user.gender;
     }
-    if (user.breed != "" && user.breed != null) {
+    if (user.breed != null) {
       userInformation["breed"] = user.breed;
     }
-    if (user.birthdate != "" && user.birthdate != null) {
+    if (user.birthdate != null) {
       userInformation["birthdate"] = user.birthdate;
     }
 

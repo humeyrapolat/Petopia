@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/features/presentation/page/announcement/emergency_call.dart';
 import 'package:petopia/features/presentation/page/announcement/lost_animal.dart';
-import 'package:petopia/features/presentation/page/credential/deneme.dart';
 import 'package:petopia/features/presentation/page/credential/sign_in.dart';
 import 'package:petopia/features/presentation/page/credential/sign_up_page.dart';
 import 'package:petopia/features/presentation/page/home_page/chat/chat.dart';
@@ -41,12 +40,7 @@ class OnGenerateRoute {
             const AdoptionPage(),
           );
         }
-      case PageConsts.denemePage:
-        {
-          return routeBuilder(
-            const MyHomePage(),
-          );
-        }
+
       case PageConsts.emergencyCallPage:
         {
           return routeBuilder(

@@ -50,6 +50,7 @@ class ProfileDropdownWidget extends StatelessWidget {
       },
       onChanged: (value) {
         //Do something when changing the item if you want.
+        controller!.text = value.toString();
       },
       onSaved: (value) {
         selectedValue = value.toString();

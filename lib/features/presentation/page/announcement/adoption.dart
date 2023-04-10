@@ -7,10 +7,7 @@ class AdoptionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: darkYellowColor,
-        title: const Text("Adoption"),
-      ),
+      body: Text("Adoption Animal"),
     );
   }
 }

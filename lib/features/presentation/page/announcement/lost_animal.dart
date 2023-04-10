@@ -6,9 +6,7 @@ class LostAnimalPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Lost Animal"),
-      ),
+      body: Text("Lost Animal"),
     );
   }
 }

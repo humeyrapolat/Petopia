@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 import 'package:petopia/features/presentation/cubit/user/get_single_user/get_single_user_cubit.dart';
+import 'package:petopia/features/presentation/page/announcement/announcement.dart';
 import 'package:petopia/features/presentation/page/home_page/home_page.dart';
 import 'package:petopia/features/presentation/page/home_page/post/comments/comments.dart';
 import 'package:petopia/features/presentation/page/home_page/search/search.dart';
@@ -81,7 +82,7 @@ class _MainScreenState extends State<MainScreen> {
                 onPageChanged: onPageChanged,
                 children: [
                   const HomePage(),
-                  const SearchPage(),
+                  Announcement(),
                   const CommentPage(),
                   ProfilePage(currentUser: currentUser),
                 ],

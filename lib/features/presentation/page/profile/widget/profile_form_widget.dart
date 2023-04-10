@@ -20,7 +20,7 @@ class ProfileFormWidget extends StatelessWidget {
             controller: controller,
             decoration: InputDecoration(
               labelText: '$title',
-              labelStyle: TextStyle(color: darkBlueGreenColor, fontSize: 20),
+              labelStyle: TextStyle(color: darkBlueGreenColor, fontSize: 16),
               hintText: "Enter your  $title",
               focusedBorder: OutlineInputBorder(
                 borderSide: BorderSide(

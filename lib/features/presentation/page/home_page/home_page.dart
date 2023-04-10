@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: darkBlueColor,
+      backgroundColor: white,
       appBar: AppBar(
         backgroundColor: darkPinkColor,
         title: const Text(
@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.only(right: 10.0),
             child: Icon(
               MaterialCommunityIcons.facebook_messenger,
-              color: lightGreenColor,
+              color: lightPinkColor,
             ),
           )
         ],
@@ -44,13 +44,13 @@ class _HomePageState extends State<HomePage> {
                       width: 30,
                       height: 30,
                       decoration: const BoxDecoration(
-                          color: lightGreenColor, shape: BoxShape.circle),
+                          color: darkPinkColor, shape: BoxShape.circle),
                     ),
                     sizeHorizontal(10),
                     const Text(
                       "Username",
                       style: TextStyle(
-                          color: lightGreenColor, fontWeight: FontWeight.bold),
+                          color: darkPinkColor, fontWeight: FontWeight.bold),
                     )
                   ],
                 ),
@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
                     },
                     child: const Icon(
                       Icons.more_vert,
-                      color: lightGreenColor,
+                      color: darkPinkColor,
                     ))
               ],
             ),
@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
             Container(
               width: double.infinity,
               height: MediaQuery.of(context).size.height * 0.30,
-              color: lightGreenColor,
+              color: Colors.grey,
             ),
             sizeVertical(10),
             Row(
@@ -79,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     const Icon(
                       Icons.favorite,
-                      color: lightGreenColor,
+                      color: darkPinkColor,
                     ),
                     sizeHorizontal(10),
                     GestureDetector(
@@ -90,18 +90,18 @@ class _HomePageState extends State<HomePage> {
                         },
                         child: const Icon(
                           Feather.message_circle,
-                          color: lightGreenColor,
+                          color: darkPinkColor,
                         )),
                     sizeHorizontal(10),
                     const Icon(
                       Feather.send,
-                      color: lightGreenColor,
+                      color: darkPinkColor,
                     ),
                   ],
                 ),
                 const Icon(
                   Icons.bookmark_border,
-                  color: lightGreenColor,
+                  color: darkPinkColor,
                 )
               ],
             ),
@@ -111,24 +111,24 @@ class _HomePageState extends State<HomePage> {
                 const Text(
                   "Username",
                   style: TextStyle(
-                      color: lightGreenColor, fontWeight: FontWeight.bold),
+                      color: darkPinkColor, fontWeight: FontWeight.bold),
                 ),
                 sizeHorizontal(10),
                 const Text(
                   "some description",
-                  style: TextStyle(color: lightGreenColor),
+                  style: TextStyle(color: darkPinkColor),
                 ),
               ],
             ),
             sizeVertical(10),
             const Text(
               "View all 10 comments",
-              style: TextStyle(color: darkBlueColor),
+              style: TextStyle(color: darkPinkColor,fontWeight: FontWeight.bold),
             ),
             sizeVertical(10),
             const Text(
               "08/5/2022",
-              style: TextStyle(color: darkBlueColor),
+              style: TextStyle(color: darkPinkColor,fontWeight: FontWeight.bold),
             ),
           ],
         ),

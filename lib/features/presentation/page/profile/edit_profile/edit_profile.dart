@@ -28,6 +28,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController? _typeController;
   TextEditingController? _genderController;
   TextEditingController? _breedController;
+  TextEditingController? _bioController;
 
   final List<String> genderItems = [
     'Male',
@@ -62,6 +63,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     _typeController = TextEditingController(text: widget.currentUser.type);
     _genderController = TextEditingController(text: widget.currentUser.gender);
     _breedController = TextEditingController(text: widget.currentUser.breed);
+    _bioController = TextEditingController(text: widget.currentUser.bio);
     super.initState();
   }
 
@@ -163,6 +165,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 list: genderItems,
               ),
               sizeVertical(10),
+              ProfileFormWidget(
+                  title: "Add Bio", controller: _bioController),
+              sizeVertical(15),
               _isUpdating == true
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -211,6 +216,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 breed: _breedController!.text,
                 website: _websiteController!.text,
                 name: _nameController!.text,
+                bio: _bioController!.text,
                 profileUrl: profileUrl))
         .then((value) => _clear());
   }
@@ -224,6 +230,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
       _breedController!.clear();
       _websiteController!.clear();
       _nameController!.clear();
+      _bioController!.clear();
     });
     Navigator.pop(context);
   }

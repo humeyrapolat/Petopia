@@ -57,7 +57,7 @@ class ProfileDropdownWidget extends StatelessWidget {
       },
       buttonStyleData: const ButtonStyleData(
         height: 60,
-        padding: EdgeInsets.only(left: 20, right: 10),
+        padding: EdgeInsets.only( right: 10),
       ),
       iconStyleData: const IconStyleData(
         icon: Icon(

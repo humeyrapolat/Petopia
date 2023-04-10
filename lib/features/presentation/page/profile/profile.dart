@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/features/presentation/cubit/auth/auth_cubit.dart';
 import 'package:petopia/profile_widget.dart';
@@ -7,6 +8,7 @@ import 'package:petopia/util/consts.dart';
 
 class ProfilePage extends StatelessWidget {
   final UserEntity currentUser;
+
   const ProfilePage({super.key, required this.currentUser});
 
   @override
@@ -14,12 +16,23 @@ class ProfilePage extends StatelessWidget {
     return Scaffold(
         backgroundColor: white,
         appBar: AppBar(
-          backgroundColor: white,
+          backgroundColor: darkBlueGreenColor,
           title: Text(
             "${currentUser.username}",
-            style: const TextStyle(color: darkOrangeColor),
+            style: const TextStyle(color: lightBlueGreenColor),
           ),
           actions: [
+            Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: InkWell(
+                onTap: () {
+                  // go notifications page
+                },
+                child: const Icon(
+                  Ionicons.ios_megaphone,
+                ),
+              ),
+            ),
             Padding(
               padding: const EdgeInsets.only(right: 10.0),
               child: InkWell(
@@ -28,7 +41,7 @@ class ProfilePage extends StatelessWidget {
                   },
                   child: const Icon(
                     Icons.menu,
-                    color: darkOrangeColor,
+                    color: lightBlueGreenColor,
                   )),
             )
           ],
@@ -39,10 +52,10 @@ class ProfilePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
+                Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
+                    SizedBox(
                       width: 80,
                       height: 80,
                       child: ClipRRect(
@@ -50,20 +63,34 @@ class ProfilePage extends StatelessWidget {
                         child: profileWidget(imageUrl: currentUser.profileUrl),
                       ),
                     ),
+                    sizeVertical(15),
+                    Text(
+                      "${currentUser.name == "" ? currentUser.username : currentUser.name}",
+                      style: const TextStyle(
+                          color: darkBlueGreenColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    sizeVertical(15),
+                    Text(
+                      "Bio: ${currentUser.bio}",
+                      style: const TextStyle(color: darkBlueGreenColor),
+                    ),
+                    sizeVertical(10),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Column(
                           children: [
                             Text(
                               "${currentUser.totalPosts}",
                               style: const TextStyle(
-                                  color: darkOrangeColor,
+                                  color: darkBlueGreenColor,
                                   fontWeight: FontWeight.bold),
                             ),
                             sizeVertical(8),
                             const Text(
                               "Posts",
-                              style: TextStyle(color: darkOrangeColor),
+                              style: TextStyle(color: darkBlueGreenColor),
                             )
                           ],
                         ),
@@ -77,13 +104,13 @@ class ProfilePage extends StatelessWidget {
                               Text(
                                 "${currentUser.totalFollowers}",
                                 style: const TextStyle(
-                                    color: darkOrangeColor,
+                                    color: darkBlueGreenColor,
                                     fontWeight: FontWeight.bold),
                               ),
                               sizeVertical(8),
                               const Text(
                                 "Followers",
-                                style: TextStyle(color: darkOrangeColor),
+                                style: TextStyle(color: darkBlueGreenColor),
                               )
                             ],
                           ),
@@ -98,42 +125,32 @@ class ProfilePage extends StatelessWidget {
                               Text(
                                 "${currentUser.totalFollowing}",
                                 style: const TextStyle(
-                                    color: darkOrangeColor,
+                                    color: darkBlueGreenColor,
                                     fontWeight: FontWeight.bold),
                               ),
                               sizeVertical(8),
                               const Text(
                                 "Following",
-                                style: TextStyle(color: darkOrangeColor),
+                                style: TextStyle(color: darkBlueGreenColor),
                               )
                             ],
                           ),
                         )
                       ],
-                    )
+                    ),
+                    sizeVertical(10),
                   ],
                 ),
-                sizeVertical(10),
-                Text(
-                  "${currentUser.name == "" ? currentUser.username : currentUser.name}",
-                  style: const TextStyle(
-                      color: darkOrangeColor, fontWeight: FontWeight.bold),
-                ),
-                sizeVertical(10),
-                Text(
-                  "${currentUser.bio}",
-                  style: const TextStyle(color: darkOrangeColor),
-                ),
-                sizeVertical(10),
                 GridView.builder(
                     itemCount: 32,
                     physics: const ScrollPhysics(),
                     shrinkWrap: true,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            crossAxisSpacing: 5,
-                            mainAxisSpacing: 5),
+                      crossAxisCount: 3,
+                      mainAxisSpacing: 16.0,
+                      crossAxisSpacing: 16.0,
+                    ),
                     itemBuilder: (context, index) {
                       return GestureDetector(
                         onTap: () {
@@ -142,7 +159,7 @@ class ProfilePage extends StatelessWidget {
                         child: Container(
                           width: 20,
                           height: 20,
-                          color: Colors.red,
+                          color: Colors.grey,
                         ),
                       );
                     }),
@@ -172,7 +189,7 @@ class ProfilePage extends StatelessWidget {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
-                            color: darkOrangeColor),
+                            color: darkBlueGreenColor),
                       ),
                     ),
                     const SizedBox(
@@ -180,7 +197,7 @@ class ProfilePage extends StatelessWidget {
                     ),
                     const Divider(
                       thickness: 1,
-                      color: darkOrangeColor,
+                      color: darkGreenColor,
                     ),
                     const SizedBox(
                       height: 8,
@@ -202,14 +219,14 @@ class ProfilePage extends StatelessWidget {
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
-                              color: darkOrangeColor),
+                              color: darkBlueGreenColor),
                         ),
                       ),
                     ),
                     sizeVertical(7),
                     const Divider(
                       thickness: 1,
-                      color: darkOrangeColor,
+                      color: darkGreenColor,
                     ),
                     sizeVertical(7),
                     Padding(
@@ -225,7 +242,7 @@ class ProfilePage extends StatelessWidget {
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
-                              color: darkOrangeColor),
+                              color: darkBlueGreenColor),
                         ),
                       ),
                     ),

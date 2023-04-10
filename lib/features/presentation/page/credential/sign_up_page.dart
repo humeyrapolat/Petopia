@@ -135,27 +135,28 @@ class _SignUpPageState extends State<SignUpPage> {
             flex: 2,
             child: Container(),
           ),
-          Expanded(
-            child: Center(
-              child: Stack(
-                children: [
-                  Container(
-                      width: 70,
-                      height: 70,
-                      child: ClipRRect(child: profileWidget(image: _image))),
-                  Positioned(
-                    right: -10,
-                    bottom: -15,
-                    child: IconButton(
-                      onPressed: selectImage,
-                      icon: const Icon(
-                        Icons.add_a_photo,
-                        color: black,
-                      ),
+          Center(
+            child: Stack(
+              children: [
+                 Container(
+                   width: 70,
+                   height: 70,
+                   child:
+                     ClipRRect(child: profileWidget(image: _image)),
+
+                 ),
+                Positioned(
+                  right: -10,
+                  bottom: -15,
+                  child: IconButton(
+                    onPressed: selectImage,
+                    icon: const Icon(
+                      Icons.add_a_photo,
+                      color: black,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 30),

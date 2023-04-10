@@ -165,8 +165,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 list: genderItems,
               ),
               sizeVertical(10),
-              ProfileFormWidget(
-                  title: "Add Bio", controller: _bioController),
+              ProfileFormWidget(title: "Add Bio", controller: _bioController),
               sizeVertical(15),
               _isUpdating == true
                   ? Row(

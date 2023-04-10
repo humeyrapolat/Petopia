@@ -10,8 +10,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,12 +18,17 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: darkPinkColor,
         title: const Text(
             "PETAPP"), //SvgPicture.asset("assets/profile_default.png", color: primaryColor, height: 32,),
-        actions: const [
+        actions: [
           Padding(
-            padding: EdgeInsets.only(right: 10.0),
-            child: Icon(
-              MaterialCommunityIcons.facebook_messenger,
-              color: lightPinkColor,
+            padding: const EdgeInsets.only(right: 10.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, PageConsts.chatPage);
+              },
+              child: const Icon(
+                MaterialCommunityIcons.facebook_messenger,
+                color: lightPinkColor,
+              ),
             ),
           )
         ],
@@ -123,12 +126,14 @@ class _HomePageState extends State<HomePage> {
             sizeVertical(10),
             const Text(
               "View all 10 comments",
-              style: TextStyle(color: darkPinkColor,fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(color: darkPinkColor, fontWeight: FontWeight.bold),
             ),
             sizeVertical(10),
             const Text(
               "08/5/2022",
-              style: TextStyle(color: darkPinkColor,fontWeight: FontWeight.bold),
+              style:
+                  TextStyle(color: darkPinkColor, fontWeight: FontWeight.bold),
             ),
           ],
         ),

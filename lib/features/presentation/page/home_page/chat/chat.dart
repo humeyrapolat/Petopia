@@ -6,9 +6,14 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Chat'),
-      ),
-    );
+        appBar: AppBar(
+          leading: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: const Icon(Icons.arrow_back)),
+          title: const Text('Chat'),
+        ),
+        body: const Center(
+          child: Text('Chat'),
+        ));
   }
 }

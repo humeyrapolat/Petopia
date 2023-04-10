@@ -16,20 +16,21 @@ class ProfileFormWidget extends StatelessWidget {
         sizeVertical(10),
         TextFormField(
             cursorColor: Colors.lightGreen,
-            keyboardType: TextInputType.phone,
+            keyboardType: TextInputType.text,
             controller: controller,
             decoration: InputDecoration(
               labelText: '$title',
-              labelStyle: TextStyle(color: darkBlueGreenColor, fontSize: 16),
+              labelStyle:
+                  const TextStyle(color: darkBlueGreenColor, fontSize: 16),
               hintText: "Enter your  $title",
               focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(
+                borderSide: const BorderSide(
                   color: darkBlueGreenColor,
                 ),
                 borderRadius: BorderRadius.circular(15),
               ),
               border: OutlineInputBorder(
-                borderSide: BorderSide(),
+                borderSide: const BorderSide(),
                 borderRadius: BorderRadius.circular(15),
               ),
             )),

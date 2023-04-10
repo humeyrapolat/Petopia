@@ -72,97 +72,107 @@ class ProfilePage extends StatelessWidget {
                     ),
                     sizeVertical(15),
                     Text(
-                      "Bio: ${currentUser.bio}",
+                      "${currentUser.bio}",
                       style: const TextStyle(color: darkBlueGreenColor),
                     ),
                     sizeVertical(10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(
-                          children: [
-                            Text(
-                              "${currentUser.totalPosts}",
-                              style: const TextStyle(
-                                  color: darkBlueGreenColor,
-                                  fontWeight: FontWeight.bold),
+                    IntrinsicHeight(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              Text(
+                                "${currentUser.totalPosts}",
+                                style: const TextStyle(
+                                    color: darkBlueGreenColor,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              sizeVertical(8),
+                              const Text(
+                                "Posts",
+                                style: TextStyle(color: darkBlueGreenColor),
+                              )
+                            ],
+                          ),
+                          sizeHorizontal(25),
+                          GestureDetector(
+                            onTap: () {
+                              // Navigator.pushNamed(context, PageConsts.f, arguments: widget.currentUser);
+                            },
+                            child: Column(
+                              children: [
+                                Text(
+                                  "${currentUser.totalFollowers}",
+                                  style: const TextStyle(
+                                      color: darkBlueGreenColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                sizeVertical(8),
+                                const Text(
+                                  "Followers",
+                                  style: TextStyle(color: darkBlueGreenColor),
+                                )
+                              ],
                             ),
-                            sizeVertical(8),
-                            const Text(
-                              "Posts",
-                              style: TextStyle(color: darkBlueGreenColor),
-                            )
-                          ],
-                        ),
-                        sizeHorizontal(25),
-                        GestureDetector(
-                          onTap: () {
-                            // Navigator.pushNamed(context, PageConsts.f, arguments: widget.currentUser);
-                          },
-                          child: Column(
-                            children: [
-                              Text(
-                                "${currentUser.totalFollowers}",
-                                style: const TextStyle(
-                                    color: darkBlueGreenColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              sizeVertical(8),
-                              const Text(
-                                "Followers",
-                                style: TextStyle(color: darkBlueGreenColor),
-                              )
-                            ],
                           ),
-                        ),
-                        sizeHorizontal(25),
-                        GestureDetector(
-                          onTap: () {
-                            // Navigator.pushNamed(context, PageConst.followingPage, arguments: widget.currentUser);
-                          },
-                          child: Column(
-                            children: [
-                              Text(
-                                "${currentUser.totalFollowing}",
-                                style: const TextStyle(
-                                    color: darkBlueGreenColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              sizeVertical(8),
-                              const Text(
-                                "Following",
-                                style: TextStyle(color: darkBlueGreenColor),
-                              )
-                            ],
-                          ),
-                        )
-                      ],
+                          sizeHorizontal(25),
+                          GestureDetector(
+                            onTap: () {
+                              // Navigator.pushNamed(context, PageConst.followingPage, arguments: widget.currentUser);
+                            },
+                            child: Column(
+                              children: [
+                                Text(
+                                  "${currentUser.totalFollowing}",
+                                  style: const TextStyle(
+                                      color: darkBlueGreenColor,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                sizeVertical(8),
+                                const Text(
+                                  "Following",
+                                  style: TextStyle(color: darkBlueGreenColor),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                    sizeVertical(10),
                   ],
                 ),
-                GridView.builder(
-                    itemCount: 32,
-                    physics: const ScrollPhysics(),
-                    shrinkWrap: true,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                      mainAxisSpacing: 16.0,
-                      crossAxisSpacing: 16.0,
-                    ),
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          //  Navigator.pushNamed(context, PageConst.postDetailPage, arguments: posts[index].postId);
-                        },
-                        child: Container(
-                          width: 20,
-                          height: 20,
-                          color: Colors.grey,
+                const Divider(
+                  thickness: 1,
+                  color: darkGreenColor,
+                ),
+                sizeVertical(5),
+                Column(
+                  children: [
+                    GridView.builder(
+                        itemCount: 32,
+                        physics: const ScrollPhysics(),
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          mainAxisSpacing: 16.0,
+                          crossAxisSpacing: 16.0,
                         ),
-                      );
-                    }),
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                            onTap: () {
+                              //  Navigator.pushNamed(context, PageConst.postDetailPage, arguments: posts[index].postId);
+                            },
+                            child: Container(
+                              width: 20,
+                              height: 20,
+                              color: Colors.grey,
+                            ),
+                          );
+                        }),
+                  ],
+                ),
               ],
             ),
           ),

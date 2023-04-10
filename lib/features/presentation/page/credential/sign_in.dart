@@ -87,7 +87,9 @@ class _SignInPageState extends State<SignInPage> {
           ),
           sizeVertical(15),
           ElevatedButton(
-            onPressed: () => _isSignIn,
+            onPressed: () {
+              _signIn();
+            },
             style: ButtonStyle(
               elevation: MaterialStateProperty.all<double>(5),
               backgroundColor: MaterialStateProperty.all<Color>(darkPinkColor),
@@ -105,11 +107,7 @@ class _SignInPageState extends State<SignInPage> {
               ),
             ),
           ),
-          Flexible(flex: 2, child: Container()),
-          const Divider(
-            color: darkPinkColor,
-            thickness: 1,
-          ),
+          sizeVertical(10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -130,6 +128,7 @@ class _SignInPageState extends State<SignInPage> {
               ),
             ],
           ),
+          Flexible(flex: 2, child: Container()),
         ],
       ),
     );

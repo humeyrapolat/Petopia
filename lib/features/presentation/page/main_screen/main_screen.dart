@@ -5,8 +5,7 @@ import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 import 'package:petopia/features/presentation/cubit/user/get_single_user/get_single_user_cubit.dart';
 import 'package:petopia/features/presentation/page/announcement/announcement.dart';
 import 'package:petopia/features/presentation/page/home_page/home_page.dart';
-import 'package:petopia/features/presentation/page/home_page/post/comments/comments.dart';
-import 'package:petopia/features/presentation/page/home_page/search/search.dart';
+import 'package:petopia/features/presentation/page/home_page/post/comments/comments_page.dart';
 import 'package:petopia/features/presentation/page/profile/profile.dart';
 import 'package:petopia/util/consts.dart';
 
@@ -64,8 +63,8 @@ class _MainScreenState extends State<MainScreen> {
                           color: lightBlueGreenColor),
                       label: ""),
                   BottomNavigationBarItem(
-                      icon:
-                          Icon(Ionicons.ios_megaphone, color: lightBlueGreenColor),
+                      icon: Icon(Ionicons.ios_megaphone,
+                          color: lightBlueGreenColor),
                       label: ""),
                   BottomNavigationBarItem(
                       icon: Icon(Ionicons.ios_paw, color: lightBlueGreenColor),

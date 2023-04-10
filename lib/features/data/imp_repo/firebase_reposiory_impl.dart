@@ -33,6 +33,10 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
   Future<void> signOut() async => await remoteDataSource.signOut();
 
   @override
+  Future<void> passwordReset(String email) async =>
+      await remoteDataSource.passwordReset(email);
+
+  @override
   Future<void> signUpUser(UserEntity user) async =>
       await remoteDataSource.signUpUser(user);
 

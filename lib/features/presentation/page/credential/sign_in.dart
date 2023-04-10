@@ -85,6 +85,23 @@ class _SignInPageState extends State<SignInPage> {
             hintText: 'Password',
             isPasswordField: true,
           ),
+          sizeVertical(10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              InkWell(
+                onTap: () {
+                  Navigator.pushNamed(
+                      context, PageConsts.resetPasswordPage);
+                },
+                child: const Text("Reset Password",
+                    style: TextStyle(
+                      color: darkPinkColor,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ),
+            ],
+          ),
           sizeVertical(15),
           ElevatedButton(
             onPressed: () {

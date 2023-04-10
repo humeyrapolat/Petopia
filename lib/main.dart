@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:petopia/features/presentation/cubit/auth/auth_cubit.dart';
 import 'package:petopia/features/presentation/cubit/credential/credential_cubit.dart';
+import 'package:petopia/features/presentation/cubit/resetPassword/reset_password_cubit.dart';
 import 'package:petopia/features/presentation/cubit/user/get_single_user/get_single_user_cubit.dart';
 import 'package:petopia/features/presentation/cubit/user/user_cubit.dart';
 import 'package:petopia/features/presentation/page/credential/sign_in.dart';
@@ -39,6 +40,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<GetSingleUserCubit>(
           create: (context) => di.sl<GetSingleUserCubit>(),
+        ),
+        BlocProvider<ResetPasswordCubit>(
+          create: (context) => di.sl<ResetPasswordCubit>(),
         ),
       ],
       child: MaterialApp(

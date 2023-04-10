@@ -6,6 +6,7 @@ import 'package:petopia/features/data/data_sources/remote_data_source/remote_dat
 import 'package:petopia/features/data/data_sources/remote_data_source/remote_data_source_imlp.dart';
 import 'package:petopia/features/data/imp_repo/firebase_reposiory_impl.dart';
 import 'package:petopia/features/domain/repo/firebase_repository.dart';
+import 'package:petopia/features/domain/usecases/firebase_usecases/resetPassword/reset_password_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/storage/upload_image_to_storage_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/create_user_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/get_current_uid_usecase.dart';
@@ -18,6 +19,7 @@ import 'package:petopia/features/domain/usecases/firebase_usecases/user/sign_up_
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/update_user_usecase.dart';
 import 'package:petopia/features/presentation/cubit/auth/auth_cubit.dart';
 import 'package:petopia/features/presentation/cubit/credential/credential_cubit.dart';
+import 'package:petopia/features/presentation/cubit/resetPassword/reset_password_cubit.dart';
 import 'package:petopia/features/presentation/cubit/user/get_single_user/get_single_user_cubit.dart';
 import 'package:petopia/features/presentation/cubit/user/user_cubit.dart';
 
@@ -50,6 +52,12 @@ Future<void> init() async {
     ),
   );
 
+  sl.registerFactory(
+        () => ResetPasswordCubit(
+      resetPasswordUseCase: sl.call(),
+    ),
+  );
+
   // Use Cases
   sl.registerLazySingleton(() => SignOutUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => IsSignInUseCase(repository: sl.call()));
@@ -60,6 +68,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetUsersUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => CreateUserUserCase(repository: sl.call()));
   sl.registerLazySingleton(() => GetSingleUserUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => ResetPasswordUseCase(repository: sl.call()));
 
   //Cloud Storage
   sl.registerLazySingleton(

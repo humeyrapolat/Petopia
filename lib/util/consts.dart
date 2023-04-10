@@ -22,6 +22,9 @@ const darkOrangeColor = Color(0xffff805d);
 const lightPinkColor = Color.fromARGB(255, 252, 237, 239);
 const darkPinkColor = Color(0xffe08594);
 
+const darkPurpleColor = Color(0xFFB39DDB);
+const lightPurpleColor = Color(0xFFEDE4F6);
+
 Widget sizeVertical(double height) {
   return SizedBox(height: height);
 }
@@ -34,7 +37,7 @@ class PageConsts {
   //credentials
   static const String signInPage = "signInPage";
   static const String signUpPage = "signUpPage";
-  static const String denemePage = "denemePage";
+  static const String resetPasswordPage = "resetPasswordPage";
   //announcement
   static const String adoptionPage = "adoptionPage";
   static const String emergencyCallPage = "emergencyCallPage";

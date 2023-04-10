@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:petopia/features/data/data_sources/remote_data_source/remote_data_source.dart';
 import 'package:petopia/features/data/models/posts/post_model.dart';
 import 'package:petopia/features/data/models/user/user_model.dart';
@@ -144,6 +145,16 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   @override
   Future<void> signOut() async {
     await firebaseAuth.signOut();
+  }
+
+  @override
+  Future<void> passwordReset(String email) async {
+    try{
+      await firebaseAuth.sendPasswordResetEmail( email: email);
+    }on FirebaseAuthException catch (e){
+      toast("Error: $e");
+    }
+
   }
 
   @override

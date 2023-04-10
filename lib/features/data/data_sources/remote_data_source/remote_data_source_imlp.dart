@@ -210,16 +210,16 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     if (user.totalPosts != null) {
       userInformation["totalPosts"] = user.totalPosts;
     }
-    if (user.type != null) {
+    if (user.type != "" && user.type != null) {
       userInformation["type"] = user.type;
     }
-    if (user.gender != null) {
+    if (user.gender != "" && user.gender != null) {
       userInformation["gender"] = user.gender;
     }
-    if (user.breed != null) {
+    if (user.breed != "" && user.breed != null) {
       userInformation["breed"] = user.breed;
     }
-    if (user.birthdate != null) {
+    if (user.birthdate != "" && user.birthdate != null) {
       userInformation["birthdate"] = user.birthdate;
     }
 

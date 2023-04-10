@@ -143,7 +143,7 @@ _openBottomModalSheet(BuildContext context) {
       builder: (context) {
         return Container(
           height: 150,
-          decoration: BoxDecoration(color: backGroundColor.withOpacity(.8)),
+          decoration: BoxDecoration(color: white.withOpacity(.8)),
           child: SingleChildScrollView(
             child: Container(
               margin: const EdgeInsets.symmetric(vertical: 10),

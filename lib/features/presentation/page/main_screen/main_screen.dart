@@ -65,7 +65,7 @@ class _MainScreenState extends State<MainScreen> {
                       label: ""),
                   BottomNavigationBarItem(
                       icon:
-                          Icon(Ionicons.md_search, color: lightBlueGreenColor),
+                          Icon(Ionicons.ios_megaphone, color: lightBlueGreenColor),
                       label: ""),
                   BottomNavigationBarItem(
                       icon: Icon(Ionicons.ios_paw, color: lightBlueGreenColor),

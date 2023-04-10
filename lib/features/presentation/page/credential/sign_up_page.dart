@@ -141,12 +141,12 @@ class _SignUpPageState extends State<SignUpPage> {
               child: Stack(
                 children: [
                   Container(
+                    color: darkPinkColor,
                       width: 60,
-                      height: 60,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30)),
+                      height: 100,
+
                       child: ClipRRect(
-                          borderRadius: BorderRadius.circular(30),
+
                           child: profileWidget(image: _image))),
                   Positioned(
                     right: -10,
@@ -665,7 +665,7 @@ class _SignUpPageState extends State<SignUpPage> {
             totalFollowers: 0,
             website: "",
             following: [],
-            name: "",
+            name: _nameController.text,
             imageFile: _image,
           ),
         )

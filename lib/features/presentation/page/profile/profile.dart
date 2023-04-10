@@ -12,9 +12,9 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: backGroundColor,
+        backgroundColor: white,
         appBar: AppBar(
-          backgroundColor: backGroundColor,
+          backgroundColor: white,
           title: Text(
             "${currentUser.username}",
             style: const TextStyle(color: darkOrangeColor),
@@ -158,7 +158,7 @@ class ProfilePage extends StatelessWidget {
         builder: (context) {
           return Container(
             height: 150,
-            decoration: BoxDecoration(color: backGroundColor.withOpacity(.8)),
+            decoration: BoxDecoration(color: white.withOpacity(.8)),
             child: SingleChildScrollView(
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 10),

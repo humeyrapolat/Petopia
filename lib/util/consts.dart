@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-const backGroundColor = Colors.white;
+const white = Colors.white;
 const black = Colors.black;
 
 const lightBlueGreenColor = Color(0xffddf1f0);

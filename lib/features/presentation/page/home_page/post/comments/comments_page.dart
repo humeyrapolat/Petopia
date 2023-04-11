@@ -15,13 +15,10 @@ class _CommentPageState extends State<CommentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: lightBlueColor,
+      backgroundColor: white,
       appBar: AppBar(
-        backgroundColor: darkBlueColor,
+        backgroundColor: darkPurpleColor,
         title: const Text('Comments'),
-        leading: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: const Icon(Icons.arrow_back)),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,7 +96,7 @@ class _CommentPageState extends State<CommentPage> {
                                 GestureDetector(
                                     child: const Icon(
                                   Icons.favorite_outline,
-                                  color: Colors.red,
+                                  color: Colors.black,
                                   size: 20,
                                 )),
                               ],
@@ -191,31 +188,36 @@ _commentSection() {
   return Container(
     width: double.infinity,
     height: 55,
-    color: Colors.grey[800],
+    color: Colors.grey[200],
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(children: [
         Container(
           width: 40,
           height: 40,
-          decoration: const BoxDecoration(
-              shape: BoxShape.circle, color: lightBlueColor),
+          decoration:
+              const BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
         ),
         sizeHorizontal(10),
         Expanded(
-          child: TextFormField(
-            style: const TextStyle(color: lightBlueColor),
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              hintText: "Add a comment...",
-              hintStyle: TextStyle(color: lightBlueColor),
+          child: Container(
+            child: TextFormField(
+              style: const TextStyle(color: black),
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                hintText: "Add a comment as username",
+                hintStyle: TextStyle(color: black),
+              ),
             ),
           ),
         ),
-        const Text(
-          "Post",
-          style: TextStyle(
-              color: lightBlueColor, fontSize: 15, fontWeight: FontWeight.bold),
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            "Post",
+            style: TextStyle(
+                color: black, fontSize: 15, fontWeight: FontWeight.bold),
+          ),
         ),
       ]),
     ),

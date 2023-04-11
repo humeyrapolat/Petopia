@@ -13,6 +13,9 @@ import 'package:petopia/features/presentation/page/home_page/search/search.dart'
 import 'package:petopia/features/presentation/page/match/match.dart';
 import 'package:petopia/features/presentation/page/profile/activity/acitivity.dart';
 import 'package:petopia/features/presentation/page/profile/edit_profile/edit_profile.dart';
+import 'package:petopia/features/presentation/page/profile/liked/liked_post.dart';
+import 'package:petopia/features/presentation/page/profile/post_type/hidden_post.dart';
+import 'package:petopia/features/presentation/page/profile/post_type/shared_post.dart';
 import 'package:petopia/features/presentation/page/profile/profile.dart';
 import 'package:petopia/util/consts.dart';
 
@@ -119,6 +122,7 @@ class OnGenerateRoute {
             const ActivityPage(),
           );
         }
+
       case PageConsts.editProfilePage:
         {
           if (args is UserEntity) {
@@ -126,8 +130,26 @@ class OnGenerateRoute {
               currentUser: args,
             ));
           } else {
-            return routeBuilder(NoPageFound());
+            return routeBuilder(const NoPageFound());
           }
+        }
+      case PageConsts.hiddenPostPage:
+        {
+          return routeBuilder(
+            const HiddenPostPage(),
+          );
+        }
+      case PageConsts.sharedPostPage:
+        {
+          return routeBuilder(
+            const SharedPostPage(),
+          );
+        }
+      case PageConsts.likedPostPage:
+        {
+          return routeBuilder(
+            const LikedPostPage(),
+          );
         }
 
       default:

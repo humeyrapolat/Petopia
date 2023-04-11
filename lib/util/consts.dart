@@ -3,6 +3,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 
 const white = Colors.white;
 const black = Colors.black;
+const darkGrey = Color.fromARGB(255, 49, 49, 49);
+const lightGrey = Color.fromARGB(255, 155, 155, 155);
 
 const lightBlueGreenColor = Color(0xffddf1f0);
 const darkBlueGreenColor = Color(0xff78c8bb);
@@ -56,6 +58,9 @@ class PageConsts {
   static const String profilePage = "profilePage";
   static const String activityPage = "activityPage";
   static const String editProfilePage = "editProfilePage";
+  static const String hiddenPostPage = "hiddenPostPage";
+  static const String sharedPostPage = "sharedPostPage";
+  static const String likedPostPage = "likedPostPage";
 
   //no page
   static const String noPageFound = "noPageFound";
@@ -80,8 +85,8 @@ void toast(String message) {
     toastLength: Toast.LENGTH_SHORT,
     gravity: ToastGravity.BOTTOM,
     timeInSecForIosWeb: 1,
-    backgroundColor: lightPinkColor,
-    textColor: Colors.white,
+    backgroundColor: darkPinkColor,
+    textColor: black,
     fontSize: 16.0,
   );
 }

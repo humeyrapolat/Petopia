@@ -29,7 +29,7 @@ class ProfileDropdownWidget extends StatelessWidget {
       isExpanded: true,
       hint: Text(
         'Select $title',
-        style: TextStyle(fontSize: 16, color: darkBlueGreenColor),
+        style: const TextStyle(fontSize: 16, color: darkBlueGreenColor),
       ),
       items: list
           .map((item) => DropdownMenuItem<String>(
@@ -57,7 +57,7 @@ class ProfileDropdownWidget extends StatelessWidget {
       },
       buttonStyleData: const ButtonStyleData(
         height: 60,
-        padding: EdgeInsets.only( right: 10),
+        padding: EdgeInsets.only(right: 10),
       ),
       iconStyleData: const IconStyleData(
         icon: Icon(

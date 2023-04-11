@@ -91,8 +91,7 @@ class _SignInPageState extends State<SignInPage> {
             children: [
               InkWell(
                 onTap: () {
-                  Navigator.pushNamed(
-                      context, PageConsts.resetPasswordPage);
+                  Navigator.pushNamed(context, PageConsts.resetPasswordPage);
                 },
                 child: const Text("Reset Password",
                     style: TextStyle(

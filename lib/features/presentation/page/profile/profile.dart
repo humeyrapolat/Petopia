@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/features/presentation/cubit/auth/auth_cubit.dart';
-import 'package:petopia/profile_widget.dart';
+import 'package:petopia/features/presentation/page/profile/liked/liked_post.dart';
+import 'package:petopia/features/presentation/page/profile/post_type/hidden_post.dart';
+import 'package:petopia/features/presentation/page/profile/post_type/shared_post.dart';
 import 'package:petopia/util/consts.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -13,26 +15,23 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
         backgroundColor: white,
         appBar: AppBar(
           backgroundColor: darkBlueGreenColor,
-          title: Text(
-            "${currentUser.username}",
-            style: const TextStyle(color: lightBlueGreenColor),
+          elevation: 0,
+          title: Center(
+            child: Text(
+              "${currentUser.username}".toUpperCase(),
+              style: const TextStyle(color: black),
+            ),
+          ),
+          leading: const Icon(
+            Ionicons.ios_megaphone,
           ),
           actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: InkWell(
-                onTap: () {
-                  // go notifications page
-                },
-                child: const Icon(
-                  Ionicons.ios_megaphone,
-                ),
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.only(right: 10.0),
               child: InkWell(
@@ -46,137 +45,144 @@ class ProfilePage extends StatelessWidget {
             )
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+        body: Column(
+          children: [
+            sizeVertical(25),
+            Container(
+              width: 120,
+              height: 120,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: NetworkImage(currentUser.profileUrl! ??
+                      "https://i.pinimg.com/474x/4b/2a/7f/4b2a7fd2bc5fcddd91a28d3421b418b2.jpg"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Text(
+                "@${currentUser.name}" ?? "username",
+                style: const TextStyle(color: black, fontSize: 15),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: 80,
-                      height: 80,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(40),
-                        child: profileWidget(imageUrl: currentUser.profileUrl),
-                      ),
-                    ),
-                    sizeVertical(15),
-                    Text(
-                      "${currentUser.name == "" ? currentUser.username : currentUser.name}",
-                      style: const TextStyle(
-                          color: darkBlueGreenColor,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    sizeVertical(15),
-                    Text(
-                      "${currentUser.bio}",
-                      style: const TextStyle(color: darkBlueGreenColor),
-                    ),
-                    sizeVertical(10),
-                    IntrinsicHeight(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            children: [
-                              Text(
-                                "${currentUser.totalPosts}",
-                                style: const TextStyle(
-                                    color: darkBlueGreenColor,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              sizeVertical(8),
-                              const Text(
-                                "Posts",
-                                style: TextStyle(color: darkBlueGreenColor),
-                              )
-                            ],
-                          ),
-                          sizeHorizontal(25),
-                          GestureDetector(
-                            onTap: () {
-                              // Navigator.pushNamed(context, PageConsts.f, arguments: widget.currentUser);
-                            },
-                            child: Column(
-                              children: [
-                                Text(
-                                  "${currentUser.totalFollowers}",
-                                  style: const TextStyle(
-                                      color: darkBlueGreenColor,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                sizeVertical(8),
-                                const Text(
-                                  "Followers",
-                                  style: TextStyle(color: darkBlueGreenColor),
-                                )
-                              ],
-                            ),
-                          ),
-                          sizeHorizontal(25),
-                          GestureDetector(
-                            onTap: () {
-                              // Navigator.pushNamed(context, PageConst.followingPage, arguments: widget.currentUser);
-                            },
-                            child: Column(
-                              children: [
-                                Text(
-                                  "${currentUser.totalFollowing}",
-                                  style: const TextStyle(
-                                      color: darkBlueGreenColor,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                sizeVertical(8),
-                                const Text(
-                                  "Following",
-                                  style: TextStyle(color: darkBlueGreenColor),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                const Divider(
-                  thickness: 1,
-                  color: darkGreenColor,
-                ),
-                sizeVertical(5),
-                Column(
-                  children: [
-                    GridView.builder(
-                        itemCount: 32,
-                        physics: const ScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 3,
-                          mainAxisSpacing: 16.0,
-                          crossAxisSpacing: 16.0,
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    child: Column(
+                      children: [
+                        Text(
+                          "${currentUser.totalPosts}",
+                          style: const TextStyle(
+                              color: black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
                         ),
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              //  Navigator.pushNamed(context, PageConst.postDetailPage, arguments: posts[index].postId);
-                            },
-                            child: Container(
-                              width: 20,
-                              height: 20,
-                              color: Colors.grey,
-                            ),
-                          );
-                        }),
-                  ],
+                        sizeVertical(5),
+                        const Text(
+                          "Followers",
+                          style: TextStyle(
+                              color: lightGrey,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Text(
+                          "${currentUser.totalFollowers}",
+                          style: const TextStyle(
+                              color: black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                        sizeVertical(5),
+                        const Text(
+                          "Followers",
+                          style: TextStyle(
+                              color: lightGrey,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      children: [
+                        Text(
+                          "${currentUser.totalFollowing}",
+                          style: const TextStyle(
+                              color: black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20),
+                        ),
+                        sizeVertical(5),
+                        const Text(
+                          "Following",
+                          style: TextStyle(
+                              color: lightGrey,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
-          ),
-        ));
+            sizeVertical(20),
+            Text(
+              currentUser.bio ?? "bio here",
+              style: const TextStyle(color: lightGrey, fontSize: 15),
+            ),
+            const TabBar(
+              tabs: [
+                Tab(
+                  icon: Icon(
+                    Ionicons.ios_menu,
+                    color: darkGrey,
+                  ),
+                ),
+                Tab(
+                  icon: Icon(
+                    Icons.hide_image_outlined,
+                    color: darkGrey,
+                  ),
+                ),
+                Tab(
+                  icon: Icon(
+                    Icons.favorite_border_outlined,
+                    color: darkGrey,
+                  ),
+                ),
+              ],
+              indicatorColor: lightGrey,
+            ),
+            const Expanded(
+                child: TabBarView(
+              children: [
+                SharedPostPage(),
+                HiddenPostPage(),
+                LikedPostPage(),
+              ],
+            ))
+          ],
+        ),
+      ),
+    );
   }
 
   _openBottomModalSheet(BuildContext context) {
@@ -184,37 +190,42 @@ class ProfilePage extends StatelessWidget {
         context: context,
         builder: (context) {
           return Container(
-            height: 150,
-            decoration: BoxDecoration(color: white.withOpacity(.8)),
-            child: SingleChildScrollView(
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 10.0),
+              height: 150,
+              decoration: BoxDecoration(
+                color: white.withOpacity(.8),
+              ),
+              child: ListView(
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 10.0),
+                    child: Center(
                       child: Text(
-                        "More Options",
+                        "More options",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: darkBlueGreenColor),
+                            fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    const Divider(
-                      thickness: 1,
-                      color: darkGreenColor,
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: GestureDetector(
+                  ),
+                  sizeVertical(5),
+                  const Divider(
+                    color: darkGrey,
+                    thickness: 1,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.edit_outlined,
+                            color: darkBlueGreenColor,
+                            size: 25,
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
                         onTap: () {
                           Navigator.pushNamed(
                                   context, PageConsts.editProfilePage,
@@ -222,46 +233,49 @@ class ProfilePage extends StatelessWidget {
                               .whenComplete(() {
                             Navigator.pop(context);
                           });
-                          // Navigator.push(context, MaterialPageRoute(builder: (context) => EditProfilePage()));
                         },
-                        child: const Text(
-                          "Edit Profile",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: darkBlueGreenColor),
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: const Text(
+                            "Edit Profile",
+                            style: TextStyle(fontSize: 20),
+                          ),
                         ),
                       ),
-                    ),
-                    sizeVertical(7),
-                    const Divider(
-                      thickness: 1,
-                      color: darkGreenColor,
-                    ),
-                    sizeVertical(7),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
-                      child: InkWell(
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerRight,
+                        child: const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Icon(
+                            Icons.logout_outlined,
+                            color: darkBlueGreenColor,
+                            size: 25,
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
                         onTap: () {
                           BlocProvider.of<AuthCubit>(context).loggedOut();
                           Navigator.pushNamedAndRemoveUntil(
                               context, PageConsts.signInPage, (route) => false);
                         },
-                        child: const Text(
-                          "Logout",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: darkBlueGreenColor),
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: const Text(
+                            "Logout",
+                            style: TextStyle(fontSize: 20),
+                          ),
                         ),
                       ),
-                    ),
-                    sizeVertical(7),
-                  ],
-                ),
-              ),
-            ),
-          );
+                    ],
+                  ),
+                ],
+              ));
         });
   }
 }

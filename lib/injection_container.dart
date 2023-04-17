@@ -23,6 +23,13 @@ import 'package:petopia/features/presentation/cubit/resetPassword/reset_password
 import 'package:petopia/features/presentation/cubit/user/get_single_user/get_single_user_cubit.dart';
 import 'package:petopia/features/presentation/cubit/user/user_cubit.dart';
 
+import 'features/domain/usecases/firebase_usecases/post/create_post_usecase.dart';
+import 'features/domain/usecases/firebase_usecases/post/delete_post_usecase.dart';
+import 'features/domain/usecases/firebase_usecases/post/like_post_usecase.dart';
+import 'features/domain/usecases/firebase_usecases/post/read_post_usecase.dart';
+import 'features/domain/usecases/firebase_usecases/post/update_post_usecase.dart';
+import 'features/presentation/cubit/post/post_cubit.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -58,6 +65,14 @@ Future<void> init() async {
     ),
   );
 
+  sl.registerFactory(() =>
+      PostCubit(updatePostUseCase: sl.call(),
+          deletePostUseCase: sl.call(),
+          likePostUseCase: sl.call(),
+          createPostUseCase: sl.call(),
+          readPostUseCase: sl.call()),
+  );
+
   // Use Cases
   sl.registerLazySingleton(() => SignOutUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => IsSignInUseCase(repository: sl.call()));
@@ -73,6 +88,13 @@ Future<void> init() async {
   //Cloud Storage
   sl.registerLazySingleton(
       () => UploadImageToStorageUseCase(repository: sl.call()));
+
+  //Post
+  sl.registerLazySingleton(() => CreatePostUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => ReadPostUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => LikePostUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => DeletePostUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => UpdatePostUseCase(repository: sl.call()));
 
   // Repository
   sl.registerLazySingleton<FirebaseRepository>(

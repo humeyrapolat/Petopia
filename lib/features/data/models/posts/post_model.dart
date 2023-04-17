@@ -33,7 +33,7 @@ class PostModel extends PostEntity {
           likes: likes,
           totalLikes: totalLikes,
           totalComments: totalComments,
-          creatAt: createAt,
+          createAt: createAt,
           userProfileUrl: userProfileUrl,
         );
 

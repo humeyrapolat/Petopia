@@ -263,7 +263,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       postId: post.postId,
       username: post.username,
       userProfileUrl: post.userProfileUrl,
-      createAt: post.creatAt,
+      createAt: post.createAt,
       totalComments: 0,
       totalLikes: 0,
       description: post.description,

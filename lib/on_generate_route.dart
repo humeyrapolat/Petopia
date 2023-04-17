@@ -19,6 +19,7 @@ import 'package:petopia/features/presentation/page/profile/post_type/shared_post
 import 'package:petopia/features/presentation/page/profile/profile.dart';
 import 'package:petopia/util/consts.dart';
 
+import 'features/domain/entities/post/post_entity.dart';
 import 'features/presentation/page/announcement/adoption.dart';
 
 class OnGenerateRoute {
@@ -71,12 +72,14 @@ class OnGenerateRoute {
           );
         }
 
-      case PageConsts.updatePostPage:
-        {
-          return routeBuilder(
-            const UpdatePostPage(),
-          );
+      case PageConsts.updatePostPage: {
+        if (args is PostEntity) {
+          return routeBuilder(UpdatePostPage(post: args,));
+
+        } else {
+          return routeBuilder(NoPageFound());
         }
+      }
       case PageConsts.searchPage:
         {
           return routeBuilder(

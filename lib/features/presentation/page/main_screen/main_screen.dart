@@ -9,6 +9,8 @@ import 'package:petopia/features/presentation/page/home_page/post/comments/comme
 import 'package:petopia/features/presentation/page/profile/profile.dart';
 import 'package:petopia/util/consts.dart';
 
+import '../home_page/post/upload_post_page.dart';
+
 class MainScreen extends StatefulWidget {
   final String uid;
   const MainScreen({Key? key, required this.uid}) : super(key: key);
@@ -67,6 +69,10 @@ class _MainScreenState extends State<MainScreen> {
                           color: lightBlueGreenColor),
                       label: ""),
                   BottomNavigationBarItem(
+                      icon: Icon(Ionicons.logo_googleplus,
+                          color: lightBlueGreenColor),
+                      label: ""),
+                  BottomNavigationBarItem(
                       icon: Icon(Ionicons.ios_paw, color: lightBlueGreenColor),
                       label: ""),
                   BottomNavigationBarItem(
@@ -82,6 +88,7 @@ class _MainScreenState extends State<MainScreen> {
                 children: [
                   const HomePage(),
                   const Announcement(),
+                  UploadPostPage(currentUser: currentUser,),
                   const CommentPage(),
                   ProfilePage(currentUser: currentUser),
                 ],

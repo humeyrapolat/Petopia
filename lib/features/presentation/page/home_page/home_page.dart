@@ -1,23 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
-import 'package:petopia/util/consts.dart';
+import 'package:petopia/features/presentation/page/home_page/post/widgets/single_post_card_widget.dart';
+import 'package:petopia/injection_container.dart' as di;
 
-class HomePage extends StatefulWidget {
+
+import '../../../../util/consts.dart';
+import '../../../domain/entities/post/post_entity.dart';
+import '../../cubit/post/post_cubit.dart';
+
+class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
         backgroundColor: darkPinkColor,
-        title: const Text(
-            "PETAPP"), //SvgPicture.asset("assets/profile_default.png", color: primaryColor, height: 32,),
+        title: Text("PETOPIA"),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
@@ -33,186 +34,39 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 30,
-                      height: 30,
-                      decoration: const BoxDecoration(
-                          color: darkPinkColor, shape: BoxShape.circle),
-                    ),
-                    sizeHorizontal(10),
-                    const Text(
-                      "Username",
-                      style: TextStyle(
-                          color: darkPinkColor, fontWeight: FontWeight.bold),
-                    )
-                  ],
-                ),
-                GestureDetector(
-                    onTap: () {
-                      _openBottomModalSheet(context);
-                      //Navigator.push(context, MaterialPageRoute(builder: (context) => UpdatePostPage()));
-                    },
-                    child: const Icon(
-                      Icons.more_vert,
-                      color: darkPinkColor,
-                    ))
-              ],
-            ),
-            sizeVertical(10),
-            Container(
-              width: double.infinity,
-              height: MediaQuery.of(context).size.height * 0.30,
-              color: Colors.grey,
-            ),
-            sizeVertical(10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.favorite,
-                      color: darkPinkColor,
-                    ),
-                    sizeHorizontal(10),
-                    GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, PageConsts.commentPage);
-
-                          //Navigator.push(context, MaterialPageRoute(builder: (context) => CommentPage()));
-                        },
-                        child: const Icon(
-                          Feather.message_circle,
-                          color: darkPinkColor,
-                        )),
-                    sizeHorizontal(10),
-                    const Icon(
-                      Feather.send,
-                      color: darkPinkColor,
-                    ),
-                  ],
-                ),
-                const Icon(
-                  Icons.bookmark_border,
-                  color: darkPinkColor,
-                )
-              ],
-            ),
-            sizeVertical(10),
-            Row(
-              children: [
-                const Text(
-                  "Username",
-                  style: TextStyle(
-                      color: darkPinkColor, fontWeight: FontWeight.bold),
-                ),
-                sizeHorizontal(10),
-                const Text(
-                  "some description",
-                  style: TextStyle(color: darkPinkColor),
-                ),
-              ],
-            ),
-            sizeVertical(10),
-            const Text(
-              "View all 10 comments",
-              style:
-                  TextStyle(color: darkPinkColor, fontWeight: FontWeight.bold),
-            ),
-            sizeVertical(10),
-            const Text(
-              "08/5/2022",
-              style:
-                  TextStyle(color: darkPinkColor, fontWeight: FontWeight.bold),
-            ),
-          ],
+      body: BlocProvider<PostCubit>(
+        create: (context) =>
+        di.sl<PostCubit>()
+          ..getPosts( post: PostEntity()),
+        child: BlocBuilder<PostCubit, PostState>(
+          builder: (context, postState) {
+            if (postState is PostLoading) {
+              return Center(child: CircularProgressIndicator(),);
+            }
+            if (postState is PostFailure) {
+              toast("Some Failure occured while creating the post");
+            }
+            if (postState is PostLoaded) {
+              return postState.posts.isEmpty? _noPostsYetWidget() : ListView.builder(
+                itemCount: postState.posts.length,
+                itemBuilder: (context, index) {
+                  final post = postState.posts[index];
+                  return BlocProvider(
+                    create: (context) => di.sl<PostCubit>(),
+                    child: SinglePostCardWidget(post: post),
+                  );
+                },
+              );
+            }
+            return Center(child: CircularProgressIndicator(),);
+          },
         ),
       ),
     );
   }
-}
 
-_openBottomModalSheet(BuildContext context) {
-  return showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          height: 150,
-          decoration: BoxDecoration(color: white.withOpacity(.8)),
-          child: SingleChildScrollView(
-            child: Container(
-              margin: const EdgeInsets.symmetric(vertical: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 10.0),
-                    child: Text(
-                      "More Options",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                          color: lightGreenColor),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  const Divider(
-                    thickness: 1,
-                    color: lightGreenColor,
-                  ),
-                  const SizedBox(
-                    height: 8,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(left: 10.0),
-                    child: Text(
-                      "Delete Post",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16,
-                          color: lightGreenColor),
-                    ),
-                  ),
-                  sizeVertical(7),
-                  const Divider(
-                    thickness: 1,
-                    color: lightGreenColor,
-                  ),
-                  sizeVertical(7),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        Navigator.pushNamed(context, PageConsts.updatePostPage);
-
-                        //Navigator.push(context, MaterialPageRoute(builder: (context) => UpdatePostPage()));
-                      },
-                      child: const Text(
-                        "Update Post",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16,
-                            color: lightGreenColor),
-                      ),
-                    ),
-                  ),
-                  sizeVertical(7),
-                ],
-              ),
-            ),
-          ),
-        );
-      });
+  _noPostsYetWidget() {
+    return Center(child: Text("No Posts Yet", style: TextStyle(
+        color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),),);
+  }
 }

@@ -1,46 +1,132 @@
-
+import 'package:petopia/features/domain/entities/post/post_entity.dart';
+import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/domain/usecases/firebase_usecases/storage/upload_image_to_storage_usecase.dart';
+import 'package:petopia/features/presentation/cubit/post/post_cubit.dart';
+import 'package:petopia/features/presentation/page/profile/widget/profile_form_widget.dart';
+import 'package:petopia/injection_container.dart' as di;
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:petopia/features/domain/entities/post/post_entity.dart';
-import 'package:petopia/features/presentation/cubit/post/post_cubit.dart';
-import 'package:petopia/util/consts.dart';
-import 'package:petopia/features/domain/entities/user/user_entity.dart';
-import 'package:petopia/features/domain/usecases/firebase_usecases/storage/upload_image_to_storage_usecase.dart';
 import 'package:petopia/profile_widget.dart';
+import 'package:petopia/util/consts.dart';
 import 'package:uuid/uuid.dart';
-import 'package:petopia/injection_container.dart' as di;
-
-import '../../../profile/widget/profile_form_widget.dart';
-
-
 
 class UploadPostMainWidget extends StatefulWidget {
   final UserEntity currentUser;
-  const UploadPostMainWidget({Key? key, required this.currentUser}) : super(key: key);
+  const UploadPostMainWidget({super.key, required this.currentUser});
 
   @override
   State<UploadPostMainWidget> createState() => _UploadPostMainWidgetState();
 }
 
 class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
-
+  final TextEditingController _descriptionController = TextEditingController();
+  bool isUploading = false;
   File? _image;
-  TextEditingController _descriptionController = TextEditingController();
-  bool _uploading = false;
 
   @override
   void dispose() {
-    _descriptionController.dispose();
     super.dispose();
+    _descriptionController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _image == null
+        ? uploadPostWidget()
+        : Scaffold(
+            backgroundColor: white,
+            appBar: AppBar(
+              backgroundColor: darkPinkColor,
+              leading: GestureDetector(
+                onTap: () => setState(() {
+                  _image = null;
+                }),
+                child: GestureDetector(
+                  onTap: () {},
+                  child: const Icon(
+                    Icons.close,
+                  ),
+                ),
+              ),
+              actions: [
+                GestureDetector(
+                  onTap: () {
+                    _submitPost();
+                  },
+                  child: const Icon(Icons.arrow_forward),
+                ),
+              ],
+            ),
+            body: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  children: [
+                    sizeVertical(10),
+                    SizedBox(
+                      width: 80,
+                      height: 80,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(40),
+                        child: profileWidget(
+                            imageUrl: widget.currentUser.profileUrl!),
+                      ),
+                    ),
+                    sizeVertical(10),
+                    Text(
+                      widget.currentUser.username!,
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    sizeVertical(10),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 200,
+                      child: profileWidget(image: _image),
+                    ),
+                    sizeVertical(10),
+                    ProfileFormWidget(
+                      title: "Description",
+                      controller: _descriptionController,
+                    ),
+                    sizeVertical(10),
+                    isUploading == true
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Uploading...",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              sizeHorizontal(10),
+                              const CircularProgressIndicator(
+                                color: Colors.pink,
+                                strokeWidth: 10,
+                              ),
+                            ],
+                          )
+                        : const SizedBox(
+                            width: 0,
+                            height: 0,
+                          )
+                  ],
+                ),
+              ),
+            ),
+          );
   }
 
   Future selectImage() async {
     try {
-      final pickedFile = await  ImagePicker.platform.getImage(source: ImageSource.gallery);
+      final pickedFile =
+          await ImagePicker.platform.getImage(source: ImageSource.gallery);
 
       setState(() {
         if (pickedFile != null) {
@@ -49,117 +135,74 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
           print("no image has been selected");
         }
       });
-
-    } catch(e) {
+    } catch (e) {
       toast("some error occured $e");
     }
   }
 
-
-  @override
-  Widget build(BuildContext context) {
-    return _image == null? _uploadPostWidget() : Scaffold(
-      backgroundColor: white,
-      appBar: AppBar(
-        backgroundColor: darkPinkColor,
-        leading: GestureDetector(onTap: () => setState(() => _image = null),child: Icon(Icons.close, size: 28,)),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: GestureDetector(onTap: _submitPost,child: Icon(Icons.arrow_forward)),
-          )
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: Column(
-          children: [
-            Container(
-              width: 80,
-              height: 80,
-              child: ClipRRect(borderRadius: BorderRadius.circular(40),child: profileWidget(imageUrl: "${widget.currentUser.profileUrl}")),
-            ),
-            sizeVertical(10),
-            Text("${widget.currentUser.username}", style: TextStyle(color: Colors.black),),
-            sizeVertical(10),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                height: 250,
-                child: profileWidget(image: _image),
-              ),
-            ),
-            sizeVertical(10),
-            ProfileFormWidget(title: "Description", controller: _descriptionController,),
-            sizeVertical(10),
-            _uploading == true?Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Uploading...", style: TextStyle(color: Colors.black),),
-                sizeHorizontal(10),
-                CircularProgressIndicator()
-              ],
-            ) : Container(width: 0, height: 0,)
-          ],
-        ),
-      ),
-    );
-  }
-
   _submitPost() {
     setState(() {
-      _uploading = true;
+      isUploading = true;
     });
-    di.sl<UploadImageToStorageUseCase>().call(_image!, true, "posts").then((imageUrl) {
-      _createSubmitPost(image: imageUrl);
+    di
+        .sl<UploadImageToStorageUseCase>()
+        .call(_image!, true, "posts")
+        .then((value) {
+      _createSubmitPost(image: value);
     });
   }
 
   _createSubmitPost({required String image}) {
-    BlocProvider.of<PostCubit>(context).createPost(
-        post: PostEntity(
-            description: _descriptionController.text,
+    BlocProvider.of<PostCubit>(context)
+        .createPost(
+          post: PostEntity(
+            description: _descriptionController.text.toString(),
             createAt: Timestamp.now(),
             creatorUid: widget.currentUser.uid,
-            likes: [],
-            postId: Uuid().v1(),
+            likes: const [],
+            postId: const Uuid().v1(),
             postImageUrl: image,
             totalComments: 0,
             totalLikes: 0,
             username: widget.currentUser.username,
-            userProfileUrl: widget.currentUser.profileUrl
+            userProfileUrl: widget.currentUser.profileUrl,
+          ),
         )
-    ).then((value) => _clear());
+        .then((value) => _clear());
   }
 
   _clear() {
     setState(() {
-      _uploading = false;
-      _descriptionController.clear();
       _image = null;
+      _descriptionController.clear();
+      isUploading = false;
     });
   }
 
-  _uploadPostWidget() {
+  uploadPostWidget() {
     return Scaffold(
-        backgroundColor: white,
-
-        body: Center(
-          child: GestureDetector(
-            onTap: selectImage,
-            child: Container(
-              width: 150,
+      backgroundColor: white,
+      body: Center(
+        child: GestureDetector(
+          onTap: () {
+            selectImage();
+          },
+          child: Container(
               height: 150,
+              width: 150,
               decoration: BoxDecoration(
-                  color: darkPinkColor.withOpacity(.3),
-                  shape: BoxShape.circle
+                color: darkPinkColor,
+                shape: BoxShape.circle,
               ),
-              child: Center(
-                child: Icon(Icons.upload, color: darkPinkColor, size: 40,),
-              ),
-            ),
-          ),
-        )
+              child: const Center(
+                child: Icon(
+                  Icons.upload,
+                  color: black,
+                  size: 40,
+                ),
+              )),
+        ),
+      ),
     );
   }
 }

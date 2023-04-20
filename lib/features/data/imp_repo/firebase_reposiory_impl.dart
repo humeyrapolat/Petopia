@@ -49,22 +49,27 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
       remoteDataSource.getSingleUser(uid);
 
   @override
-  Future<String> uploadImageToStorage(File? file, bool isPost, String childName) async =>
+  Future<String> uploadImageToStorage(
+          File? file, bool isPost, String childName) async =>
       remoteDataSource.uploadImageToStorage(file, isPost, childName);
 
   @override
-  Future<void> createPost(PostEntity post) async => remoteDataSource.createPost(post);
+  Future<void> createPost(PostEntity post) async =>
+      remoteDataSource.createPost(post);
 
   @override
-  Future<void> deletePost(PostEntity post) async => remoteDataSource.deletePost(post);
+  Future<void> deletePost(PostEntity post) async =>
+      remoteDataSource.deletePost(post);
 
   @override
-  Future<void> likePost(PostEntity post)  async => remoteDataSource.deletePost(post);
+  Future<void> likePost(PostEntity post) async =>
+      remoteDataSource.likePost(post);
 
   @override
-  Stream<List<PostEntity>> readPost(PostEntity post) => remoteDataSource.readPost(post);
+  Stream<List<PostEntity>> readPost(PostEntity post) =>
+      remoteDataSource.readPost(post);
 
   @override
-  Future<void> updatePost(PostEntity post) async => remoteDataSource.updatePost(post);
-
+  Future<void> updatePost(PostEntity post) async =>
+      remoteDataSource.updatePost(post);
 }

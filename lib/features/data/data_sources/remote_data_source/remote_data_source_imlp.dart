@@ -149,12 +149,11 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
 
   @override
   Future<void> passwordReset(String email) async {
-    try{
-      await firebaseAuth.sendPasswordResetEmail( email: email);
-    }on FirebaseAuthException catch (e){
+    try {
+      await firebaseAuth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
       toast("Error: $e");
     }
-
   }
 
   @override
@@ -300,24 +299,21 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     final postCollection = firebaseFirestore.collection(FirebaseConsts.post);
 
     final currentUid = await getCurrentUid();
-
     final postRef = await postCollection.doc(post.postId).get();
 
-    if (!postRef.exists) {
+    if (postRef.exists) {
       List likes = postRef.get("likes");
       final totalLikes = postRef.get("totalLikes");
       if (likes.contains(currentUid)) {
         postCollection.doc(post.postId).update({
           "likes": FieldValue.arrayRemove([currentUid]),
-          "totalLikes": totalLikes - 1,
+          "totalLikes": totalLikes - 1
         });
       } else {
-        postCollection.doc(post.postId).update(
-          {
-            "likes": FieldValue.arrayUnion([currentUid]),
-            "totalLikes": totalLikes + 1,
-          },
-        );
+        postCollection.doc(post.postId).update({
+          "likes": FieldValue.arrayUnion([currentUid]),
+          "totalLikes": totalLikes + 1
+        });
       }
     }
   }
@@ -334,16 +330,14 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   @override
   Future<void> updatePost(PostEntity post) async {
     final postCollection = firebaseFirestore.collection(FirebaseConsts.post);
-    Map<String, dynamic> postInfo = {};
+    Map<String, dynamic> postInfo = Map();
 
-    if (post.description == "" && post.description != null) {
-      postInfo["description"] = post.description;
+    if (post.description != "" && post.description != null) {
+      postInfo['description'] = post.description;
     }
-    // TODO : fotograf güncellemeyelim
-    if (post.postImageUrl == "" && post.postImageUrl != null) {
-      postInfo["postImageUrl"] = post.postImageUrl;
+    if (post.postImageUrl != "" && post.postImageUrl != null) {
+      postInfo['postImageUrl'] = post.postImageUrl;
     }
-
     postCollection.doc(post.postId).update(postInfo);
   }
 }

@@ -1,19 +1,15 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:petopia/util/consts.dart';
+import 'package:petopia/features/domain/entities/post/post_entity.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/storage/upload_image_to_storage_usecase.dart';
-import 'package:petopia/profile_widget.dart';
+import 'package:petopia/features/presentation/cubit/post/post_cubit.dart';
+import 'package:petopia/features/presentation/page/profile/widget/profile_form_widget.dart';
 import 'package:petopia/injection_container.dart' as di;
-
-import '../../../../../domain/entities/post/post_entity.dart';
-import '../../../../cubit/post/post_cubit.dart';
-import '../../../profile/widget/profile_form_widget.dart';
-
-
+import 'package:petopia/profile_widget.dart';
+import 'package:petopia/util/consts.dart';
 
 class UpdatePostMainWidget extends StatefulWidget {
   final PostEntity post;
@@ -24,12 +20,12 @@ class UpdatePostMainWidget extends StatefulWidget {
 }
 
 class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
-
   TextEditingController? _descriptionController;
 
   @override
   void initState() {
-    _descriptionController = TextEditingController(text: widget.post.description);
+    _descriptionController =
+        TextEditingController(text: widget.post.description);
     super.initState();
   }
 
@@ -43,7 +39,8 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
   bool? _uploading = false;
   Future selectImage() async {
     try {
-      final pickedFile = await ImagePicker.platform.getImage(source: ImageSource.gallery);
+      final pickedFile =
+          await ImagePicker.platform.getImage(source: ImageSource.gallery);
 
       setState(() {
         if (pickedFile != null) {
@@ -52,8 +49,7 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
           print("no image has been selected");
         }
       });
-
-    } catch(e) {
+    } catch (e) {
       toast("some error occured $e");
     }
   }
@@ -68,7 +64,13 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
-            child: GestureDetector(onTap: _updatePost,child: Icon(Icons.done, color: darkBlueColor, size: 28,)),
+            child: GestureDetector(
+                onTap: _updatePost,
+                child: Icon(
+                  Icons.done,
+                  color: darkPinkColor,
+                  size: 28,
+                )),
           )
         ],
       ),
@@ -86,7 +88,11 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
                 ),
               ),
               sizeVertical(10),
-              Text("${widget.post.username}", style: TextStyle(color: black, fontSize: 16, fontWeight: FontWeight.bold),),
+              Text(
+                "${widget.post.username}",
+                style: TextStyle(
+                    color: black, fontSize: 16, fontWeight: FontWeight.bold),
+              ),
               sizeVertical(10),
               Stack(
                 children: [
@@ -94,9 +100,7 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
                     width: double.infinity,
                     height: 200,
                     child: profileWidget(
-                        imageUrl: widget.post.postImageUrl,
-                        image: _image
-                    ),
+                        imageUrl: widget.post.postImageUrl, image: _image),
                   ),
                   Positioned(
                     top: 15,
@@ -108,9 +112,11 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
                         height: 30,
                         decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.circular(15)
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Icon(
+                          Icons.edit,
+                          color: darkPinkColor,
                         ),
-                        child: Icon(Icons.edit, color: darkBlueColor,),
                       ),
                     ),
                   )
@@ -122,14 +128,22 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
                 title: "Description",
               ),
               sizeVertical(10),
-              _uploading == true?Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Updating...", style: TextStyle(color: Colors.white),),
-                  sizeHorizontal(10),
-                  CircularProgressIndicator()
-                ],
-              ) : Container(width: 0, height: 0,)
+              _uploading == true
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Updating...",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        sizeHorizontal(10),
+                        CircularProgressIndicator()
+                      ],
+                    )
+                  : Container(
+                      width: 0,
+                      height: 0,
+                    )
             ],
           ),
         ),
@@ -144,22 +158,24 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
     if (_image == null) {
       _submitUpdatePost(image: widget.post.postImageUrl!);
     } else {
-      di.sl<UploadImageToStorageUseCase>().call(_image!, true, "posts").then((imageUrl) {
+      di
+          .sl<UploadImageToStorageUseCase>()
+          .call(_image!, true, "posts")
+          .then((imageUrl) {
         _submitUpdatePost(image: imageUrl);
       });
     }
   }
 
-
   _submitUpdatePost({required String image}) {
-    BlocProvider.of<PostCubit>(context).updatePost(
-        post: PostEntity(
-            creatorUid: widget.post.creatorUid,
-            postId: widget.post.postId,
-            postImageUrl: image,
-            description: _descriptionController!.text
-        )
-    ).then((value) => _clear());
+    BlocProvider.of<PostCubit>(context)
+        .updatePost(
+            post: PostEntity(
+                creatorUid: widget.post.creatorUid,
+                postId: widget.post.postId,
+                postImageUrl: image,
+                description: _descriptionController!.text))
+        .then((value) => _clear());
   }
 
   _clear() {
@@ -169,5 +185,4 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
       _uploading = false;
     });
   }
-
 }

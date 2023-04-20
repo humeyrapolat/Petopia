@@ -188,19 +188,16 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
             selectImage();
           },
           child: Container(
-              height: 150,
-              width: 150,
-              decoration: BoxDecoration(
-                color: darkPinkColor,
-                shape: BoxShape.circle,
-              ),
-              child: const Center(
-                child: Icon(
-                  Icons.upload,
-                  color: black,
-                  size: 40,
-                ),
-              )),
+            width: 150,
+            height: 150,
+            decoration: BoxDecoration(
+                color: darkPinkColor.withOpacity(.3),
+                shape: BoxShape.circle
+            ),
+            child: Center(
+              child: Icon(Icons.upload, color: darkPinkColor, size: 40,),
+            ),
+          ),
         ),
       ),
     );

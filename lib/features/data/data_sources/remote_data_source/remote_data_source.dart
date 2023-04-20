@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:petopia/features/domain/entities/post/post_entity.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
 
+import '../../../domain/entities/comment/comment_entity.dart';
+
 abstract class FirebaseRemoteDataSource {
   //Credential
   Future<void> signInUser(UserEntity user);
@@ -27,4 +29,11 @@ abstract class FirebaseRemoteDataSource {
   Future<void> updatePost(PostEntity post);
   Future<void> deletePost(PostEntity post);
   Future<void> likePost(PostEntity post);
+
+  // Comment
+  Future<void> createComment(CommentEntity comment);
+  Stream<List<CommentEntity>> readComments(String postId);
+  Future<void> updateComment(CommentEntity comment);
+  Future<void> deleteComment(CommentEntity comment);
+  Future<void> likeComment(CommentEntity comment);
 }

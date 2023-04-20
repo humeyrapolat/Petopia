@@ -8,10 +8,15 @@
       <change beforePath="$PROJECT_DIR$/.flutter-plugins" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/.flutter-plugins-dependencies" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/data/data_sources/remote_data_source/remote_data_source.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/data/data_sources/remote_data_source/remote_data_source.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/features/data/data_sources/remote_data_source/remote_data_source_imlp.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/data/data_sources/remote_data_source/remote_data_source_imlp.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/data/imp_repo/firebase_reposiory_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/data/imp_repo/firebase_reposiory_impl.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/domain/repo/firebase_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/domain/repo/firebase_repository.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/data/models/posts/post_model.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/data/models/posts/post_model.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/domain/entities/post/post_entity.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/domain/entities/post/post_entity.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/page/home_page/home_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/page/home_page/home_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/page/home_page/post/update_post_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/page/home_page/post/update_post_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/page/home_page/post/upload_post_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/page/home_page/post/upload_post_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/page/main_screen/main_screen.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/page/main_screen/main_screen.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/injection_container.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/injection_container.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/on_generate_route.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/on_generate_route.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,7 +59,7 @@
     <property name="dart.analysis.tool.window.force.activate" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../AA/pet" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
@@ -84,6 +89,15 @@
     </layout>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>

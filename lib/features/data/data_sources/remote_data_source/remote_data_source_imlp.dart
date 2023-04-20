@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:petopia/features/data/data_sources/remote_data_source/remote_data_source.dart';
 import 'package:petopia/features/data/models/posts/post_model.dart';
 import 'package:petopia/features/data/models/user/user_model.dart';
@@ -21,7 +22,6 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       required this.firebaseAuth,
       required this.firebaseStorage});
 
-  @override
   Future<void> createUserWithImage(UserEntity user, String profileUrl) async {
     final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
     final uid = await getCurrentUid();
@@ -36,6 +36,10 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         website: user.website,
         profileUrl: profileUrl,
         followers: user.followers,
+        type: user.type,
+        gender: user.gender,
+        breed: user.breed,
+        birthdate: user.birthdate,
         totalFollowers: user.totalFollowers,
         totalFollowing: user.totalFollowing,
         totalPosts: user.totalPosts,
@@ -68,6 +72,10 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         following: user.following,
         website: user.website,
         username: user.username,
+        type: user.type,
+        gender: user.gender,
+        breed: user.breed,
+        birthdate: user.birthdate,
         totalFollowers: user.totalFollowers,
         totalFollowing: user.totalFollowing,
         totalPosts: user.totalPosts,
@@ -140,6 +148,15 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   }
 
   @override
+  Future<void> passwordReset(String email) async {
+    try {
+      await firebaseAuth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      toast("Error: $e");
+    }
+  }
+
+  @override
   Future<void> signUpUser(UserEntity user) async {
     try {
       await firebaseAuth
@@ -202,6 +219,18 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     if (user.totalPosts != null) {
       userInformation["totalPosts"] = user.totalPosts;
     }
+    if (user.type != null) {
+      userInformation["type"] = user.type;
+    }
+    if (user.gender != null) {
+      userInformation["gender"] = user.gender;
+    }
+    if (user.breed != null) {
+      userInformation["breed"] = user.breed;
+    }
+    if (user.birthdate != null) {
+      userInformation["birthdate"] = user.birthdate;
+    }
 
     userCollection.doc(user.uid).update(userInformation);
   }
@@ -233,7 +262,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       postId: post.postId,
       username: post.username,
       userProfileUrl: post.userProfileUrl,
-      createAt: post.creatAt,
+      createAt: post.createAt,
       totalComments: 0,
       totalLikes: 0,
       description: post.description,
@@ -270,24 +299,21 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     final postCollection = firebaseFirestore.collection(FirebaseConsts.post);
 
     final currentUid = await getCurrentUid();
-
     final postRef = await postCollection.doc(post.postId).get();
 
-    if (!postRef.exists) {
+    if (postRef.exists) {
       List likes = postRef.get("likes");
       final totalLikes = postRef.get("totalLikes");
       if (likes.contains(currentUid)) {
         postCollection.doc(post.postId).update({
           "likes": FieldValue.arrayRemove([currentUid]),
-          "totalLikes": totalLikes - 1,
+          "totalLikes": totalLikes - 1
         });
       } else {
-        postCollection.doc(post.postId).update(
-          {
-            "likes": FieldValue.arrayUnion([currentUid]),
-            "totalLikes": totalLikes + 1,
-          },
-        );
+        postCollection.doc(post.postId).update({
+          "likes": FieldValue.arrayUnion([currentUid]),
+          "totalLikes": totalLikes + 1
+        });
       }
     }
   }
@@ -304,16 +330,14 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   @override
   Future<void> updatePost(PostEntity post) async {
     final postCollection = firebaseFirestore.collection(FirebaseConsts.post);
-    Map<String, dynamic> postInfo = {};
+    Map<String, dynamic> postInfo = Map();
 
-    if (post.description == "" && post.description != null) {
-      postInfo["description"] = post.description;
+    if (post.description != "" && post.description != null) {
+      postInfo['description'] = post.description;
     }
-    // TODO : fotograf güncellemeyelim
-    if (post.postImageUrl == "" && post.postImageUrl != null) {
-      postInfo["postImageUrl"] = post.postImageUrl;
+    if (post.postImageUrl != "" && post.postImageUrl != null) {
+      postInfo['postImageUrl'] = post.postImageUrl;
     }
-
     postCollection.doc(post.postId).update(postInfo);
   }
 }

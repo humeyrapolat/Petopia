@@ -15,13 +15,10 @@ class _CommentPageState extends State<CommentPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: darkBlueColor,
+      backgroundColor: white,
       appBar: AppBar(
-        backgroundColor: lightBlueColor,
+        backgroundColor: darkPurpleColor,
         title: const Text('Comments'),
-        leading: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: const Icon(Icons.arrow_back)),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,13 +34,13 @@ class _CommentPageState extends State<CommentPage> {
                       width: 40,
                       height: 40,
                       decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: darkBlueColor),
+                          shape: BoxShape.circle, color: Colors.grey),
                     ),
                     sizeHorizontal(10),
                     const Text(
                       "Username",
                       style: TextStyle(
-                          color: lightBlueColor,
+                          color: black,
                           fontSize: 15,
                           fontWeight: FontWeight.bold),
                     ),
@@ -58,9 +55,7 @@ class _CommentPageState extends State<CommentPage> {
             child: Text(
               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel tincidunt lacinia, nunc nisl aliquam nunc, eget aliquam nunc nisl eu nunc. Sed euismod, nunc vel tincidunt lacinia, nunc nisl aliquam nunc, eget aliquam nunc nisl eu nunc.",
               style: TextStyle(
-                  color: lightBlueColor,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w400),
+                  color: black, fontSize: 15, fontWeight: FontWeight.w400),
             ),
           ),
           sizeVertical(10),
@@ -78,7 +73,7 @@ class _CommentPageState extends State<CommentPage> {
                     width: 40,
                     height: 40,
                     decoration: const BoxDecoration(
-                        shape: BoxShape.circle, color: lightBlueColor),
+                        shape: BoxShape.circle, color: Colors.grey),
                   ),
                   sizeHorizontal(10),
                   Expanded(
@@ -94,23 +89,23 @@ class _CommentPageState extends State<CommentPage> {
                                 const Text(
                                   "Username",
                                   style: TextStyle(
-                                      color: lightBlueColor,
+                                      color: black,
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 GestureDetector(
                                     child: const Icon(
-                                      Icons.favorite_outline,
-                                      color: lightBlueColor,
-                                      size: 20,
-                                    )),
+                                  Icons.favorite_outline,
+                                  color: Colors.black,
+                                  size: 20,
+                                )),
                               ],
                             ),
                             sizeVertical(4),
                             const Text(
                               "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod, nunc vel tincidunt lacinia, nunc nisl aliquam nunc, eget aliquam nunc nisl eu nunc. Sed euismod, nunc vel tincidunt lacinia, nunc nisl aliquam nunc, eget aliquam nunc nisl eu nunc.",
                               style: TextStyle(
-                                  color: lightBlueColor,
+                                  color: black,
                                   fontSize: 15,
                                   fontWeight: FontWeight.w400),
                             ),
@@ -121,7 +116,7 @@ class _CommentPageState extends State<CommentPage> {
                                 const Text(
                                   "1 day ago",
                                   style: TextStyle(
-                                    color: lightBlueColor,
+                                    color: black,
                                     fontSize: 12,
                                   ),
                                 ),
@@ -135,7 +130,7 @@ class _CommentPageState extends State<CommentPage> {
                                   child: const Text(
                                     "Reply",
                                     style: TextStyle(
-                                      color: lightBlueColor,
+                                      color: black,
                                       fontSize: 12,
                                     ),
                                   ),
@@ -144,7 +139,7 @@ class _CommentPageState extends State<CommentPage> {
                                 const Text(
                                   "View Replays",
                                   style: TextStyle(
-                                    color: lightBlueColor,
+                                    color: black,
                                     fontSize: 12,
                                   ),
                                 ),
@@ -154,25 +149,25 @@ class _CommentPageState extends State<CommentPage> {
                             isReply ? sizeVertical(10) : sizeVertical(0),
                             isReply
                                 ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                const FormContainerWidget(
-                                  hintText: "Add a comment...",
-                                ),
-                                sizeVertical(10),
-                                const Text(
-                                  "Post",
-                                  style: TextStyle(
-                                      color: lightBlueColor,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            )
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      const FormContainerWidget(
+                                        hintText: "Add a comment...",
+                                      ),
+                                      sizeVertical(10),
+                                      const Text(
+                                        "Post",
+                                        style: TextStyle(
+                                            color: black,
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  )
                                 : const SizedBox(
-                              width: 0,
-                              height: 0,
-                            )
+                                    width: 0,
+                                    height: 0,
+                                  )
                           ],
                         ),
                       ),
@@ -193,31 +188,36 @@ _commentSection() {
   return Container(
     width: double.infinity,
     height: 55,
-    color: Colors.grey[800],
+    color: Colors.grey[200],
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(children: [
         Container(
           width: 40,
           height: 40,
-          decoration: const BoxDecoration(
-              shape: BoxShape.circle, color: lightBlueColor),
+          decoration:
+              const BoxDecoration(shape: BoxShape.circle, color: Colors.grey),
         ),
         sizeHorizontal(10),
         Expanded(
-          child: TextFormField(
-            style: const TextStyle(color: lightBlueColor),
-            decoration: const InputDecoration(
-              border: InputBorder.none,
-              hintText: "Add a comment...",
-              hintStyle: TextStyle(color: lightBlueColor),
+          child: Container(
+            child: TextFormField(
+              style: const TextStyle(color: black),
+              decoration: const InputDecoration(
+                border: InputBorder.none,
+                hintText: "Add a comment as username",
+                hintStyle: TextStyle(color: black),
+              ),
             ),
           ),
         ),
-        const Text(
-          "Post",
-          style: TextStyle(
-              color: lightBlueColor, fontSize: 15, fontWeight: FontWeight.bold),
+        const Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            "Post",
+            style: TextStyle(
+                color: black, fontSize: 15, fontWeight: FontWeight.bold),
+          ),
         ),
       ]),
     ),

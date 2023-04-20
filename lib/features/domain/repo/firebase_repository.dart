@@ -9,6 +9,8 @@ abstract class FirebaseRepository {
   Future<void> signUpUser(UserEntity user);
   Future<bool> isSignIn();
   Future<void> signOut();
+  Future<void> passwordReset(String email);
+
 
   //User
   Stream<List<UserEntity>> getUsers(UserEntity user); //canli veriler olacagi icin Stream kullaniyoz

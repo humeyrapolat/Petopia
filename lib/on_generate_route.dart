@@ -2,19 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/features/presentation/page/announcement/emergency_call.dart';
 import 'package:petopia/features/presentation/page/announcement/lost_animal.dart';
+import 'package:petopia/features/presentation/page/credential/reset_password.dart';
 import 'package:petopia/features/presentation/page/credential/sign_in.dart';
 import 'package:petopia/features/presentation/page/credential/sign_up_page.dart';
 import 'package:petopia/features/presentation/page/home_page/chat/chat.dart';
 import 'package:petopia/features/presentation/page/home_page/home_page.dart';
-import 'package:petopia/features/presentation/page/home_page/post/comments/comments.dart';
+import 'package:petopia/features/presentation/page/home_page/post/comments/comments_page.dart';
 import 'package:petopia/features/presentation/page/home_page/post/update_post_page.dart';
 import 'package:petopia/features/presentation/page/home_page/search/search.dart';
 import 'package:petopia/features/presentation/page/match/match.dart';
 import 'package:petopia/features/presentation/page/profile/activity/acitivity.dart';
 import 'package:petopia/features/presentation/page/profile/edit_profile/edit_profile.dart';
+import 'package:petopia/features/presentation/page/profile/liked/liked_post.dart';
+import 'package:petopia/features/presentation/page/profile/post_type/hidden_post.dart';
+import 'package:petopia/features/presentation/page/profile/post_type/shared_post.dart';
 import 'package:petopia/features/presentation/page/profile/profile.dart';
 import 'package:petopia/util/consts.dart';
 
+import 'features/domain/entities/post/post_entity.dart';
 import 'features/presentation/page/announcement/adoption.dart';
 
 class OnGenerateRoute {
@@ -40,6 +45,7 @@ class OnGenerateRoute {
             const AdoptionPage(),
           );
         }
+
       case PageConsts.emergencyCallPage:
         {
           return routeBuilder(
@@ -59,13 +65,21 @@ class OnGenerateRoute {
             const ChatPage(),
           );
         }
-
-      case PageConsts.updatePostPage:
+      case PageConsts.resetPasswordPage:
         {
           return routeBuilder(
-            const UpdatePostPage(),
+            const ResetPasswordPage(),
           );
         }
+
+      case PageConsts.updatePostPage: {
+        if (args is PostEntity) {
+          return routeBuilder(UpdatePostPage(post: args,));
+
+        } else {
+          return routeBuilder(NoPageFound());
+        }
+      }
       case PageConsts.searchPage:
         {
           return routeBuilder(
@@ -111,13 +125,34 @@ class OnGenerateRoute {
             const ActivityPage(),
           );
         }
+
       case PageConsts.editProfilePage:
         {
-          if(args is UserEntity){
-            return routeBuilder(EditProfilePage(currentUser: args,));
-          }else{
-            return routeBuilder(NoPageFound());
+          if (args is UserEntity) {
+            return routeBuilder(EditProfilePage(
+              currentUser: args,
+            ));
+          } else {
+            return routeBuilder(const NoPageFound());
           }
+        }
+      case PageConsts.hiddenPostPage:
+        {
+          return routeBuilder(
+            const HiddenPostPage(),
+          );
+        }
+      case PageConsts.sharedPostPage:
+        {
+          return routeBuilder(
+            const SharedPostPage(),
+          );
+        }
+      case PageConsts.likedPostPage:
+        {
+          return routeBuilder(
+            const LikedPostPage(),
+          );
         }
 
       default:

@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 import 'package:petopia/features/presentation/cubit/user/get_single_user/get_single_user_cubit.dart';
+import 'package:petopia/features/presentation/page/announcement/announcement.dart';
 import 'package:petopia/features/presentation/page/home_page/home_page.dart';
-import 'package:petopia/features/presentation/page/home_page/post/comments/comments.dart';
-import 'package:petopia/features/presentation/page/home_page/search/search.dart';
+import 'package:petopia/features/presentation/page/home_page/post/comments/comments_page.dart';
 import 'package:petopia/features/presentation/page/profile/profile.dart';
 import 'package:petopia/util/consts.dart';
+
+import '../home_page/post/upload_post_page.dart';
 
 class MainScreen extends StatefulWidget {
   final String uid;
@@ -63,8 +65,12 @@ class _MainScreenState extends State<MainScreen> {
                           color: lightBlueGreenColor),
                       label: ""),
                   BottomNavigationBarItem(
-                      icon:
-                          Icon(Ionicons.md_search, color: lightBlueGreenColor),
+                      icon: Icon(Ionicons.ios_megaphone,
+                          color: lightBlueGreenColor),
+                      label: ""),
+                  BottomNavigationBarItem(
+                      icon: Icon(Ionicons.logo_googleplus,
+                          color: lightBlueGreenColor),
                       label: ""),
                   BottomNavigationBarItem(
                       icon: Icon(Ionicons.ios_paw, color: lightBlueGreenColor),
@@ -81,7 +87,8 @@ class _MainScreenState extends State<MainScreen> {
                 onPageChanged: onPageChanged,
                 children: [
                   const HomePage(),
-                  const SearchPage(),
+                  const Announcement(),
+                  UploadPostPage(currentUser: currentUser,),
                   const CommentPage(),
                   ProfilePage(currentUser: currentUser),
                 ],

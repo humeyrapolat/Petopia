@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-const backGroundColor = Colors.white;
+const white = Colors.white;
 const black = Colors.black;
+const darkGrey = Color.fromARGB(255, 49, 49, 49);
+const lightGrey = Color.fromARGB(255, 155, 155, 155);
 
 const lightBlueGreenColor = Color(0xffddf1f0);
 const darkBlueGreenColor = Color(0xff78c8bb);
@@ -19,8 +21,11 @@ const darkYellowColor = Color(0xfffed36d);
 const lightOrangeColor = Color(0xffffded7);
 const darkOrangeColor = Color(0xffff805d);
 
-const lightPinkColor = Color(0xfff6e0e3);
+const lightPinkColor = Color.fromARGB(255, 252, 237, 239);
 const darkPinkColor = Color(0xffe08594);
+
+const darkPurpleColor = Color(0xFFB39DDB);
+const lightPurpleColor = Color(0xFFEDE4F6);
 
 Widget sizeVertical(double height) {
   return SizedBox(height: height);
@@ -34,6 +39,7 @@ class PageConsts {
   //credentials
   static const String signInPage = "signInPage";
   static const String signUpPage = "signUpPage";
+  static const String resetPasswordPage = "resetPasswordPage";
   //announcement
   static const String adoptionPage = "adoptionPage";
   static const String emergencyCallPage = "emergencyCallPage";
@@ -52,6 +58,9 @@ class PageConsts {
   static const String profilePage = "profilePage";
   static const String activityPage = "activityPage";
   static const String editProfilePage = "editProfilePage";
+  static const String hiddenPostPage = "hiddenPostPage";
+  static const String sharedPostPage = "sharedPostPage";
+  static const String likedPostPage = "likedPostPage";
 
   //no page
   static const String noPageFound = "noPageFound";
@@ -76,8 +85,8 @@ void toast(String message) {
     toastLength: Toast.LENGTH_SHORT,
     gravity: ToastGravity.BOTTOM,
     timeInSecForIosWeb: 1,
-    backgroundColor: lightPinkColor,
-    textColor: Colors.white,
+    backgroundColor: darkPinkColor,
+    textColor: black,
     fontSize: 16.0,
   );
 }

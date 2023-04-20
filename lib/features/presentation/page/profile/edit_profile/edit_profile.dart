@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/storage/upload_image_to_storage_usecase.dart';
 import 'package:petopia/features/presentation/cubit/user/user_cubit.dart';
+import 'package:petopia/features/presentation/page/profile/widget/profile_dropDown_widget.dart';
 import 'package:petopia/features/presentation/page/profile/widget/profile_form_widget.dart';
 import 'package:petopia/profile_widget.dart';
 import 'package:petopia/util/consts.dart';
@@ -14,8 +15,7 @@ import 'package:petopia/injection_container.dart' as di;
 class EditProfilePage extends StatefulWidget {
   final UserEntity currentUser;
 
-  const EditProfilePage({Key? key, required this.currentUser})
-      : super(key: key);
+  EditProfilePage({Key? key, required this.currentUser}) : super(key: key);
 
   @override
   State<EditProfilePage> createState() => _EditProfilePageState();
@@ -25,7 +25,33 @@ class _EditProfilePageState extends State<EditProfilePage> {
   TextEditingController? _nameController;
   TextEditingController? _usernameController;
   TextEditingController? _websiteController;
+  TextEditingController? _typeController;
+  TextEditingController? _genderController;
+  TextEditingController? _breedController;
   TextEditingController? _bioController;
+
+  final List<String> genderItems = [
+    'Male',
+    'Female',
+  ];
+
+  final List<String> typeItems = [
+    'Cat',
+    'Dog',
+  ];
+
+  final List<String> breedItems = [
+    "Labrador Retriever",
+    "German Shepherd",
+    "Bulldog",
+    "Poodle",
+    "Golden Retriever",
+    "Siamese",
+    "Persian",
+    "Maine Coon",
+    "Bengal",
+    "Sphynx",
+  ];
 
   @override
   void initState() {
@@ -34,6 +60,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
         TextEditingController(text: widget.currentUser.username);
     _websiteController =
         TextEditingController(text: widget.currentUser.website);
+    _typeController = TextEditingController(text: widget.currentUser.type);
+    _genderController = TextEditingController(text: widget.currentUser.gender);
+    _breedController = TextEditingController(text: widget.currentUser.breed);
     _bioController = TextEditingController(text: widget.currentUser.bio);
     super.initState();
   }
@@ -62,13 +91,13 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: darkGreenColor,
+      backgroundColor: white,
       appBar: AppBar(
-        backgroundColor: darkGreenColor,
-        title: Text("Edit Profile"),
+        backgroundColor: darkBlueGreenColor,
+        title: const Text("Edit Profile"),
         leading: GestureDetector(
             onTap: () => Navigator.pop(context),
-            child: Icon(
+            child: const Icon(
               Icons.close,
               size: 32,
             )),
@@ -77,9 +106,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
             padding: const EdgeInsets.only(right: 10.0),
             child: GestureDetector(
               onTap: _updateUserProfileData,
-              child: Icon(
+              child: const Icon(
                 Icons.done,
-                color: black,
+                color: white,
                 size: 32,
               ),
             ),
@@ -106,7 +135,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               Center(
                 child: GestureDetector(
                   onTap: selectImage,
-                  child: Text(
+                  child: const Text(
                     "Change profile photo",
                     style: TextStyle(
                         color: black,
@@ -121,21 +150,33 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ProfileFormWidget(
                   title: "Username", controller: _usernameController),
               sizeVertical(15),
-              ProfileFormWidget(
-                  title: "Website", controller: _websiteController),
+              ProfileDropdownWidget(
+                  title: "Type", controller: _typeController, list: typeItems),
               sizeVertical(15),
-              ProfileFormWidget(title: "Bio", controller: _bioController),
+              ProfileDropdownWidget(
+                title: "Breed",
+                controller: _breedController,
+                list: breedItems,
+              ),
               sizeVertical(10),
+              ProfileDropdownWidget(
+                title: "Gender",
+                controller: _genderController,
+                list: genderItems,
+              ),
+              sizeVertical(10),
+              ProfileFormWidget(title: "Add Bio", controller: _bioController),
+              sizeVertical(15),
               _isUpdating == true
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           "Please wait...",
                           style: TextStyle(color: Colors.white),
                         ),
                         sizeHorizontal(10),
-                        CircularProgressIndicator()
+                        const CircularProgressIndicator()
                       ],
                     )
                   : Container(
@@ -169,9 +210,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
             user: UserEntity(
                 uid: widget.currentUser.uid,
                 username: _usernameController!.text,
-                bio: _bioController!.text,
+                type: _typeController!.text,
+                gender: _genderController!.text,
+                breed: _breedController!.text,
                 website: _websiteController!.text,
                 name: _nameController!.text,
+                bio: _bioController!.text,
                 profileUrl: profileUrl))
         .then((value) => _clear());
   }
@@ -180,9 +224,12 @@ class _EditProfilePageState extends State<EditProfilePage> {
     setState(() {
       _isUpdating = false;
       _usernameController!.clear();
-      _bioController!.clear();
+      _typeController!.clear();
+      _genderController!.clear();
+      _breedController!.clear();
       _websiteController!.clear();
       _nameController!.clear();
+      _bioController!.clear();
     });
     Navigator.pop(context);
   }

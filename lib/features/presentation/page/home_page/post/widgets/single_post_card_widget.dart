@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 import 'package:intl/intl.dart';
+import 'package:petopia/features/domain/entities/app_entity.dart';
 import 'package:petopia/features/domain/entities/post/post_entity.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/get_current_uid_usecase.dart';
 import 'package:petopia/features/presentation/cubit/post/post_cubit.dart';
@@ -10,15 +11,16 @@ import 'package:petopia/injection_container.dart' as di;
 import 'package:petopia/profile_widget.dart';
 import 'package:petopia/util/consts.dart';
 
-class SinglePostCardWidget extends StatefulWidget {
+class SinglePagePostCardWidget extends StatefulWidget {
   final PostEntity post;
-  const SinglePostCardWidget({super.key, required this.post});
+  const SinglePagePostCardWidget({super.key, required this.post});
 
   @override
-  State<SinglePostCardWidget> createState() => _SinglePostCardWidgetState();
+  State<SinglePagePostCardWidget> createState() =>
+      _SinglePagePostCardWidgetState();
 }
 
-class _SinglePostCardWidgetState extends State<SinglePostCardWidget> {
+class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
   bool _isLikeAnimating = false;
   String _currentUUid = " ";
 
@@ -49,10 +51,8 @@ class _SinglePostCardWidgetState extends State<SinglePostCardWidget> {
                     height: 30,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15),
-                      child: Image.network(
-                        widget.post.userProfileUrl!,
-                        fit: BoxFit.cover,
-                      ),
+                      child: profileWidget(
+                          imageUrl: "${widget.post.userProfileUrl}"),
                     ),
                   ),
                   sizeHorizontal(10),
@@ -67,7 +67,7 @@ class _SinglePostCardWidgetState extends State<SinglePostCardWidget> {
                 onTap: () {
                   _openModalBottomSheet(context, widget.post);
                 },
-                child: const Icon(Icons.more_vert, color: black),
+                child: const Icon(Icons.more_vert, color: darkGrey),
               ),
             ],
           ),
@@ -101,7 +101,7 @@ class _SinglePostCardWidgetState extends State<SinglePostCardWidget> {
                       child: const Icon(
                         Icons.favorite,
                         size: 100,
-                        color: Colors.white,
+                        color: darkGrey,
                       )),
                 ),
               ],
@@ -114,38 +114,40 @@ class _SinglePostCardWidgetState extends State<SinglePostCardWidget> {
               Row(
                 children: [
                   GestureDetector(
-                    onTap: () {
-                      _likePost();
-                    },
+                    onTap: _likePost,
                     child: Icon(
                       widget.post.likes!.contains(_currentUUid)
                           ? Icons.favorite
                           : Icons.favorite_outline,
                       color: widget.post.likes!.contains(_currentUUid)
                           ? Colors.red
-                          : black,
+                          : darkGrey,
                     ),
                   ),
                   sizeHorizontal(10),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, PageConsts.commentPage);
+                      Navigator.pushNamed(context, PageConsts.commentPage,
+                          arguments: AppEntity(
+                            uid: _currentUUid,
+                            postId: widget.post.postId,
+                          ));
                     },
                     child: const Icon(
                       Feather.message_circle,
-                      color: black,
+                      color: darkGrey,
                     ),
                   ),
                   sizeHorizontal(10),
                   const Icon(
                     Feather.send,
-                    color: black,
+                    color: darkGrey,
                   ),
                 ],
               ),
               const Icon(
                 Icons.bookmark_border,
-                color: black,
+                color: white,
               ),
             ],
           ),
@@ -171,16 +173,25 @@ class _SinglePostCardWidgetState extends State<SinglePostCardWidget> {
             ],
           ),
           sizeVertical(10),
-          Text(
-            widget.post.totalComments == 0
-                ? "No Comments"
-                : "View all comments",
-            style: const TextStyle(color: darkGrey),
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, PageConsts.commentPage,
+                  arguments: AppEntity(
+                    uid: _currentUUid,
+                    postId: widget.post.postId,
+                  ));
+            },
+            child: Text(
+              widget.post.totalComments == 0
+                  ? "No Comments"
+                  : "View all ${widget.post.totalComments} comments",
+              style: const TextStyle(color: black),
+            ),
           ),
           sizeVertical(10),
           Text(
-            "${DateFormat('dd MMM yyyy').format(widget.post.createAt!.toDate())}",
-            style: const TextStyle(color: darkGrey),
+            DateFormat('dd MMM yyyy').format(widget.post.createAt!.toDate()),
+            style: const TextStyle(color: black),
           ),
         ],
       ),
@@ -194,7 +205,7 @@ class _SinglePostCardWidgetState extends State<SinglePostCardWidget> {
           return Container(
             height: 150,
             decoration: BoxDecoration(
-              color: white,
+              color: lightBlueColor,
             ),
             child: SingleChildScrollView(
               child: Container(
@@ -211,13 +222,13 @@ class _SinglePostCardWidgetState extends State<SinglePostCardWidget> {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 18,
-                              color: black),
+                              color: white),
                         ),
                       ),
                       sizeVertical(10),
                       const Divider(
                         thickness: 1,
-                        color: darkPinkColor,
+                        color: black,
                       ),
                       const SizedBox(
                         height: 8,
@@ -233,14 +244,14 @@ class _SinglePostCardWidgetState extends State<SinglePostCardWidget> {
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16,
-                                color: black),
+                                color: white),
                           ),
                         ),
                       ),
                       sizeVertical(7),
                       const Divider(
                         thickness: 1,
-                        color: darkGrey,
+                        color: black,
                       ),
                       sizeVertical(7),
                       Padding(
@@ -256,7 +267,7 @@ class _SinglePostCardWidgetState extends State<SinglePostCardWidget> {
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16,
-                                color: black),
+                                color: white),
                           ),
                         ),
                       ),
@@ -266,7 +277,7 @@ class _SinglePostCardWidgetState extends State<SinglePostCardWidget> {
                       sizeVertical(7),
                       const Divider(
                         thickness: 1,
-                        color: darkGrey,
+                        color: black,
                       ),
                       sizeVertical(7),
                       const Padding(
@@ -276,7 +287,7 @@ class _SinglePostCardWidgetState extends State<SinglePostCardWidget> {
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,
-                              color: black),
+                              color: white),
                         ),
                       )
                     ]),

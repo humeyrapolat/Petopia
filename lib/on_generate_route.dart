@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:petopia/features/domain/entities/app_entity.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/features/presentation/page/announcement/emergency_call.dart';
 import 'package:petopia/features/presentation/page/announcement/lost_animal.dart';
@@ -72,14 +73,16 @@ class OnGenerateRoute {
           );
         }
 
-      case PageConsts.updatePostPage: {
-        if (args is PostEntity) {
-          return routeBuilder(UpdatePostPage(post: args,));
-
-        } else {
-          return routeBuilder(NoPageFound());
+      case PageConsts.updatePostPage:
+        {
+          if (args is PostEntity) {
+            return routeBuilder(UpdatePostPage(
+              post: args,
+            ));
+          } else {
+            return routeBuilder(NoPageFound());
+          }
         }
-      }
       case PageConsts.searchPage:
         {
           return routeBuilder(
@@ -96,8 +99,15 @@ class OnGenerateRoute {
 
       case PageConsts.commentPage:
         {
+          if (args is AppEntity) {
+            return routeBuilder(
+              CommentPage(
+                appEntity: args,
+              ),
+            );
+          }
           return routeBuilder(
-            const CommentPage(),
+            const NoPageFound(),
           );
         }
       case PageConsts.matchPage:

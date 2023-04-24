@@ -6,6 +6,11 @@ import 'package:petopia/features/data/data_sources/remote_data_source/remote_dat
 import 'package:petopia/features/data/data_sources/remote_data_source/remote_data_source_imlp.dart';
 import 'package:petopia/features/data/imp_repo/firebase_reposiory_impl.dart';
 import 'package:petopia/features/domain/repo/firebase_repository.dart';
+import 'package:petopia/features/domain/usecases/firebase_usecases/comment/create_comment_usecase.dart';
+import 'package:petopia/features/domain/usecases/firebase_usecases/comment/delete_comment_usecase.dart';
+import 'package:petopia/features/domain/usecases/firebase_usecases/comment/like_comment_usecase.dart';
+import 'package:petopia/features/domain/usecases/firebase_usecases/comment/read_comment_usecase.dart';
+import 'package:petopia/features/domain/usecases/firebase_usecases/comment/update_comment_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/resetPassword/reset_password_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/storage/upload_image_to_storage_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/create_user_usecase.dart';
@@ -18,6 +23,7 @@ import 'package:petopia/features/domain/usecases/firebase_usecases/user/sign_out
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/sign_up_user_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/update_user_usecase.dart';
 import 'package:petopia/features/presentation/cubit/auth/auth_cubit.dart';
+import 'package:petopia/features/presentation/cubit/comment/comment_cubit.dart';
 import 'package:petopia/features/presentation/cubit/credential/credential_cubit.dart';
 import 'package:petopia/features/presentation/cubit/resetPassword/reset_password_cubit.dart';
 import 'package:petopia/features/presentation/cubit/user/get_single_user/get_single_user_cubit.dart';
@@ -60,17 +66,28 @@ Future<void> init() async {
   );
 
   sl.registerFactory(
-        () => ResetPasswordCubit(
+    () => ResetPasswordCubit(
       resetPasswordUseCase: sl.call(),
     ),
   );
 
-  sl.registerFactory(() =>
-      PostCubit(updatePostUseCase: sl.call(),
-          deletePostUseCase: sl.call(),
-          likePostUseCase: sl.call(),
-          createPostUseCase: sl.call(),
-          readPostUseCase: sl.call()),
+  sl.registerFactory(
+    () => PostCubit(
+        updatePostUseCase: sl.call(),
+        deletePostUseCase: sl.call(),
+        likePostUseCase: sl.call(),
+        createPostUseCase: sl.call(),
+        readPostUseCase: sl.call()),
+  );
+
+  sl.registerFactory(
+    () => CommentCubit(
+      updateCommentUseCase: sl.call(),
+      readCommentsUseCase: sl.call(),
+      likeCommentUseCase: sl.call(),
+      deleteCommentUseCase: sl.call(),
+      createCommentUseCase: sl.call(),
+    ),
   );
 
   // Use Cases
@@ -95,6 +112,13 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LikePostUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => DeletePostUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => UpdatePostUseCase(repository: sl.call()));
+
+  //Comment
+  sl.registerLazySingleton(() => CreateCommentUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => ReadCommentUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => LikeCommentUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => DeleteCommentUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => UpdateCommentUseCase(repository: sl.call()));
 
   // Repository
   sl.registerLazySingleton<FirebaseRepository>(

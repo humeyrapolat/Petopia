@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
+import 'package:petopia/features/domain/entities/app_entity.dart';
 import 'package:petopia/features/presentation/cubit/user/get_single_user/get_single_user_cubit.dart';
 import 'package:petopia/features/presentation/page/announcement/announcement.dart';
 import 'package:petopia/features/presentation/page/home_page/home_page.dart';
@@ -88,8 +89,12 @@ class _MainScreenState extends State<MainScreen> {
                 children: [
                   const HomePage(),
                   const Announcement(),
-                  UploadPostPage(currentUser: currentUser,),
-                  const CommentPage(),
+                  UploadPostPage(
+                    currentUser: currentUser,
+                  ),
+                  CommentPage(
+                    appEntity: AppEntity(currentUser: currentUser),
+                  ),
                   ProfilePage(currentUser: currentUser),
                 ],
               ));

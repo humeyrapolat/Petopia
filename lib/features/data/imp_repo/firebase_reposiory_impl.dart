@@ -71,6 +71,9 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
       remoteDataSource.readPost(post);
 
   @override
+  Stream<List<PostEntity>> readSinglePost(String postId) => remoteDataSource.readSinglePost(postId);
+
+  @override
   Future<void> updatePost(PostEntity post) async =>
       remoteDataSource.updatePost(post);
 

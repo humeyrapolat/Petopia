@@ -20,8 +20,10 @@ import 'package:petopia/features/presentation/page/profile/post_type/shared_post
 import 'package:petopia/features/presentation/page/profile/profile.dart';
 import 'package:petopia/util/consts.dart';
 
+import 'features/domain/entities/comment/comment_entity.dart';
 import 'features/domain/entities/post/post_entity.dart';
 import 'features/presentation/page/announcement/adoption.dart';
+import 'features/presentation/page/home_page/post/comments/edit_comment_page.dart';
 
 class OnGenerateRoute {
   static Route<dynamic>? route(RouteSettings settings) {
@@ -110,6 +112,14 @@ class OnGenerateRoute {
             const NoPageFound(),
           );
         }
+      case PageConsts.updateCommentPage: {
+        if (args is CommentEntity) {
+          return routeBuilder(EditCommentPage(comment: args,));
+
+        } else {
+          return routeBuilder(NoPageFound());
+        }
+      }
       case PageConsts.matchPage:
         {
           return routeBuilder(

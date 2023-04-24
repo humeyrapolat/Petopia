@@ -33,7 +33,9 @@ import 'features/domain/usecases/firebase_usecases/post/create_post_usecase.dart
 import 'features/domain/usecases/firebase_usecases/post/delete_post_usecase.dart';
 import 'features/domain/usecases/firebase_usecases/post/like_post_usecase.dart';
 import 'features/domain/usecases/firebase_usecases/post/read_post_usecase.dart';
+import 'features/domain/usecases/firebase_usecases/post/read_single_post_usecase.dart';
 import 'features/domain/usecases/firebase_usecases/post/update_post_usecase.dart';
+import 'features/presentation/cubit/post/get_single_post/get_single_post_cubit.dart';
 import 'features/presentation/cubit/post/post_cubit.dart';
 
 final sl = GetIt.instance;
@@ -81,6 +83,12 @@ Future<void> init() async {
   );
 
   sl.registerFactory(
+        () => GetSinglePostCubit(
+        readSinglePostUseCase: sl.call()
+    ),
+  );
+
+  sl.registerFactory(
     () => CommentCubit(
       updateCommentUseCase: sl.call(),
       readCommentsUseCase: sl.call(),
@@ -101,6 +109,7 @@ Future<void> init() async {
   sl.registerLazySingleton(() => CreateUserUserCase(repository: sl.call()));
   sl.registerLazySingleton(() => GetSingleUserUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => ResetPasswordUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => ReadSinglePostUseCase(repository: sl.call()));
 
   //Cloud Storage
   sl.registerLazySingleton(

@@ -6,6 +6,8 @@ import 'package:petopia/features/presentation/cubit/user/get_single_user/get_sin
 import 'package:petopia/features/presentation/page/home_page/post/comments/widgets/comment_main_widget.dart';
 import 'package:petopia/injection_container.dart' as di;
 
+import '../../../../cubit/post/get_single_post/get_single_post_cubit.dart';
+
 class CommentPage extends StatelessWidget {
   final AppEntity appEntity;
   const CommentPage({super.key, required this.appEntity});
@@ -19,6 +21,9 @@ class CommentPage extends StatelessWidget {
         ),
         BlocProvider<GetSingleUserCubit>(
           create: (context) => di.sl<GetSingleUserCubit>(),
+        ),
+        BlocProvider<GetSinglePostCubit>(
+          create: (context) => di.sl<GetSinglePostCubit>(),
         ),
       ],
       child: CommentMainWidget(appEntity: appEntity),

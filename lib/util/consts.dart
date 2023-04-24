@@ -51,6 +51,7 @@ class PageConsts {
   static const String searchPage = "searchPage";
   static const String homePage = "homePage";
   static const String commentPage = "commentPage";
+  static const String updateCommentPage = "updateCommentPage";
 
   //match
   static const String matchPage = "matchPage";

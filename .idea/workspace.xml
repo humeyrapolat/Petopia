@@ -12,7 +12,12 @@
       <change beforePath="$PROJECT_DIR$/lib/features/data/data_sources/remote_data_source/remote_data_source_imlp.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/data/data_sources/remote_data_source/remote_data_source_imlp.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/features/data/imp_repo/firebase_reposiory_impl.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/data/imp_repo/firebase_reposiory_impl.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/features/domain/repo/firebase_repository.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/domain/repo/firebase_repository.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/features/presentation/page/home_page/post/widgets/upload_post_main_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/page/home_page/post/widgets/upload_post_main_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/page/home_page/post/comments/comments_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/page/home_page/post/comments/comments_page.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/page/home_page/post/comments/widgets/comment_main_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/page/home_page/post/comments/widgets/comment_main_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/features/presentation/page/home_page/post/comments/widgets/single_comment_widget.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/features/presentation/page/home_page/post/comments/widgets/single_comment_widget.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/injection_container.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/injection_container.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/on_generate_route.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/on_generate_route.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/util/consts.dart" beforeDir="false" afterPath="$PROJECT_DIR$/lib/util/consts.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

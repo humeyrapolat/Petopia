@@ -9,14 +9,14 @@ import 'package:petopia/util/consts.dart';
 
 class SingleCommentWidget extends StatefulWidget {
   final CommentEntity comment;
-  final VoidCallback? onLongPressListner;
-  final VoidCallback? onLikePressListner;
+  final VoidCallback? onLongPressListener;
+  final VoidCallback? onLikePressListener;
 
   const SingleCommentWidget({
     super.key,
     required this.comment,
-    this.onLongPressListner,
-    this.onLikePressListner,
+    this.onLongPressListener,
+    this.onLikePressListener,
   });
 
   @override
@@ -41,7 +41,7 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onLongPress: widget.onLongPressListner,
+      onLongPress: widget.onLongPressListener,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 10),
         child: Row(
@@ -76,7 +76,7 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
                                 fontWeight: FontWeight.bold),
                           ),
                           InkWell(
-                              onTap: widget.onLikePressListner!,
+                              onTap: widget.onLikePressListener!,
                               child: Icon(
                                 widget.comment.likes!.contains(_currentUUid)
                                     ? Icons.favorite
@@ -84,7 +84,7 @@ class _SingleCommentWidgetState extends State<SingleCommentWidget> {
                                 color:
                                     widget.comment.likes!.contains(_currentUUid)
                                         ? Colors.red
-                                        : white,
+                                        : black,
                                 size: 20,
                               )),
                         ],

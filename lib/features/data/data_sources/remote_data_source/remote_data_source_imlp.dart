@@ -10,6 +10,7 @@ import 'package:petopia/features/data/models/posts/post_model.dart';
 import 'package:petopia/features/data/models/user/user_model.dart';
 import 'package:petopia/features/domain/entities/comment/comment_entity.dart';
 import 'package:petopia/features/domain/entities/post/post_entity.dart';
+import 'package:petopia/features/domain/entities/replay/replay_entity.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/util/consts.dart';
 import 'package:uuid/uuid.dart';
@@ -465,5 +466,35 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       commentInfo["description"] = comment.description;
 
     commentCollection.doc(comment.commentId).update(commentInfo);
+  }
+
+  @override
+  Future<void> createReplay(ReplayEntity replay) {
+    // TODO: implement createReplay
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> deleteReplay(ReplayEntity replay) {
+    // TODO: implement deleteReplay
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> likeReplay(ReplayEntity replay) {
+    // TODO: implement likeReplay
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<List<ReplayEntity>> readReplays(ReplayEntity replay) {
+    // TODO: implement readReplays
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateReplay(ReplayEntity replay) {
+    // TODO: implement updateReplay
+    throw UnimplementedError();
   }
 }

@@ -22,8 +22,10 @@ import 'package:petopia/util/consts.dart';
 
 import 'features/domain/entities/comment/comment_entity.dart';
 import 'features/domain/entities/post/post_entity.dart';
+import 'features/domain/entities/replay/replay_entity.dart';
 import 'features/presentation/page/announcement/adoption.dart';
 import 'features/presentation/page/home_page/post/comments/edit_comment_page.dart';
+import 'features/presentation/page/home_page/post/comments/edit_replay_page.dart';
 
 class OnGenerateRoute {
   static Route<dynamic>? route(RouteSettings settings) {
@@ -115,6 +117,14 @@ class OnGenerateRoute {
       case PageConsts.updateCommentPage: {
         if (args is CommentEntity) {
           return routeBuilder(EditCommentPage(comment: args,));
+
+        } else {
+          return routeBuilder(NoPageFound());
+        }
+      }
+      case PageConsts.updateReplayPage: {
+        if (args is ReplayEntity) {
+          return routeBuilder(EditReplayPage(replay: args,));
 
         } else {
           return routeBuilder(NoPageFound());

@@ -12,9 +12,10 @@ import '../../../../../../domain/entities/comment/comment_entity.dart';
 import '../../../../../../domain/entities/user/user_entity.dart';
 import '../../../../../cubit/comment/comment_cubit.dart';
 import '../../../../../cubit/post/get_single_post/get_single_post_cubit.dart';
+import '../../../../../cubit/replay/replay_cubit.dart';
 import '../../../../../cubit/user/get_single_user/get_single_user_cubit.dart';
 
-
+import 'package:petopia/injection_container.dart' as di;
 
 class CommentMainWidget extends StatefulWidget {
   final AppEntity appEntity;
@@ -110,17 +111,21 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                                   itemCount: commentState.comments.length,
                                   itemBuilder: (context, index) {
                                     final singleComment = commentState.comments[index];
-                                    return SingleCommentWidget(
-                                      comment: singleComment,
-                                      onLongPressListener: () {
-                                        _openBottomModalSheet(
-                                          context: context,
-                                          comment: commentState.comments[index],
-                                        );
-                                      },
-                                      onLikePressListener: () {
-                                        _likeComment(comment: commentState.comments[index]);
-                                      },
+                                    return BlocProvider(
+                                      create: (context) => di.sl<ReplayCubit>(),
+                                      child: SingleCommentWidget(
+                                        currentUser: singleUser,
+                                        comment: singleComment,
+                                        onLongPressListener: () {
+                                          _openBottomModalSheet(
+                                            context: context,
+                                            comment: commentState.comments[index],
+                                          );
+                                        },
+                                        onLikePressListener: () {
+                                          _likeComment(comment: commentState.comments[index]);
+                                        },
+                                      ),
                                     );
                                   }),
                             ),

@@ -475,36 +475,44 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
 
   @override
   Future<void> createReplay(ReplayEntity replay) async {
-    final replayCollection = firebaseFirestore
-        .collection(FirebaseConsts.post)
-        .doc(replay.postId)
-        .collection(FirebaseConsts.comments)
-        .doc(replay.commentId)
-        .collection(FirebaseConsts.replay);
+    final replayCollection = firebaseFirestore.collection(FirebaseConsts.post).doc(replay.postId).collection(FirebaseConsts.comments).doc(replay.commentId).collection(FirebaseConsts.replay);
 
     final newReplay = ReplayModel(
-            userProfileUrl: replay.userProfileUrl,
-            username: replay.username,
-            replayId: replay.replayId,
-            commentId: replay.commentId,
-            postId: replay.postId,
-            likes: [],
-            description: replay.description,
-            creatorUid: replay.creatorUid,
-            createAt: replay.createAt)
-        .toJson();
+        userProfileUrl: replay.userProfileUrl,
+        username: replay.username,
+        replayId: replay.replayId,
+        commentId: replay.commentId,
+        postId: replay.postId,
+        likes: [],
+        description: replay.description,
+        creatorUid: replay.creatorUid,
+        createAt: replay.createAt
+    ).toJson();
+
 
     try {
+
       final replayDocRef = await replayCollection.doc(replay.replayId).get();
 
       if (!replayDocRef.exists) {
-        replayCollection.doc(replay.replayId).set(newReplay);
+        replayCollection.doc(replay.replayId).set(newReplay).then((value) {
+          final commentCollection = firebaseFirestore.collection(FirebaseConsts.post).doc(replay.postId).collection(FirebaseConsts.comments).doc(replay.commentId);
+
+          commentCollection.get().then((value) {
+            if (value.exists) {
+              final totalReplays = value.get('totalReplays');
+              commentCollection.update({"totalReplays": totalReplays + 1});
+              return;
+            }
+          });
+        });
       } else {
         replayCollection.doc(replay.replayId).update(newReplay);
       }
     } catch (e) {
       print("some error occured $e");
     }
+
   }
 
   @override

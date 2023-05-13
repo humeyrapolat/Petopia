@@ -40,10 +40,12 @@ class PageConsts {
   static const String signInPage = "signInPage";
   static const String signUpPage = "signUpPage";
   static const String resetPasswordPage = "resetPasswordPage";
+
   //announcement
   static const String adoptionPage = "adoptionPage";
   static const String emergencyCallPage = "emergencyCallPage";
   static const String lostAnimalPage = "lostAnimalPage";
+
   //home page
   static const String chatPage = "chatPage";
   static const String postPage = "postPage";
@@ -52,9 +54,11 @@ class PageConsts {
   static const String homePage = "homePage";
   static const String commentPage = "commentPage";
   static const String updateCommentPage = "updateCommentPage";
+  static const String updateReplayPage = "updateReplayPage";
 
   //match
   static const String matchPage = "matchPage";
+
   //profile
   static const String profilePage = "profilePage";
   static const String activityPage = "activityPage";

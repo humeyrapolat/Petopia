@@ -11,6 +11,7 @@ import 'package:petopia/features/domain/usecases/firebase_usecases/comment/delet
 import 'package:petopia/features/domain/usecases/firebase_usecases/comment/like_comment_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/comment/read_comment_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/comment/update_comment_usecase.dart';
+import 'package:petopia/features/domain/usecases/firebase_usecases/replay/read_replay_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/resetPassword/reset_password_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/storage/upload_image_to_storage_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/create_user_usecase.dart';
@@ -35,8 +36,13 @@ import 'features/domain/usecases/firebase_usecases/post/like_post_usecase.dart';
 import 'features/domain/usecases/firebase_usecases/post/read_post_usecase.dart';
 import 'features/domain/usecases/firebase_usecases/post/read_single_post_usecase.dart';
 import 'features/domain/usecases/firebase_usecases/post/update_post_usecase.dart';
+import 'features/domain/usecases/firebase_usecases/replay/create_replay_usecase.dart';
+import 'features/domain/usecases/firebase_usecases/replay/delete_replay_usecase.dart';
+import 'features/domain/usecases/firebase_usecases/replay/like_replay_usecase.dart';
+import 'features/domain/usecases/firebase_usecases/replay/update_replay_usecase.dart';
 import 'features/presentation/cubit/post/get_single_post/get_single_post_cubit.dart';
 import 'features/presentation/cubit/post/post_cubit.dart';
+import 'features/presentation/cubit/replay/replay_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -73,6 +79,7 @@ Future<void> init() async {
     ),
   );
 
+  // Post Cubit Injection
   sl.registerFactory(
     () => PostCubit(
         updatePostUseCase: sl.call(),
@@ -88,6 +95,7 @@ Future<void> init() async {
     ),
   );
 
+  // Comment Cubit Injection
   sl.registerFactory(
     () => CommentCubit(
       updateCommentUseCase: sl.call(),
@@ -95,6 +103,17 @@ Future<void> init() async {
       likeCommentUseCase: sl.call(),
       deleteCommentUseCase: sl.call(),
       createCommentUseCase: sl.call(),
+    ),
+  );
+
+  // Replay Cubit Injection
+  sl.registerFactory(
+        () => ReplayCubit(
+        createReplayUseCase: sl.call(),
+        deleteReplayUseCase: sl.call(),
+        likeReplayUseCase: sl.call(),
+        readReplaysUseCase: sl.call(),
+        updateReplayUseCase: sl.call()
     ),
   );
 
@@ -128,6 +147,13 @@ Future<void> init() async {
   sl.registerLazySingleton(() => LikeCommentUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => DeleteCommentUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => UpdateCommentUseCase(repository: sl.call()));
+
+  // Replay
+  sl.registerLazySingleton(() => CreateReplayUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => ReadReplaysUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => LikeReplayUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => UpdateReplayUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => DeleteReplayUseCase(repository: sl.call()));
 
   // Repository
   sl.registerLazySingleton<FirebaseRepository>(

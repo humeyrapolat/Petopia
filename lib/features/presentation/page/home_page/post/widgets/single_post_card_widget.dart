@@ -63,12 +63,14 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
                   ),
                 ],
               ),
-              GestureDetector(
-                onTap: () {
-                  _openModalBottomSheet(context, widget.post);
-                },
-                child: const Icon(Icons.more_vert, color: darkGrey),
-              ),
+              widget.post.creatorUid == _currentUUid
+                  ? GestureDetector(
+                      onTap: () {
+                        _openModalBottomSheet(context, widget.post);
+                      },
+                      child: const Icon(Icons.more_vert, color: darkGrey),
+                    )
+                  : const SizedBox(),
             ],
           ),
           sizeVertical(10),

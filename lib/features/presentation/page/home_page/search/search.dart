@@ -22,7 +22,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: darkBlueColor,
+        backgroundColor: white,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
           child: SingleChildScrollView(
@@ -46,7 +46,7 @@ class _SearchPageState extends State<SearchPage> {
                       return Container(
                         width: 100,
                         height: 100,
-                        color: darkBlueColor,
+                        color: lightPinkColor,
                       );
                     })
               ],

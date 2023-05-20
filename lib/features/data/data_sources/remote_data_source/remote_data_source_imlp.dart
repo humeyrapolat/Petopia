@@ -1,9 +1,8 @@
 import 'dart:io';
-
+// package imports
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 import 'package:petopia/features/data/data_sources/remote_data_source/remote_data_source.dart';
 import 'package:petopia/features/data/models/comment/comment_model.dart';
 import 'package:petopia/features/data/models/posts/post_model.dart';
@@ -278,7 +277,19 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       final postDocRef = await postCollection.doc(post.postId).get();
 
       if (!postDocRef.exists) {
-        postCollection.doc(post.postId).set(newPost);
+        postCollection.doc(post.postId).set(newPost).then((value) {
+          final userCollection = firebaseFirestore
+              .collection(FirebaseConsts.users)
+              .doc(post.creatorUid);
+
+          userCollection.get().then((value) {
+            if (value.exists) {
+              final totalPosts = value.get('totalPosts');
+              userCollection.update({"totalPosts": totalPosts + 1});
+              return;
+            }
+          });
+        });
       } else {
         postCollection.doc(post.postId).update(newPost);
       }
@@ -292,9 +303,21 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     final postCollection = firebaseFirestore.collection(FirebaseConsts.post);
 
     try {
-      await postCollection.doc(post.postId).delete();
+      postCollection.doc(post.postId).delete().then((value) {
+        final userCollection = firebaseFirestore
+            .collection(FirebaseConsts.users)
+            .doc(post.creatorUid);
+
+        userCollection.get().then((value) {
+          if (value.exists) {
+            final totalPosts = value.get('totalPosts');
+            userCollection.update({"totalPosts": totalPosts - 1});
+            return;
+          }
+        });
+      });
     } catch (e) {
-      toast("some error occured $e ");
+      print("some error occured $e");
     }
   }
 
@@ -475,28 +498,35 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
 
   @override
   Future<void> createReplay(ReplayEntity replay) async {
-    final replayCollection = firebaseFirestore.collection(FirebaseConsts.post).doc(replay.postId).collection(FirebaseConsts.comments).doc(replay.commentId).collection(FirebaseConsts.replay);
+    final replayCollection = firebaseFirestore
+        .collection(FirebaseConsts.post)
+        .doc(replay.postId)
+        .collection(FirebaseConsts.comments)
+        .doc(replay.commentId)
+        .collection(FirebaseConsts.replay);
 
     final newReplay = ReplayModel(
-        userProfileUrl: replay.userProfileUrl,
-        username: replay.username,
-        replayId: replay.replayId,
-        commentId: replay.commentId,
-        postId: replay.postId,
-        likes: [],
-        description: replay.description,
-        creatorUid: replay.creatorUid,
-        createAt: replay.createAt
-    ).toJson();
-
+            userProfileUrl: replay.userProfileUrl,
+            username: replay.username,
+            replayId: replay.replayId,
+            commentId: replay.commentId,
+            postId: replay.postId,
+            likes: [],
+            description: replay.description,
+            creatorUid: replay.creatorUid,
+            createAt: replay.createAt)
+        .toJson();
 
     try {
-
       final replayDocRef = await replayCollection.doc(replay.replayId).get();
 
       if (!replayDocRef.exists) {
         replayCollection.doc(replay.replayId).set(newReplay).then((value) {
-          final commentCollection = firebaseFirestore.collection(FirebaseConsts.post).doc(replay.postId).collection(FirebaseConsts.comments).doc(replay.commentId);
+          final commentCollection = firebaseFirestore
+              .collection(FirebaseConsts.post)
+              .doc(replay.postId)
+              .collection(FirebaseConsts.comments)
+              .doc(replay.commentId);
 
           commentCollection.get().then((value) {
             if (value.exists) {
@@ -512,7 +542,6 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     } catch (e) {
       print("some error occured $e");
     }
-
   }
 
   @override
@@ -525,7 +554,21 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         .collection(FirebaseConsts.replay);
 
     try {
-      replayCollection.doc(replay.replayId).delete();
+      replayCollection.doc(replay.replayId).delete().then((value) {
+        final commentCollection = firebaseFirestore
+            .collection(FirebaseConsts.post)
+            .doc(replay.postId)
+            .collection(FirebaseConsts.comments)
+            .doc(replay.commentId);
+
+        commentCollection.get().then((value) {
+          if (value.exists) {
+            final totalReplays = value.get('totalReplays');
+            commentCollection.update({"totalReplays": totalReplays - 1});
+            return;
+          }
+        });
+      });
     } catch (e) {
       print("some error occured $e");
     }

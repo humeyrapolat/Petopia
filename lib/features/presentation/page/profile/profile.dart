@@ -84,7 +84,7 @@ class ProfilePage extends StatelessWidget {
                         ),
                         sizeVertical(5),
                         const Text(
-                          "Followers",
+                          "Posts",
                           style: TextStyle(
                               color: lightGrey,
                               fontWeight: FontWeight.bold,

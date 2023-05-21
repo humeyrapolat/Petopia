@@ -32,7 +32,7 @@ class CommentCubit extends Cubit<CommentState> {
     emit(CommentLoading());
     try {
       final streamResponse = readCommentsUseCase.call(postId);
-      streamResponse.listen((comments) {
+      _streamSubscription = streamResponse.listen((comments) {
         emit(CommentLoaded(comments: comments));
         dispose();
       });

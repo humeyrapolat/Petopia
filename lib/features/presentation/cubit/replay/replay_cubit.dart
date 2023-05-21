@@ -35,6 +35,7 @@ class ReplayCubit extends Cubit<ReplayState> {
       final streamResponse = readReplaysUseCase.call(replay);
       _streamSubscription = streamResponse.listen((replays) {
         emit(ReplayLoaded(replays: replays));
+        dispose();
       });
     } on SocketException catch (_) {
       emit(ReplayFailure());

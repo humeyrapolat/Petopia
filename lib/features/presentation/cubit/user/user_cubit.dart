@@ -1,4 +1,7 @@
+import 'dart:async';
 import 'dart:io';
+
+//package imports
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
@@ -14,12 +17,15 @@ class UserCubit extends Cubit<UserState> {
     required this.getUsersUseCase,
   }) : super(UserInitial());
 
+  StreamSubscription? _streamSubscription;
+
   Future<void> getUsers({required UserEntity user}) async {
     emit(UserLoading());
     try {
       final streamResponse = getUsersUseCase.call(user);
-      streamResponse.listen((users) {
+      _streamSubscription = streamResponse.listen((users) {
         emit(UserLoaded(users: users));
+        dispose();
       });
     } on SocketException catch (_) {
       emit(UserFailure());
@@ -36,5 +42,9 @@ class UserCubit extends Cubit<UserState> {
     } catch (_) {
       emit(UserFailure());
     }
+  }
+
+  dispose() {
+    _streamSubscription?.cancel();
   }
 }

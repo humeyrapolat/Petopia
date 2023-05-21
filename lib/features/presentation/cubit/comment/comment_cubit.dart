@@ -1,5 +1,6 @@
+import 'dart:async';
 import 'dart:io';
-
+//package imports
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:petopia/features/domain/entities/comment/comment_entity.dart';
@@ -25,12 +26,15 @@ class CommentCubit extends Cubit<CommentState> {
       required this.createCommentUseCase})
       : super(CommentInitial());
 
+  StreamSubscription? _streamSubscription;
+
   Future<void> getComments({required String postId}) async {
     emit(CommentLoading());
     try {
       final streamResponse = readCommentsUseCase.call(postId);
       streamResponse.listen((comments) {
         emit(CommentLoaded(comments: comments));
+        dispose();
       });
     } on SocketException catch (_) {
       emit(CommentFailure());
@@ -77,5 +81,9 @@ class CommentCubit extends Cubit<CommentState> {
     } catch (_) {
       emit(CommentFailure());
     }
+  }
+
+  dispose() {
+    _streamSubscription?.cancel();
   }
 }

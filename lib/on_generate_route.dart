@@ -9,8 +9,9 @@ import 'package:petopia/features/presentation/page/credential/sign_up_page.dart'
 import 'package:petopia/features/presentation/page/home_page/chat/chat.dart';
 import 'package:petopia/features/presentation/page/home_page/home_page.dart';
 import 'package:petopia/features/presentation/page/home_page/post/comments/comments_page.dart';
+import 'package:petopia/features/presentation/page/home_page/post/post_detail_page.dart';
 import 'package:petopia/features/presentation/page/home_page/post/update_post_page.dart';
-import 'package:petopia/features/presentation/page/home_page/search/search.dart';
+import 'package:petopia/features/presentation/page/home_page/search/search_page.dart';
 import 'package:petopia/features/presentation/page/match/match.dart';
 import 'package:petopia/features/presentation/page/profile/activity/acitivity.dart';
 import 'package:petopia/features/presentation/page/profile/edit_profile/edit_profile.dart';
@@ -114,22 +115,26 @@ class OnGenerateRoute {
             const NoPageFound(),
           );
         }
-      case PageConsts.updateCommentPage: {
-        if (args is CommentEntity) {
-          return routeBuilder(EditCommentPage(comment: args,));
-
-        } else {
-          return routeBuilder(NoPageFound());
+      case PageConsts.updateCommentPage:
+        {
+          if (args is CommentEntity) {
+            return routeBuilder(EditCommentPage(
+              comment: args,
+            ));
+          } else {
+            return routeBuilder(NoPageFound());
+          }
         }
-      }
-      case PageConsts.updateReplayPage: {
-        if (args is ReplayEntity) {
-          return routeBuilder(EditReplayPage(replay: args,));
-
-        } else {
-          return routeBuilder(NoPageFound());
+      case PageConsts.updateReplayPage:
+        {
+          if (args is ReplayEntity) {
+            return routeBuilder(EditReplayPage(
+              replay: args,
+            ));
+          } else {
+            return routeBuilder(NoPageFound());
+          }
         }
-      }
       case PageConsts.matchPage:
         {
           return routeBuilder(
@@ -166,6 +171,21 @@ class OnGenerateRoute {
             return routeBuilder(const NoPageFound());
           }
         }
+      case PageConsts.postDetailPage:
+        {
+          if (args is String) {
+            return routeBuilder(
+              PostDetailPage(
+                postId: args,
+              ),
+            );
+          } else {
+            return routeBuilder(
+              const NoPageFound(),
+            );
+          }
+        }
+
       case PageConsts.hiddenPostPage:
         {
           return routeBuilder(

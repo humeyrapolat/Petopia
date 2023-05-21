@@ -15,7 +15,9 @@ class UpdatePostPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<PostCubit>(
       create: (context) => di.sl<PostCubit>(),
-      child: UpdatePostMainWidget( post: post,),
+      child: UpdatePostMainWidget(
+        post: post,
+      ),
     );
   }
 }

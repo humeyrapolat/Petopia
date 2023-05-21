@@ -8,7 +8,7 @@ import 'package:petopia/features/presentation/cubit/user/get_single_user/get_sin
 import 'package:petopia/features/presentation/page/announcement/announcement.dart';
 import 'package:petopia/features/presentation/page/home_page/home_page.dart';
 import 'package:petopia/features/presentation/page/home_page/post/comments/comments_page.dart';
-import 'package:petopia/features/presentation/page/home_page/search/search.dart';
+import 'package:petopia/features/presentation/page/home_page/search/search_page.dart';
 import 'package:petopia/features/presentation/page/profile/profile.dart';
 import 'package:petopia/util/consts.dart';
 
@@ -93,9 +93,7 @@ class _MainScreenState extends State<MainScreen> {
                   UploadPostPage(
                     currentUser: currentUser,
                   ),
-                  CommentPage(
-                    appEntity: AppEntity(currentUser: currentUser),
-                  ),
+                  ProfilePage(currentUser: currentUser),
                   ProfilePage(currentUser: currentUser),
                 ],
               ));

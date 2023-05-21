@@ -1,5 +1,6 @@
+import 'dart:async';
 import 'dart:io';
-
+//package imports
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:petopia/features/domain/entities/post/post_entity.dart';
@@ -26,12 +27,15 @@ class PostCubit extends Cubit<PostState> {
     required this.readPostUseCase,
   }) : super(PostInitial());
 
+  StreamSubscription? _streamSubscription;
+
   Future<void> getPosts({required PostEntity post}) async {
     emit(PostLoading());
     try {
       final streamResponse = readPostUseCase.call(post);
-      streamResponse.listen((posts) {
+      _streamSubscription = streamResponse.listen((posts) {
         emit(PostLoaded(posts: posts));
+        dispose();
       });
     } on SocketException catch (_) {
       emit(PostFailure());
@@ -78,5 +82,9 @@ class PostCubit extends Cubit<PostState> {
     } catch (_) {
       emit(PostFailure());
     }
+  }
+
+  dispose() {
+    _streamSubscription?.cancel();
   }
 }

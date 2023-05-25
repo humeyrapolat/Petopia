@@ -22,13 +22,13 @@ class SinglePagePostCardWidget extends StatefulWidget {
 
 class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
   bool _isLikeAnimating = false;
-  String _currentUUid = " ";
+  String _currentUid = " ";
 
   @override
   void initState() {
     di.sl<GetCurrentUidUseCase>().call().then((value) {
       setState(() {
-        _currentUUid = value;
+        _currentUid = value;
       });
     });
     super.initState();
@@ -44,26 +44,29 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: 30,
-                    height: 30,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: profileWidget(
-                          imageUrl: "${widget.post.userProfileUrl}"),
+              GestureDetector(
+                onTap: () {},
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: profileWidget(
+                            imageUrl: "${widget.post.userProfileUrl}"),
+                      ),
                     ),
-                  ),
-                  sizeHorizontal(10),
-                  Text(
-                    widget.post.username!,
-                    style: const TextStyle(
-                        color: black, fontWeight: FontWeight.bold),
-                  ),
-                ],
+                    sizeHorizontal(10),
+                    Text(
+                      widget.post.username!,
+                      style: const TextStyle(
+                          color: black, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
-              widget.post.creatorUid == _currentUUid
+              widget.post.creatorUid == _currentUid
                   ? GestureDetector(
                       onTap: () {
                         _openModalBottomSheet(context, widget.post);
@@ -118,10 +121,10 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
                   GestureDetector(
                     onTap: _likePost,
                     child: Icon(
-                      widget.post.likes!.contains(_currentUUid)
+                      widget.post.likes!.contains(_currentUid)
                           ? Icons.favorite
                           : Icons.favorite_outline,
-                      color: widget.post.likes!.contains(_currentUUid)
+                      color: widget.post.likes!.contains(_currentUid)
                           ? Colors.red
                           : darkGrey,
                     ),
@@ -131,7 +134,7 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
                     onTap: () {
                       Navigator.pushNamed(context, PageConsts.commentPage,
                           arguments: AppEntity(
-                            uid: _currentUUid,
+                            uid: _currentUid,
                             postId: widget.post.postId,
                           ));
                     },
@@ -179,7 +182,7 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
             onTap: () {
               Navigator.pushNamed(context, PageConsts.commentPage,
                   arguments: AppEntity(
-                    uid: _currentUUid,
+                    uid: _currentUid,
                     postId: widget.post.postId,
                   ));
             },

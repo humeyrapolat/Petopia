@@ -284,8 +284,8 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
 
           userCollection.get().then((value) {
             if (value.exists) {
-              final totalPosts = value.get('totalPosts');
-              userCollection.update({"totalPosts": totalPosts + 1});
+              final totalPost = value.get('totalPosts');
+              userCollection.update({"totalPosts": totalPost + 1});
               return;
             }
           });
@@ -303,21 +303,20 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     final postCollection = firebaseFirestore.collection(FirebaseConsts.post);
 
     try {
-      postCollection.doc(post.postId).delete().then((value) {
+      await postCollection.doc(post.postId).delete().then((value) {
         final userCollection = firebaseFirestore
             .collection(FirebaseConsts.users)
             .doc(post.creatorUid);
-
         userCollection.get().then((value) {
           if (value.exists) {
-            final totalPosts = value.get('totalPosts');
-            userCollection.update({"totalPosts": totalPosts - 1});
+            final totalPost = value.get('totalPosts');
+            userCollection.update({"totalPosts": totalPost + 1});
             return;
           }
         });
       });
     } catch (e) {
-      print("some error occured $e");
+      toast("some error occured $e ");
     }
   }
 

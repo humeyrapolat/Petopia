@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/features/presentation/cubit/auth/auth_cubit.dart';
@@ -396,7 +395,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     sizeHorizontal(1),
                     IconButton(
                       onPressed: () {
-                        DatePicker.showDatePicker(context,
+                      /*  DatePicker.showDatePicker(context,
                             showTitleActions: true,
                             minTime: DateTime(2018, 3, 5),
                             maxTime: DateTime(2050, 12, 31), onChanged: (date) {
@@ -408,6 +407,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         }, onConfirm: (date) {
                           _dateTime = date;
                         }, currentTime: _dateTime, locale: LocaleType.tr);
+                      },*/
                       },
                       icon: const Icon(Icons.calendar_today),
                     ),

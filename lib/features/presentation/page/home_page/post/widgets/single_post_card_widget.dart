@@ -44,31 +44,39 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  SizedBox(
-                    width: 30,
-                    height: 30,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(15),
-                      child: profileWidget(
-                          imageUrl: "${widget.post.userProfileUrl}"),
-                    ),
-                  ),
-                  sizeHorizontal(10),
-                  Text(
-                    widget.post.username!,
-                    style: const TextStyle(
-                        color: black, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
               GestureDetector(
                 onTap: () {
-                  _openModalBottomSheet(context, widget.post);
+                  Navigator.pushNamed(context, PageConsts.singleUserProfilePage,
+                      arguments: widget.post.creatorUid);
                 },
-                child: const Icon(Icons.more_vert, color: darkGrey),
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: profileWidget(
+                            imageUrl: "${widget.post.userProfileUrl}"),
+                      ),
+                    ),
+                    sizeHorizontal(10),
+                    Text(
+                      widget.post.username!,
+                      style: const TextStyle(
+                          color: black, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
+              widget.post.creatorUid == _currentUUid
+                  ? GestureDetector(
+                      onTap: () {
+                        _openModalBottomSheet(context, widget.post);
+                      },
+                      child: const Icon(Icons.more_vert, color: darkGrey),
+                    )
+                  : const SizedBox(width: 0, height: 0),
             ],
           ),
           sizeVertical(10),
@@ -204,7 +212,7 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
         builder: (context) {
           return Container(
             height: 150,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: lightBlueColor,
             ),
             child: SingleChildScrollView(

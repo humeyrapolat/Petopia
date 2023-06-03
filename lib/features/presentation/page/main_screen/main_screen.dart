@@ -2,11 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:petopia/features/domain/entities/app_entity.dart';
 import 'package:petopia/features/presentation/cubit/user/get_single_user/get_single_user_cubit.dart';
 import 'package:petopia/features/presentation/page/announcement/announcement.dart';
 import 'package:petopia/features/presentation/page/home_page/home_page.dart';
 import 'package:petopia/features/presentation/page/home_page/post/comments/comments_page.dart';
+import 'package:petopia/features/presentation/page/home_page/search/search.dart';
 import 'package:petopia/features/presentation/page/profile/profile.dart';
 import 'package:petopia/util/consts.dart';
 
@@ -55,40 +57,42 @@ class _MainScreenState extends State<MainScreen> {
         if (getSingleUserState is GetSingleUserLoaded) {
           final currentUser = getSingleUserState.user;
           return Scaffold(
-              backgroundColor: black,
-              bottomNavigationBar: CupertinoTabBar(
-                backgroundColor: black,
-                activeColor: Colors.white,
-                inactiveColor: Colors.white,
-                items: const [
-                  BottomNavigationBarItem(
-                      icon: Icon(MaterialCommunityIcons.home_variant,
-                          color: lightBlueGreenColor),
-                      label: ""),
-                  BottomNavigationBarItem(
-                      icon: Icon(Ionicons.ios_megaphone,
-                          color: lightBlueGreenColor),
-                      label: ""),
-                  BottomNavigationBarItem(
-                      icon: Icon(Ionicons.logo_googleplus,
-                          color: lightBlueGreenColor),
-                      label: ""),
-                  BottomNavigationBarItem(
-                      icon: Icon(Ionicons.ios_paw, color: lightBlueGreenColor),
-                      label: ""),
-                  BottomNavigationBarItem(
-                      icon: Icon(Icons.account_circle_outlined,
-                          color: lightBlueGreenColor),
-                      label: ""),
-                ],
-                onTap: navigationTapped,
+              backgroundColor: white,
+              bottomNavigationBar: Padding(
+                padding: const EdgeInsets.only(top: 5),
+                child: CupertinoTabBar(
+                  backgroundColor: white,
+                  items: const [
+                    BottomNavigationBarItem(
+                        icon: Icon(Iconsax.home,
+                            color: darkPurpleColor,size: 25,),
+                        label: "",),
+                    BottomNavigationBarItem(
+                        icon: Icon(Iconsax.flash,
+                            color: darkPurpleColor,size: 25),
+                        label: "",),
+                    BottomNavigationBarItem(
+                        icon: Icon(Iconsax.add_circle,
+                            color: darkPurpleColor,size: 25),
+                        label: "",),
+                    BottomNavigationBarItem(
+                        icon: Icon(Iconsax.pet4, color: darkPurpleColor,size: 25),
+                        label: "",),
+                    BottomNavigationBarItem(
+                        icon: Icon(Iconsax.user,
+                            color: darkPurpleColor,size: 25),
+                        label: "",)
+                        ,
+                  ],
+                  onTap: navigationTapped,
+                ),
               ),
               body: PageView(
                 controller: pageController,
                 onPageChanged: onPageChanged,
                 children: [
                   const HomePage(),
-                  const Announcement(),
+                  const SearchPage(),
                   UploadPostPage(
                     currentUser: currentUser,
                   ),

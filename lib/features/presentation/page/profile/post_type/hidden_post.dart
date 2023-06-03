@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/util/consts.dart';
 
 class HiddenPostPage extends StatelessWidget {
-  const HiddenPostPage({super.key});
+  final UserEntity currentUser;
+
+  const HiddenPostPage({super.key, required this.currentUser});
 
   @override
   Widget build(BuildContext context) {

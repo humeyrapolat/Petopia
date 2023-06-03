@@ -9,7 +9,9 @@ import 'package:petopia/features/presentation/page/credential/sign_up_page.dart'
 import 'package:petopia/features/presentation/page/home_page/chat/chat.dart';
 import 'package:petopia/features/presentation/page/home_page/home_page.dart';
 import 'package:petopia/features/presentation/page/home_page/post/comments/comments_page.dart';
+import 'package:petopia/features/presentation/page/home_page/post/post_detail_page.dart';
 import 'package:petopia/features/presentation/page/home_page/post/update_post_page.dart';
+import 'package:petopia/features/presentation/page/home_page/post/widgets/post_detail_main_widget.dart';
 import 'package:petopia/features/presentation/page/home_page/search/search.dart';
 import 'package:petopia/features/presentation/page/match/match.dart';
 import 'package:petopia/features/presentation/page/profile/activity/acitivity.dart';
@@ -18,6 +20,7 @@ import 'package:petopia/features/presentation/page/profile/liked/liked_post.dart
 import 'package:petopia/features/presentation/page/profile/post_type/hidden_post.dart';
 import 'package:petopia/features/presentation/page/profile/post_type/shared_post.dart';
 import 'package:petopia/features/presentation/page/profile/profile.dart';
+import 'package:petopia/features/presentation/page/profile/single_user_profile_page.dart';
 import 'package:petopia/util/consts.dart';
 
 import 'features/domain/entities/comment/comment_entity.dart';
@@ -84,7 +87,27 @@ class OnGenerateRoute {
               post: args,
             ));
           } else {
-            return routeBuilder(NoPageFound());
+            return routeBuilder(const NoPageFound());
+          }
+        }
+      case PageConsts.postDetailPage:
+        {
+          if (args is String) {
+            return routeBuilder(PostDetailPage(
+              postId: args,
+            ));
+          } else {
+            return routeBuilder(const NoPageFound());
+          }
+        }
+      case PageConsts.singleUserProfilePage:
+        {
+          if (args is String) {
+            return routeBuilder(SingleUserProfilePage(
+              otherUserId: args,
+            ));
+          } else {
+            return routeBuilder(const NoPageFound());
           }
         }
       case PageConsts.searchPage:
@@ -114,22 +137,26 @@ class OnGenerateRoute {
             const NoPageFound(),
           );
         }
-      case PageConsts.updateCommentPage: {
-        if (args is CommentEntity) {
-          return routeBuilder(EditCommentPage(comment: args,));
-
-        } else {
-          return routeBuilder(NoPageFound());
+      case PageConsts.updateCommentPage:
+        {
+          if (args is CommentEntity) {
+            return routeBuilder(EditCommentPage(
+              comment: args,
+            ));
+          } else {
+            return routeBuilder(const NoPageFound());
+          }
         }
-      }
-      case PageConsts.updateReplayPage: {
-        if (args is ReplayEntity) {
-          return routeBuilder(EditReplayPage(replay: args,));
-
-        } else {
-          return routeBuilder(NoPageFound());
+      case PageConsts.updateReplayPage:
+        {
+          if (args is ReplayEntity) {
+            return routeBuilder(EditReplayPage(
+              replay: args,
+            ));
+          } else {
+            return routeBuilder(const NoPageFound());
+          }
         }
-      }
       case PageConsts.matchPage:
         {
           return routeBuilder(
@@ -168,21 +195,33 @@ class OnGenerateRoute {
         }
       case PageConsts.hiddenPostPage:
         {
-          return routeBuilder(
-            const HiddenPostPage(),
-          );
+          if (args is UserEntity) {
+            return routeBuilder(HiddenPostPage(
+              currentUser: args,
+            ));
+          } else {
+            return routeBuilder(const NoPageFound());
+          }
         }
       case PageConsts.sharedPostPage:
         {
-          return routeBuilder(
-            const SharedPostPage(),
-          );
+          if (args is UserEntity) {
+            return routeBuilder(SharedPostPage(
+              currentUser: args,
+            ));
+          } else {
+            return routeBuilder(const NoPageFound());
+          }
         }
       case PageConsts.likedPostPage:
         {
-          return routeBuilder(
-            const LikedPostPage(),
-          );
+          if (args is UserEntity) {
+            return routeBuilder(LikedPostPage(
+              currentUser: args,
+            ));
+          } else {
+            return routeBuilder(const NoPageFound());
+          }
         }
 
       default:

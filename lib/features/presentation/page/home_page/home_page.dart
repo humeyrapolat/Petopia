@@ -17,7 +17,7 @@ class HomePage extends StatelessWidget {
       backgroundColor: white,
       appBar: AppBar(
         backgroundColor: darkPinkColor,
-        title: Text("PETOPIA"),
+        title: const Text("PETOPIA"),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
@@ -34,11 +34,11 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: BlocProvider<PostCubit>(
-        create: (context) => di.sl<PostCubit>()..getPosts(post: PostEntity()),
+        create: (context) => di.sl<PostCubit>()..getPosts(post: const PostEntity()),
         child: BlocBuilder<PostCubit, PostState>(
           builder: (context, postState) {
             if (postState is PostLoading) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -59,7 +59,7 @@ class HomePage extends StatelessWidget {
                       },
                     );
             }
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           },
@@ -69,7 +69,7 @@ class HomePage extends StatelessWidget {
   }
 
   _noPostsYetWidget() {
-    return Center(
+    return const Center(
       child: Text(
         "No Posts Yet",
         style: TextStyle(

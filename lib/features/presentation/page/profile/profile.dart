@@ -84,7 +84,7 @@ class ProfilePage extends StatelessWidget {
                         ),
                         sizeVertical(5),
                         const Text(
-                          "Followers",
+                          "Posts",
                           style: TextStyle(
                               color: lightGrey,
                               fontWeight: FontWeight.bold,
@@ -171,12 +171,16 @@ class ProfilePage extends StatelessWidget {
               ],
               indicatorColor: lightGrey,
             ),
-            const Expanded(
+            Expanded(
                 child: TabBarView(
               children: [
-                SharedPostPage(),
-                HiddenPostPage(),
-                LikedPostPage(),
+                SharedPostPage(currentUser: currentUser),
+                HiddenPostPage(
+                  currentUser: currentUser,
+                ),
+                LikedPostPage(
+                  currentUser: currentUser,
+                ),
               ],
             ))
           ],

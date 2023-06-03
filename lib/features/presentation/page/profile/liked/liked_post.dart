@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:petopia/features/domain/entities/user/user_entity.dart';
 import 'package:petopia/util/consts.dart';
 
 class LikedPostPage extends StatelessWidget {
-  const LikedPostPage({super.key});
+  final UserEntity currentUser;
+
+  const LikedPostPage({super.key, required this.currentUser});
 
   @override
   Widget build(BuildContext context) {

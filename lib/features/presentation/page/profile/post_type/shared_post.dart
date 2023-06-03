@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:petopia/util/consts.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/presentation/cubit/post/post_cubit.dart';
+import 'package:petopia/features/presentation/page/profile/widget/shared_post_main_widget.dart';
+import 'package:petopia/injection_container.dart' as di;
 
 class SharedPostPage extends StatelessWidget {
-  const SharedPostPage({super.key});
+  final UserEntity currentUser;
+
+  const SharedPostPage({super.key, required this.currentUser});
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-        itemCount: 4,
-        gridDelegate:
-            const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 3),
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.all(1.0),
-            child: Container(
-              color: lightBlueGreenColor,
-            ),
-          );
-        });
+    return BlocProvider(
+        create: (context) => di.sl<PostCubit>(),
+        child: SharedPostMainWidget(
+          currentUser: currentUser,
+        ));
   }
 }

@@ -68,6 +68,8 @@ class PageConsts {
   static const String hiddenPostPage = "hiddenPostPage";
   static const String sharedPostPage = "sharedPostPage";
   static const String likedPostPage = "likedPostPage";
+  static const String followingPage = "followingPage";
+  static const String followersPage = "followersPage";
 
   //no page
   static const String noPageFound = "noPageFound";

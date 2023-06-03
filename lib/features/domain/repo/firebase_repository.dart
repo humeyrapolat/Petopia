@@ -13,16 +13,19 @@ abstract class FirebaseRepository {
   Future<void> signOut();
   Future<void> passwordReset(String email);
 
-
   //User
-  Stream<List<UserEntity>> getUsers(UserEntity user); //canli veriler olacagi icin Stream kullaniyoz
+  Stream<List<UserEntity>> getUsers(
+      UserEntity user); //canli veriler olacagi icin Stream kullaniyoz
   Stream<List<UserEntity>> getSingleUsers(String uid);
+  Stream<List<UserEntity>> getSingleOtherUser(String otherUid);
   Future<String> getCurrentUid();
   Future<void> createUser(UserEntity user);
   Future<void> updateUser(UserEntity user);
+  Future<void> followUnfollowUser(UserEntity user);
 
   //Cloud Storage
-  Future<String> uploadImageToStorage(File? file, bool isPost, String childName);
+  Future<String> uploadImageToStorage(
+      File? file, bool isPost, String childName);
 
   //Post
   Future<void> createPost(PostEntity post);

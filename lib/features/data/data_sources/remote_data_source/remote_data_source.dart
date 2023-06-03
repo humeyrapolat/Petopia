@@ -20,9 +20,12 @@ abstract class FirebaseRemoteDataSource {
   Future<String> getCurrentUid();
   Future<void> createUser(UserEntity user);
   Future<void> updateUser(UserEntity user);
+  Future<void> followUnfollowUser(UserEntity user);
+  Stream<List<UserEntity>> getSingleOtherUser(String otherUid);
 
   //Cloud Storage
-  Future<String> uploadImageToStorage(File? file, bool isPost, String childName);
+  Future<String> uploadImageToStorage(
+      File? file, bool isPost, String childName);
 
   //Post
   Future<void> createPost(PostEntity post);

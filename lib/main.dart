@@ -12,6 +12,7 @@ import 'package:petopia/features/presentation/page/main_screen/main_screen.dart'
 import 'package:petopia/on_generate_route.dart';
 import 'package:petopia/util/consts.dart';
 
+import 'features/presentation/cubit/user/get_single_other_user/get_single_other_user_cubit.dart';
 import 'injection_container.dart' as di;
 
 Future main() async {
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<ResetPasswordCubit>(
           create: (context) => di.sl<ResetPasswordCubit>(),
         ),
+        BlocProvider(create: (_) => di.sl<GetSingleOtherUserCubit>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

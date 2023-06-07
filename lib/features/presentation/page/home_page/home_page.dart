@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:petopia/features/presentation/page/home_page/post/widgets/single_post_card_widget.dart';
 import 'package:petopia/injection_container.dart' as di;
 
@@ -26,7 +27,7 @@ class HomePage extends StatelessWidget {
                 Navigator.pushNamed(context, PageConsts.chatPage);
               },
               child: const Icon(
-                MaterialCommunityIcons.facebook_messenger,
+                Iconsax.message,
                 color: lightPinkColor,
               ),
             ),
@@ -34,7 +35,8 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: BlocProvider<PostCubit>(
-        create: (context) => di.sl<PostCubit>()..getPosts(post: const PostEntity()),
+        create: (context) =>
+            di.sl<PostCubit>()..getPosts(post: const PostEntity()),
         child: BlocBuilder<PostCubit, PostState>(
           builder: (context, postState) {
             if (postState is PostLoading) {

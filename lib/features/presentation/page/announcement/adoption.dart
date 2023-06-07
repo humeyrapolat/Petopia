@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:petopia/util/consts.dart';
 
 class AdoptionPage extends StatelessWidget {
@@ -25,7 +26,7 @@ class AdoptionPage extends StatelessWidget {
                   TextStyle(color: darkGreenColor, fontWeight: FontWeight.bold),
             ),
             trailing: const Icon(
-              Icons.bookmark_border,
+              Iconsax.message,
               color: darkGreenColor,
             ),
           ),
@@ -45,8 +46,7 @@ class AdoptionPage extends StatelessWidget {
                   TextStyle(color: darkGreenColor, fontWeight: FontWeight.bold),
             ),
             trailing: const Icon(
-              Icons.bookmark_border,
-              color: darkGreenColor,
+              Iconsax.message,
             ),
           ),
         ),
@@ -65,7 +65,7 @@ class AdoptionPage extends StatelessWidget {
                   TextStyle(color: darkGreenColor, fontWeight: FontWeight.bold),
             ),
             trailing: const Icon(
-              Icons.bookmark_border,
+              Iconsax.message,
               color: darkGreenColor,
             ),
           ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 import 'package:petopia/features/presentation/page/announcement/adoption.dart';
+import 'package:petopia/features/presentation/page/announcement/create_dialogs/adoption_dialog.dart';
 import 'package:petopia/features/presentation/page/announcement/lost_animal.dart';
+import 'package:petopia/features/presentation/page/announcement/create_dialogs/lost_animal_dialog.dart';
 import 'package:petopia/util/consts.dart';
 
 class Announcement extends StatefulWidget {
@@ -72,7 +74,7 @@ class _AnnouncementState extends State<Announcement>
         body: TabBarView(
           controller: _tabController,
           children: const [
-            AdoptionPage(),
+            LostAnimalPage(),
             LostAnimalPage(),
           ],
         ),
@@ -118,10 +120,14 @@ class _AnnouncementState extends State<Announcement>
                       child: GestureDetector(
                         child: InkWell(
                           onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) => LostAnimalDialog());
+
                             // lost oluşturma sayfası
                           },
                           child: const Text(
-                            "Create Lost Announcement",
+                            "Lost Animal Announcement",
                             style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 16,
@@ -140,10 +146,12 @@ class _AnnouncementState extends State<Announcement>
                       padding: const EdgeInsets.only(left: 10.0),
                       child: InkWell(
                         onTap: () {
-                          //// adopt oluşturma sayfası
+                          showDialog(
+                              context: context,
+                              builder: (context) => AdoptionAnimalDialog());
                         },
                         child: const Text(
-                          "Create Lost Announcement",
+                          "Adoption Animal",
                           style: TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 16,

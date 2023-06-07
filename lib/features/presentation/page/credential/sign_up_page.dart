@@ -3,12 +3,13 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/features/presentation/cubit/auth/auth_cubit.dart';
 import 'package:petopia/features/presentation/cubit/credential/credential_cubit.dart';
 import 'package:petopia/features/presentation/page/main_screen/main_screen.dart';
 import 'package:petopia/features/presentation/widgets/form_container_widget.dart';
 import 'package:petopia/profile_widget.dart';
+import 'package:petopia/util/validator.dart';
 
 import '../../../../util/consts.dart';
 
@@ -30,8 +31,9 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _dateController = TextEditingController();
 
   DateTime _dateTime = DateTime.now();
-
-  bool _isSigningUp = false;
+  bool isLoading = false;
+  final _formKey = GlobalKey<FormState>();
+  bool _autoFocus = true;
 
   final List<String> genderItems = [
     'Male',
@@ -57,8 +59,6 @@ class _SignUpPageState extends State<SignUpPage> {
   ];
 
   String? selectedValue;
-
-  final _formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -395,7 +395,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     sizeHorizontal(1),
                     IconButton(
                       onPressed: () {
-                      /*  DatePicker.showDatePicker(context,
+                        /*  DatePicker.showDatePicker(context,
                             showTitleActions: true,
                             minTime: DateTime(2018, 3, 5),
                             maxTime: DateTime(2050, 12, 31), onChanged: (date) {
@@ -421,6 +421,7 @@ class _SignUpPageState extends State<SignUpPage> {
               height: 50,
               child: FormContainerWidget(
                 controller: _emailController,
+                validator: Validator.onEmailValidation,
                 hintText: 'Email',
                 inputType: TextInputType.emailAddress,
               ),
@@ -431,6 +432,7 @@ class _SignUpPageState extends State<SignUpPage> {
               height: 50,
               child: FormContainerWidget(
                 controller: _passwordController,
+                validator: Validator.onPasswordValidation,
                 hintText: 'Password',
                 inputType: TextInputType.visiblePassword,
                 isPasswordField: true,
@@ -480,7 +482,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ],
             ),
-            _isSigningUp == true
+            isLoading == true
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -506,31 +508,36 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Future<void> _signUpUser() async {
-    setState(() {
-      _isSigningUp = true;
-    });
-    BlocProvider.of<CredentialCubit>(context)
-        .signUpUser(
-          UserEntity(
-            email: _emailController.text,
-            password: _passwordController.text,
-            bio: "",
-            username: _usernameController.text,
-            totalPosts: 0,
-            birthdate: _dateController.text,
-            type: _typeController.text,
-            gender: _genderController.text,
-            breed: _breedController.text,
-            totalFollowing: 0,
-            followers: [],
-            totalFollowers: 0,
-            website: "",
-            following: [],
-            name: _nameController.text,
-            imageFile: _image,
-          ),
-        )
-        .then((value) => _clearControllers());
+    if (isLoading) {
+      if (_formKey.currentState!.validate()) {
+        _autoFocus = false;
+        setState(() {
+          isLoading = true;
+        });
+        BlocProvider.of<CredentialCubit>(context)
+            .signUpUser(
+              AnimalEntity(
+                email: _emailController.text,
+                password: _passwordController.text,
+                bio: "",
+                username: _usernameController.text,
+                totalPosts: 0,
+                birthdate: _dateController.text,
+                type: _typeController.text,
+                gender: _genderController.text,
+                breed: _breedController.text,
+                totalFollowing: 0,
+                followers: [],
+                totalFollowers: 0,
+                website: "",
+                following: [],
+                name: _nameController.text,
+                imageFile: _image,
+              ),
+            )
+            .then((value) => _clearControllers());
+      }
+    }
   }
 
   _clearControllers() {
@@ -543,7 +550,7 @@ class _SignUpPageState extends State<SignUpPage> {
       _dateController.clear();
       _genderController.clear();
       _typeController.clear();
-      _isSigningUp = false;
+      isLoading = false;
     });
   }
 }

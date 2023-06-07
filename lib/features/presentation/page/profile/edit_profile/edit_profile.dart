@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/storage/upload_image_to_storage_usecase.dart';
 import 'package:petopia/features/presentation/cubit/user/user_cubit.dart';
 import 'package:petopia/features/presentation/page/profile/widget/profile_dropDown_widget.dart';
@@ -13,7 +13,7 @@ import 'package:petopia/util/consts.dart';
 import 'package:petopia/injection_container.dart' as di;
 
 class EditProfilePage extends StatefulWidget {
-  final UserEntity currentUser;
+  final AnimalEntity currentUser;
 
   EditProfilePage({Key? key, required this.currentUser}) : super(key: key);
 
@@ -207,7 +207,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   _updateUserProfile(String profileUrl) {
     BlocProvider.of<UserCubit>(context)
         .updateUser(
-            user: UserEntity(
+            user: AnimalEntity(
                 uid: widget.currentUser.uid,
                 username: _usernameController!.text,
                 type: _typeController!.text,

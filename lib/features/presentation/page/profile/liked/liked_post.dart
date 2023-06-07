@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/util/consts.dart';
 
 class LikedPostPage extends StatelessWidget {
-  final UserEntity currentUser;
+  final AnimalEntity currentUser;
 
   const LikedPostPage({super.key, required this.currentUser});
 

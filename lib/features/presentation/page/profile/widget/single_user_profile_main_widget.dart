@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 import 'package:petopia/features/domain/entities/post/post_entity.dart';
-import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/get_current_uid_usecase.dart';
 import 'package:petopia/features/presentation/cubit/auth/auth_cubit.dart';
 import 'package:petopia/features/presentation/cubit/post/post_cubit.dart';
@@ -234,7 +234,7 @@ class _SingleUserProfileMainWigdetState
   }
 
   _openBottomModalSheet(
-      {required BuildContext context, required UserEntity currentUser}) {
+      {required BuildContext context, required AnimalEntity currentUser}) {
     return showModalBottomSheet(
         context: context,
         builder: (context) {

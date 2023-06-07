@@ -1,8 +1,8 @@
 import 'package:petopia/features/domain/entities/post/post_entity.dart';
-import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 
 class AppEntity {
-  final UserEntity? currentUser;
+  final AnimalEntity? currentUser;
   final PostEntity? postEntity;
   final String? uid;
   final String? postId;

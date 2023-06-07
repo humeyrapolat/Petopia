@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 
-class UserEntity extends Equatable {
+class AnimalEntity extends Equatable {
   final String? uid;
   final String? username;
   final String? name;
@@ -24,7 +24,7 @@ class UserEntity extends Equatable {
   final String? password;
   final String? otherUid;
 
-  const UserEntity({
+  const AnimalEntity({
     this.imageFile,
     this.uid,
     this.username,

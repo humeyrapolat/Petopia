@@ -3,6 +3,8 @@ import 'package:petopia/util/consts.dart';
 
 class FormContainerWidget extends StatefulWidget {
   final TextEditingController? controller;
+  final bool? autofocus;
+
   final Key? fieldKey;
   final bool? isPasswordField;
   final String? hintText;
@@ -16,6 +18,7 @@ class FormContainerWidget extends StatefulWidget {
   const FormContainerWidget(
       {super.key,
       this.controller,
+      this.autofocus,
       this.isPasswordField,
       this.fieldKey,
       this.hintText,
@@ -43,6 +46,7 @@ class _FormContainerWidgetState extends State<FormContainerWidget> {
       child: TextFormField(
         style: const TextStyle(color: black),
         controller: widget.controller,
+        autofocus: widget.autofocus == true ? true : false,
         keyboardType: widget.inputType,
         key: widget.fieldKey,
         obscureText: widget.isPasswordField == true ? _obscureText : false,

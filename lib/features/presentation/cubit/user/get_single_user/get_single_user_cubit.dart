@@ -2,15 +2,15 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/get_single_user_usecase.dart';
 
 part 'get_single_user_state.dart';
 
 class GetSingleUserCubit extends Cubit<GetSingleUserState> {
   final GetSingleUserUseCase getSingleUserUseCase;
-  GetSingleUserCubit({required this.getSingleUserUseCase}) : super(GetSingleUserInitial());
-
+  GetSingleUserCubit({required this.getSingleUserUseCase})
+      : super(GetSingleUserInitial());
 
   Future<void> getSingleUser({required String uid}) async {
     emit(GetSingleUserLoading());
@@ -19,11 +19,10 @@ class GetSingleUserCubit extends Cubit<GetSingleUserState> {
       streamResponse.listen((users) {
         emit(GetSingleUserLoaded(user: users.first));
       });
-    } on SocketException catch(_) {
+    } on SocketException catch (_) {
       emit(GetSingleUserFailure());
     } catch (_) {
       emit(GetSingleUserFailure());
     }
   }
-
 }

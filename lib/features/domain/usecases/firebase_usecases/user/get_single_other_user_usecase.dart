@@ -1,4 +1,4 @@
-import '../../../entities/user/user_entity.dart';
+import '../../../entities/animal/animal_entity.dart';
 import '../../../repo/firebase_repository.dart';
 
 class GetSingleOtherUserUseCase {
@@ -6,7 +6,7 @@ class GetSingleOtherUserUseCase {
 
   GetSingleOtherUserUseCase({required this.repository});
 
-  Stream<List<UserEntity>> call(String otherUid) {
+  Stream<List<AnimalEntity>> call(String otherUid) {
     return repository.getSingleOtherUser(otherUid);
   }
 }

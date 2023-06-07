@@ -103,7 +103,7 @@ class OnGenerateRoute {
         }
       case PageConsts.followingPage:
         {
-          if (args is UserEntity) {
+          if (args is AnimalEntity) {
             return routeBuilder(FollowingPage(
               user: args,
             ));
@@ -112,7 +112,7 @@ class OnGenerateRoute {
         }
       case PageConsts.followersPage:
         {
-          if (args is UserEntity) {
+          if (args is AnimalEntity) {
             return routeBuilder(FollowersPage(
               user: args,
             ));

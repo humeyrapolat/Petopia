@@ -15,7 +15,7 @@ class GetSingleOtherUserLoading extends GetSingleOtherUserState {
 }
 
 class GetSingleOtherUserLoaded extends GetSingleOtherUserState {
-  final UserEntity otherUser;
+  final AnimalEntity otherUser;
 
   GetSingleOtherUserLoaded({required this.otherUser});
   @override

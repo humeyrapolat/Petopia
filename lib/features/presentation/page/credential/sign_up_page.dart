@@ -537,34 +537,32 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Future<void> _signUpUser() async {
     if (isLoading) {
-      if (_formKey.currentState!.validate()) {
-        _autoFocus = false;
-        setState(() {
-          isLoading = true;
-        });
-        BlocProvider.of<CredentialCubit>(context)
-            .signUpUser(
-              AnimalEntity(
-                email: _emailController.text,
-                password: _passwordController.text,
-                bio: "",
-                username: _usernameController.text,
-                totalPosts: 0,
-                birthdate: _dateController.text,
-                type: _typeController.text,
-                gender: _genderController.text,
-                breed: _breedController.text,
-                totalFollowing: 0,
-                followers: [],
-                totalFollowers: 0,
-                website: "",
-                following: [],
-                name: _nameController.text,
-                imageFile: _image,
-              ),
-            )
-            .then((value) => _clearControllers());
-      }
+      _autoFocus = false;
+      setState(() {
+        isLoading = true;
+      });
+      BlocProvider.of<CredentialCubit>(context)
+          .signUpUser(
+            AnimalEntity(
+              email: _emailController.text,
+              password: _passwordController.text,
+              bio: "",
+              username: _usernameController.text,
+              totalPosts: 0,
+              birthdate: _dateController.text,
+              type: _typeController.text,
+              gender: _genderController.text,
+              breed: _breedController.text,
+              totalFollowing: 0,
+              followers: [],
+              totalFollowers: 0,
+              website: "",
+              following: [],
+              name: _nameController.text,
+              imageFile: _image,
+            ),
+          )
+          .then((value) => _clearControllers());
     }
   }
 

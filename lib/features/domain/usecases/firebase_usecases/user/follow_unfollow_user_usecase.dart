@@ -1,4 +1,4 @@
-import '../../../entities/user/user_entity.dart';
+import '../../../entities/animal/animal_entity.dart';
 import '../../../repo/firebase_repository.dart';
 
 class FollowUnfollowUseCase {
@@ -6,7 +6,7 @@ class FollowUnfollowUseCase {
 
   FollowUnfollowUseCase({required this.repository});
 
-  Future<void> call(UserEntity user) {
+  Future<void> call(AnimalEntity user) {
     return repository.followUnfollowUser(user);
   }
 }

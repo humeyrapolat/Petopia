@@ -212,7 +212,7 @@ class _SingleUserProfileMainWigdetState
                           onTapListener: () {
                             BlocProvider.of<UserCubit>(context)
                                 .followUnFollowUser(
-                                    user: UserEntity(
+                                    user: AnimalEntity(
                                         uid: _currentUid,
                                         otherUid: widget.otherUserId));
                           },

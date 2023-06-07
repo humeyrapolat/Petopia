@@ -2,7 +2,8 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import '../../../../domain/entities/user/user_entity.dart';
+import 'package:flutter/material.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import '../../../../domain/usecases/firebase_usecases/user/get_single_other_user_usecase.dart';
 
 part 'get_single_other_user_state.dart';

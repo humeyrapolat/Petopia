@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/injection_container.dart' as di;
 import 'package:petopia/util/consts.dart';
 import '../../../../profile_widget.dart';
-import '../../../domain/entities/user/user_entity.dart';
 import '../../../domain/usecases/firebase_usecases/user/get_single_user_usecase.dart';
 
 class FollowersPage extends StatelessWidget {
-  final UserEntity user;
+  final AnimalEntity user;
   const FollowersPage({Key? key, required this.user}) : super(key: key);
 
   @override
@@ -27,7 +27,7 @@ class FollowersPage extends StatelessWidget {
                   : ListView.builder(
                       itemCount: user.followers!.length,
                       itemBuilder: (context, index) {
-                        return StreamBuilder<List<UserEntity>>(
+                        return StreamBuilder<List<AnimalEntity>>(
                             stream: di
                                 .sl<GetSingleUserUseCase>()
                                 .call(user.followers![index]),

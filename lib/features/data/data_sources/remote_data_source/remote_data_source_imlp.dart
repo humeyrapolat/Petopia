@@ -258,7 +258,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   }
 
   @override
-  Future<void> followUnfollowUser(UserEntity user) async {
+  Future<void> followUnfollowUser(AnimalEntity user) async {
     final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
 
     final myDocRef = await userCollection.doc(user.uid).get();
@@ -339,13 +339,13 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   }
 
   @override
-  Stream<List<UserEntity>> getSingleOtherUser(String otherUid) {
+  Stream<List<AnimalEntity>> getSingleOtherUser(String otherUid) {
     final userCollection = firebaseFirestore
         .collection(FirebaseConsts.users)
         .where("uid", isEqualTo: otherUid)
         .limit(1);
     return userCollection.snapshots().map((querySnapshot) =>
-        querySnapshot.docs.map((e) => UserModel.fromSnapshot(e)).toList());
+        querySnapshot.docs.map((e) => AnimalModel.fromSnapshot(e)).toList());
   }
 
   @override

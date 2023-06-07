@@ -5,6 +5,10 @@
 ///   (?=.*?[!@#\$&*~]) // should contain at least one Special character
 ///   .{8,}             // Must be at least 8 characters in length
 /// $
+///
+///
+///
+/*
 extension EmailValidator on String {
   bool isValidEmail() {
     return RegExp(
@@ -87,3 +91,4 @@ class Validator {
     return null;
   }
 }
+*/

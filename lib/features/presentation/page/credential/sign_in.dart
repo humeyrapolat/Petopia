@@ -21,7 +21,6 @@ class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool isLoading = false;
-  bool _autoFocus = true;
 
   @override
   void dispose() {
@@ -89,8 +88,6 @@ class _SignInPageState extends State<SignInPage> {
           FormContainerWidget(
             controller: _emailController,
             hintText: 'Email',
-            autofocus: _autoFocus,
-            validator: Validator.onEmailValidation,
             inputType: TextInputType.emailAddress,
           ),
           sizeVertical(10),
@@ -98,7 +95,6 @@ class _SignInPageState extends State<SignInPage> {
             controller: _passwordController,
             hintText: 'Password',
             onFieldSubmitted: _onPasswordTextFieldSubmit,
-            validator: Validator.onPasswordValidation,
             isPasswordField: true,
           ),
           sizeVertical(10),
@@ -168,7 +164,6 @@ class _SignInPageState extends State<SignInPage> {
 
   Future<void> _signIn() async {
     if (!isLoading) {
-      _autoFocus = false;
       setState(() {
         isLoading = true;
       });

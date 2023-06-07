@@ -31,9 +31,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _dateController = TextEditingController();
 
   DateTime _dateTime = DateTime.now();
-  bool isLoading = false;
-  final _formKey = GlobalKey<FormState>();
-  bool _autoFocus = true;
+  bool _isSigningUp = false;
 
   final List<String> genderItems = [
     'Male',
@@ -421,7 +419,6 @@ class _SignUpPageState extends State<SignUpPage> {
               height: 50,
               child: FormContainerWidget(
                 controller: _emailController,
-                validator: Validator.onEmailValidation,
                 hintText: 'Email',
                 inputType: TextInputType.emailAddress,
               ),
@@ -432,7 +429,6 @@ class _SignUpPageState extends State<SignUpPage> {
               height: 50,
               child: FormContainerWidget(
                 controller: _passwordController,
-                validator: Validator.onPasswordValidation,
                 hintText: 'Password',
                 inputType: TextInputType.visiblePassword,
                 isPasswordField: true,
@@ -482,7 +478,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ],
             ),
-            isLoading == true
+            _isSigningUp == true
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -508,36 +504,31 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Future<void> _signUpUser() async {
-    if (isLoading) {
-      if (_formKey.currentState!.validate()) {
-        _autoFocus = false;
-        setState(() {
-          isLoading = true;
-        });
-        BlocProvider.of<CredentialCubit>(context)
-            .signUpUser(
-              AnimalEntity(
-                email: _emailController.text,
-                password: _passwordController.text,
-                bio: "",
-                username: _usernameController.text,
-                totalPosts: 0,
-                birthdate: _dateController.text,
-                type: _typeController.text,
-                gender: _genderController.text,
-                breed: _breedController.text,
-                totalFollowing: 0,
-                followers: [],
-                totalFollowers: 0,
-                website: "",
-                following: [],
-                name: _nameController.text,
-                imageFile: _image,
-              ),
-            )
-            .then((value) => _clearControllers());
-      }
-    }
+    setState(() {
+      _isSigningUp = true;
+    });
+    BlocProvider.of<CredentialCubit>(context)
+        .signUpUser(
+          AnimalEntity(
+            email: _emailController.text,
+            password: _passwordController.text,
+            bio: "",
+            username: _usernameController.text,
+            totalPosts: 0,
+            birthdate: _dateController.text,
+            type: _typeController.text,
+            gender: _genderController.text,
+            breed: _breedController.text,
+            totalFollowing: 0,
+            followers: [],
+            totalFollowers: 0,
+            website: "",
+            following: [],
+            name: _nameController.text,
+            imageFile: _image,
+          ),
+        )
+        .then((value) => _clearControllers());
   }
 
   _clearControllers() {
@@ -550,7 +541,7 @@ class _SignUpPageState extends State<SignUpPage> {
       _dateController.clear();
       _genderController.clear();
       _typeController.clear();
-      isLoading = false;
+      _isSigningUp = false;
     });
   }
 }

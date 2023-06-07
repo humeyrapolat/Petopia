@@ -8,11 +8,11 @@ import 'package:petopia/features/data/data_sources/remote_data_source/remote_dat
 import 'package:petopia/features/data/models/comment/comment_model.dart';
 import 'package:petopia/features/data/models/posts/post_model.dart';
 import 'package:petopia/features/data/models/replay/replay_model.dart';
-import 'package:petopia/features/data/models/user/user_model.dart';
+import 'package:petopia/features/data/models/animal/animal_model.dart';
 import 'package:petopia/features/domain/entities/comment/comment_entity.dart';
 import 'package:petopia/features/domain/entities/post/post_entity.dart';
 import 'package:petopia/features/domain/entities/replay/replay_entity.dart';
-import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/util/consts.dart';
 import 'package:uuid/uuid.dart';
 
@@ -26,11 +26,11 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       required this.firebaseAuth,
       required this.firebaseStorage});
 
-  Future<void> createUserWithImage(UserEntity user, String profileUrl) async {
+  Future<void> createUserWithImage(AnimalEntity user, String profileUrl) async {
     final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
     final uid = await getCurrentUid();
     userCollection.doc(uid).get().then((userDoc) {
-      final newUser = UserModel(
+      final newUser = AnimalModel(
         uid: uid,
         name: user.name,
         email: user.email,
@@ -60,13 +60,13 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   }
 
   @override
-  Future<void> createUser(UserEntity user) async {
+  Future<void> createUser(AnimalEntity user) async {
     final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
 
     final uid = await getCurrentUid();
 
     userCollection.doc(user.uid).get().then((userDoc) {
-      final newUser = UserModel(
+      final newUser = AnimalModel(
         name: user.name,
         email: user.email,
         uid: uid,
@@ -99,7 +99,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   Future<String> getCurrentUid() async => firebaseAuth.currentUser!.uid;
 
   @override
-  Stream<List<UserEntity>> getSingleUser(String uid) {
+  Stream<List<AnimalEntity>> getSingleUser(String uid) {
     final userCollection = firebaseFirestore
         .collection(FirebaseConsts.users)
         .where("uid", isEqualTo: uid)
@@ -107,19 +107,19 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     return userCollection.snapshots().map(
       (querySnapsoht) {
         return querySnapsoht.docs
-            .map((e) => UserModel.fromSnapshot(e))
+            .map((e) => AnimalModel.fromSnapshot(e))
             .toList();
       },
     );
   }
 
   @override
-  Stream<List<UserEntity>> getUsers(UserEntity user) {
+  Stream<List<AnimalEntity>> getUsers(AnimalEntity user) {
     final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
     return userCollection.snapshots().map(
       (querySnapsoht) {
         return querySnapsoht.docs
-            .map((e) => UserModel.fromSnapshot(e))
+            .map((e) => AnimalModel.fromSnapshot(e))
             .toList();
       },
     );
@@ -129,7 +129,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   Future<bool> isSignIn() async => firebaseAuth.currentUser?.uid != null;
 
   @override
-  Future<void> signInUser(UserEntity user) async {
+  Future<void> signInUser(AnimalEntity user) async {
     try {
       if (user.email!.isNotEmpty && user.password!.isNotEmpty) {
         await firebaseAuth.signInWithEmailAndPassword(
@@ -161,7 +161,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   }
 
   @override
-  Future<void> signUpUser(UserEntity user) async {
+  Future<void> signUpUser(AnimalEntity user) async {
     try {
       await firebaseAuth
           .createUserWithEmailAndPassword(
@@ -189,7 +189,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   }
 
   @override
-  Future<void> updateUser(UserEntity user) async {
+  Future<void> updateUser(AnimalEntity user) async {
     final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
     Map<String, dynamic> userInformation = {};
 
@@ -363,6 +363,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       description: post.description,
       postImageUrl: post.postImageUrl,
       likes: [],
+      isPrivate: post.isPrivate!,
     ).toJson();
 
     try {

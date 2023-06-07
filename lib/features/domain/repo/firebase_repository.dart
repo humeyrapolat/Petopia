@@ -3,25 +3,25 @@ import 'dart:io';
 import 'package:petopia/features/domain/entities/comment/comment_entity.dart';
 import 'package:petopia/features/domain/entities/post/post_entity.dart';
 import 'package:petopia/features/domain/entities/replay/replay_entity.dart';
-import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 
 abstract class FirebaseRepository {
   //Credential
-  Future<void> signInUser(UserEntity user);
-  Future<void> signUpUser(UserEntity user);
+  Future<void> signInUser(AnimalEntity user);
+  Future<void> signUpUser(AnimalEntity user);
   Future<bool> isSignIn();
   Future<void> signOut();
   Future<void> passwordReset(String email);
 
   //User
-  Stream<List<UserEntity>> getUsers(
-      UserEntity user); //canli veriler olacagi icin Stream kullaniyoz
-  Stream<List<UserEntity>> getSingleUsers(String uid);
-  Stream<List<UserEntity>> getSingleOtherUser(String otherUid);
+  Stream<List<AnimalEntity>> getUsers(
+      AnimalEntity user); //canli veriler olacagi icin Stream kullaniyoz
+  Stream<List<AnimalEntity>> getSingleUsers(String uid);
+  Stream<List<AnimalEntity>> getSingleOtherUser(String otherUid);
   Future<String> getCurrentUid();
-  Future<void> createUser(UserEntity user);
-  Future<void> updateUser(UserEntity user);
-  Future<void> followUnfollowUser(UserEntity user);
+  Future<void> createUser(AnimalEntity user);
+  Future<void> updateUser(AnimalEntity user);
+  Future<void> followUnfollowUser(AnimalEntity user);
 
   //Cloud Storage
   Future<String> uploadImageToStorage(

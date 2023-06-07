@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/get_users_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/update_user_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/follow_unfollow_user_usecase.dart';
@@ -17,7 +17,7 @@ class UserCubit extends Cubit<UserState> {
       required this.getUsersUseCase})
       : super(UserInitial());
 
-  Future<void> getUsers({required UserEntity user}) async {
+  Future<void> getUsers({required AnimalEntity user}) async {
     emit(UserLoading());
     try {
       final streamResponse = getUsersUseCase.call(user);
@@ -31,7 +31,7 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> followUnFollowUser({required UserEntity user}) async {
+  Future<void> followUnFollowUser({required AnimalEntity user}) async {
     try {
       await followUnfollowUseCase.call(user);
     } on SocketException catch (_) {
@@ -41,7 +41,7 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> updateUser({required UserEntity user}) async {
+  Future<void> updateUser({required AnimalEntity user}) async {
     try {
       await updateUserUseCase.call(user);
     } on SocketException catch (_) {

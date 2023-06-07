@@ -12,6 +12,7 @@ class PostModel extends PostEntity {
   final num? totalComments;
   final Timestamp? createAt;
   final String? userProfileUrl;
+  final bool isPrivate;
 
   const PostModel({
     this.postId,
@@ -24,18 +25,19 @@ class PostModel extends PostEntity {
     this.totalComments,
     this.createAt,
     this.userProfileUrl,
+    required this.isPrivate,
   }) : super(
-          postId: postId,
-          creatorUid: creatorUid,
-          username: username,
-          description: description,
-          postImageUrl: postImageUrl,
-          likes: likes,
-          totalLikes: totalLikes,
-          totalComments: totalComments,
-          createAt: createAt,
-          userProfileUrl: userProfileUrl,
-        );
+            postId: postId,
+            creatorUid: creatorUid,
+            username: username,
+            description: description,
+            postImageUrl: postImageUrl,
+            likes: likes,
+            totalLikes: totalLikes,
+            totalComments: totalComments,
+            createAt: createAt,
+            userProfileUrl: userProfileUrl,
+            isPrivate: isPrivate);
 
   factory PostModel.fromSnapshot(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
@@ -50,7 +52,8 @@ class PostModel extends PostEntity {
         totalLikes: snapshot['totalLikes'],
         totalComments: snapshot['totalComments'],
         createAt: snapshot['createAt'],
-        userProfileUrl: snapshot['userProfileUrl']);
+        userProfileUrl: snapshot['userProfileUrl'],
+        isPrivate: snapshot['isPrivate']);
   }
 
   Map<String, dynamic> toJson() => {
@@ -64,5 +67,6 @@ class PostModel extends PostEntity {
         "totalComments": totalComments,
         "createAt": createAt,
         "userProfileUrl": userProfileUrl,
+        "isPrivate": isPrivate
       };
 }

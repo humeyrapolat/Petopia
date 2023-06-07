@@ -4,7 +4,7 @@ import 'package:petopia/features/data/data_sources/remote_data_source/remote_dat
 import 'package:petopia/features/domain/entities/comment/comment_entity.dart';
 import 'package:petopia/features/domain/entities/post/post_entity.dart';
 import 'package:petopia/features/domain/entities/replay/replay_entity.dart';
-import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/features/domain/repo/firebase_repository.dart';
 
 class FirebaseRepositoryImpl implements FirebaseRepository {
@@ -13,7 +13,7 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
   FirebaseRepositoryImpl({required this.remoteDataSource});
 
   @override
-  Future<void> createUser(UserEntity user) async =>
+  Future<void> createUser(AnimalEntity user) async =>
       await remoteDataSource.createUser(user);
 
   @override
@@ -21,14 +21,14 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
       await remoteDataSource.getCurrentUid();
 
   @override
-  Stream<List<UserEntity>> getUsers(UserEntity user) =>
+  Stream<List<AnimalEntity>> getUsers(AnimalEntity user) =>
       remoteDataSource.getUsers(user);
 
   @override
   Future<bool> isSignIn() async => await remoteDataSource.isSignIn();
 
   @override
-  Future<void> signInUser(UserEntity user) async =>
+  Future<void> signInUser(AnimalEntity user) async =>
       await remoteDataSource.signInUser(user);
 
   @override
@@ -39,15 +39,15 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
       await remoteDataSource.passwordReset(email);
 
   @override
-  Future<void> signUpUser(UserEntity user) async =>
+  Future<void> signUpUser(AnimalEntity user) async =>
       await remoteDataSource.signUpUser(user);
 
   @override
-  Future<void> updateUser(UserEntity user) async =>
+  Future<void> updateUser(AnimalEntity user) async =>
       await remoteDataSource.updateUser(user);
 
   @override
-  Stream<List<UserEntity>> getSingleUsers(String uid) =>
+  Stream<List<AnimalEntity>> getSingleUsers(String uid) =>
       remoteDataSource.getSingleUser(uid);
 
   @override
@@ -120,10 +120,10 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
       remoteDataSource.updateReplay(replay);
 
   @override
-  Future<void> followUnfollowUser(UserEntity user) async =>
+  Future<void> followUnfollowUser(AnimalEntity user) async =>
       remoteDataSource.followUnfollowUser(user);
 
   @override
-  Stream<List<UserEntity>> getSingleOtherUser(String otherUid) =>
+  Stream<List<AnimalEntity>> getSingleOtherUser(String otherUid) =>
       remoteDataSource.getSingleOtherUser(otherUid);
 }

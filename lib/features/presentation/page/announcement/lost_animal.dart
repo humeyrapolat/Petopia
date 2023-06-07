@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 import '../../../../util/consts.dart';
 
@@ -26,7 +27,7 @@ class LostAnimalPage extends StatelessWidget {
                   TextStyle(color: darkGreenColor, fontWeight: FontWeight.bold),
             ),
             trailing: const Icon(
-              Icons.send,
+              Iconsax.message,
               color: darkGreenColor,
             ),
           ),
@@ -46,7 +47,7 @@ class LostAnimalPage extends StatelessWidget {
                   TextStyle(color: darkGreenColor, fontWeight: FontWeight.bold),
             ),
             trailing: const Icon(
-              Icons.send,
+              Iconsax.message,
               color: darkGreenColor,
             ),
           ),
@@ -66,7 +67,7 @@ class LostAnimalPage extends StatelessWidget {
                   TextStyle(color: darkGreenColor, fontWeight: FontWeight.bold),
             ),
             trailing: const Icon(
-              Icons.send,
+              Iconsax.message,
               color: darkGreenColor,
             ),
           ),

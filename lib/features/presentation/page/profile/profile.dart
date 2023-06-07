@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
-import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/features/presentation/cubit/auth/auth_cubit.dart';
 import 'package:petopia/features/presentation/page/profile/liked/liked_post.dart';
 import 'package:petopia/features/presentation/page/profile/post_type/hidden_post.dart';
@@ -9,7 +9,7 @@ import 'package:petopia/features/presentation/page/profile/post_type/shared_post
 import 'package:petopia/util/consts.dart';
 
 class ProfilePage extends StatelessWidget {
-  final UserEntity currentUser;
+  final AnimalEntity currentUser;
 
   const ProfilePage({super.key, required this.currentUser});
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:petopia/features/domain/entities/app_entity.dart';
-import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/features/presentation/page/announcement/emergency_call.dart';
 import 'package:petopia/features/presentation/page/announcement/lost_animal.dart';
 import 'package:petopia/features/presentation/page/credential/reset_password.dart';
@@ -71,7 +71,7 @@ class OnGenerateRoute {
       case PageConsts.chatPage:
         {
           return routeBuilder(
-            const ChatPage(),
+            ChatPage(),
           );
         }
       case PageConsts.resetPasswordPage:
@@ -185,7 +185,7 @@ class OnGenerateRoute {
 
       case PageConsts.profilePage:
         {
-          if (args is UserEntity) {
+          if (args is AnimalEntity) {
             return routeBuilder(
               ProfilePage(currentUser: args),
             );
@@ -204,7 +204,7 @@ class OnGenerateRoute {
 
       case PageConsts.editProfilePage:
         {
-          if (args is UserEntity) {
+          if (args is AnimalEntity) {
             return routeBuilder(EditProfilePage(
               currentUser: args,
             ));
@@ -214,7 +214,7 @@ class OnGenerateRoute {
         }
       case PageConsts.hiddenPostPage:
         {
-          if (args is UserEntity) {
+          if (args is AnimalEntity) {
             return routeBuilder(HiddenPostPage(
               currentUser: args,
             ));
@@ -224,7 +224,7 @@ class OnGenerateRoute {
         }
       case PageConsts.sharedPostPage:
         {
-          if (args is UserEntity) {
+          if (args is AnimalEntity) {
             return routeBuilder(SharedPostPage(
               currentUser: args,
             ));
@@ -234,7 +234,7 @@ class OnGenerateRoute {
         }
       case PageConsts.likedPostPage:
         {
-          if (args is UserEntity) {
+          if (args is AnimalEntity) {
             return routeBuilder(LikedPostPage(
               currentUser: args,
             ));

@@ -12,14 +12,14 @@ import 'package:petopia/util/consts.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../../../../domain/entities/replay/replay_entity.dart';
-import '../../../../../../domain/entities/user/user_entity.dart';
+import '../../../../../../domain/entities/animal/animal_entity.dart';
 import '../../../../../cubit/replay/replay_cubit.dart';
 
 class SingleCommentWidget extends StatefulWidget {
   final CommentEntity comment;
   final VoidCallback? onLongPressListener;
   final VoidCallback? onLikePressListener;
-  final UserEntity? currentUser;
+  final AnimalEntity? currentUser;
   const SingleCommentWidget(
       {Key? key,
       required this.comment,

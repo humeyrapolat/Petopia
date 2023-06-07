@@ -1,7 +1,7 @@
-import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class UserModel extends UserEntity {
+class AnimalModel extends AnimalEntity {
   final String? uid;
   final String? username;
   final String? name;
@@ -19,7 +19,7 @@ class UserModel extends UserEntity {
   final num? totalFollowing;
   final num? totalPosts;
 
-  const UserModel(
+  const AnimalModel(
       {this.uid,
       this.username,
       this.name,
@@ -55,10 +55,10 @@ class UserModel extends UserEntity {
           totalPosts: totalPosts,
         );
 
-  factory UserModel.fromSnapshot(DocumentSnapshot snap) {
+  factory AnimalModel.fromSnapshot(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
 
-    return UserModel(
+    return AnimalModel(
         uid: snapshot['uid'],
         username: snapshot['username'],
         name: snapshot['name'],

@@ -11,7 +11,6 @@ import 'package:petopia/features/presentation/page/home_page/home_page.dart';
 import 'package:petopia/features/presentation/page/home_page/post/comments/comments_page.dart';
 import 'package:petopia/features/presentation/page/home_page/post/post_detail_page.dart';
 import 'package:petopia/features/presentation/page/home_page/post/update_post_page.dart';
-import 'package:petopia/features/presentation/page/home_page/post/widgets/post_detail_main_widget.dart';
 import 'package:petopia/features/presentation/page/home_page/search/search.dart';
 import 'package:petopia/features/presentation/page/match/match.dart';
 import 'package:petopia/features/presentation/page/profile/activity/acitivity.dart';
@@ -29,6 +28,8 @@ import 'features/domain/entities/replay/replay_entity.dart';
 import 'features/presentation/page/announcement/adoption.dart';
 import 'features/presentation/page/home_page/post/comments/edit_comment_page.dart';
 import 'features/presentation/page/home_page/post/comments/edit_replay_page.dart';
+import 'features/presentation/page/profile/followers_page.dart';
+import 'features/presentation/page/profile/following_page.dart';
 
 class OnGenerateRoute {
   static Route<dynamic>? route(RouteSettings settings) {
@@ -99,6 +100,24 @@ class OnGenerateRoute {
           } else {
             return routeBuilder(const NoPageFound());
           }
+        }
+      case PageConsts.followingPage:
+        {
+          if (args is AnimalEntity) {
+            return routeBuilder(FollowingPage(
+              user: args,
+            ));
+          }
+          return routeBuilder(const NoPageFound());
+        }
+      case PageConsts.followersPage:
+        {
+          if (args is AnimalEntity) {
+            return routeBuilder(FollowersPage(
+              user: args,
+            ));
+          }
+          return routeBuilder(const NoPageFound());
         }
       case PageConsts.singleUserProfilePage:
         {

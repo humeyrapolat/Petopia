@@ -9,7 +9,6 @@ import 'package:petopia/features/presentation/cubit/credential/credential_cubit.
 import 'package:petopia/features/presentation/page/main_screen/main_screen.dart';
 import 'package:petopia/features/presentation/widgets/form_container_widget.dart';
 import 'package:petopia/profile_widget.dart';
-import 'package:petopia/util/validator.dart';
 
 import '../../../../util/consts.dart';
 
@@ -31,30 +30,60 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _dateController = TextEditingController();
 
   DateTime _dateTime = DateTime.now();
+  String selectedType = "";
+
   bool _isSigningUp = false;
+  bool isLoading = false;
 
   final List<String> genderItems = [
     'Male',
     'Female',
   ];
 
-  final List<String> typeItems = [
-    'Cat',
-    'Dog',
-  ];
+  final List<String> typeItems = ['Cat', 'Dog', 'Rabbit'];
 
-  final List<String> breedItems = [
-    "Labrador Retriever",
-    "German Shepherd",
-    "Bulldog",
-    "Poodle",
-    "Golden Retriever",
+  final List<String> catBreeds = [
     "Siamese",
     "Persian",
-    "Maine Coon",
+    "Scottish Fold",
+    "British",
     "Bengal",
-    "Sphynx",
+    "Others",
   ];
+
+  final List<String> dogBreeds = [
+    "Labrador Retriever",
+    "Golden Retriever",
+    "Bulldog",
+    "Poodle",
+    "Terrier",
+    "Others"
+  ];
+
+  final List<String> rabbitBreeds = [
+    "Alaska",
+    "Holland Lop",
+    "French Lop",
+    "Blanc de Hotot",
+    "Others",
+  ];
+
+  void updateBreeds(String type) {
+    setState(() {
+      selectedType = type;
+      if (type == "Cat") {
+        selectedBreeds = catBreeds;
+      } else if (type == "Dog") {
+        selectedBreeds = dogBreeds;
+      } else if (type == "Rabbit") {
+        selectedBreeds = rabbitBreeds;
+      } else {
+        selectedBreeds = [];
+      }
+    });
+  }
+
+  List<String> selectedBreeds = [];
 
   String? selectedValue;
 
@@ -222,7 +251,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       return null;
                     },
                     onChanged: (value) {
-                      //Do something when changing the item if you want.
+                      updateBreeds(value.toString());
                       _typeController.text = value.toString();
                     },
                     onSaved: (value) {
@@ -285,7 +314,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       return null;
                     },
                     onChanged: (value) {
-                      //Do something when changing the item if you want.
                       _genderController.text = value.toString();
                     },
                     onSaved: (value) {
@@ -335,7 +363,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       "Breed",
                       style: TextStyle(fontSize: 14),
                     ),
-                    items: breedItems
+                    items: selectedBreeds
                         .map((item) => DropdownMenuItem<String>(
                               value: item,
                               child: Text(
@@ -353,7 +381,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       return null;
                     },
                     onChanged: (value) {
-                      //Do something when changing the item if you want.
                       _breedController.text = value.toString();
                     },
                     onSaved: (value) {

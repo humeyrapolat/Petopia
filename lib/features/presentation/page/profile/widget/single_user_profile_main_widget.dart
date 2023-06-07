@@ -13,6 +13,10 @@ import 'package:petopia/features/presentation/page/profile/post_type/shared_post
 import 'package:petopia/util/consts.dart';
 import 'package:petopia/injection_container.dart' as di;
 
+import '../../../cubit/user/get_single_other_user/get_single_other_user_cubit.dart';
+import '../../../cubit/user/user_cubit.dart';
+import '../../../widgets/button_container_widget.dart';
+
 class SingleUserProfileMainWigdet extends StatefulWidget {
   final String otherUserId;
 
@@ -34,8 +38,8 @@ class _SingleUserProfileMainWigdetState
         _currentUid = value;
       });
     });
-    BlocProvider.of<GetSingleUserCubit>(context)
-        .getSingleUser(uid: widget.otherUserId);
+    BlocProvider.of<GetSingleOtherUserCubit>(context)
+        .getSingleOtherUser(otherUid: widget.otherUserId);
     super.initState();
   }
 
@@ -43,11 +47,10 @@ class _SingleUserProfileMainWigdetState
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 3,
-      child: BlocBuilder<GetSingleUserCubit, GetSingleUserState>(
+      child: BlocBuilder<GetSingleOtherUserCubit, GetSingleOtherUserState>(
         builder: (context, userState) {
-          if (userState is GetSingleUserLoaded) {
-            final singleUser = userState.user;
-            print("single user: $singleUser");
+          if (userState is GetSingleOtherUserLoaded) {
+            final singleUser = userState.otherUser;
             return Scaffold(
               backgroundColor: white,
               appBar: AppBar(
@@ -63,18 +66,20 @@ class _SingleUserProfileMainWigdetState
                   Ionicons.ios_megaphone,
                 ),
                 actions: [
-                  Padding(
-                    padding: const EdgeInsets.only(right: 10.0),
-                    child: InkWell(
-                        onTap: () {
-                          _openBottomModalSheet(
-                              context: context, currentUser: singleUser);
-                        },
-                        child: const Icon(
-                          Icons.menu,
-                          color: lightBlueGreenColor,
-                        )),
-                  )
+                  _currentUid == singleUser.uid
+                      ? Padding(
+                          padding: const EdgeInsets.only(right: 10.0),
+                          child: InkWell(
+                              onTap: () {
+                                _openBottomModalSheet(
+                                    context: context, currentUser: singleUser);
+                              },
+                              child: const Icon(
+                                Icons.menu,
+                                color: lightBlueGreenColor,
+                              )),
+                        )
+                      : Container()
                 ],
               ),
               body: Column(
@@ -128,48 +133,62 @@ class _SingleUserProfileMainWigdetState
                       ),
                       Expanded(
                         child: Container(
-                          child: Column(
-                            children: [
-                              Text(
-                                "${singleUser.totalFollowers}",
-                                style: const TextStyle(
-                                    color: black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              ),
-                              sizeVertical(5),
-                              const Text(
-                                "Followers",
-                                style: TextStyle(
-                                    color: lightGrey,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15),
-                              ),
-                            ],
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, PageConsts.followersPage,
+                                  arguments: singleUser);
+                            },
+                            child: Column(
+                              children: [
+                                Text(
+                                  "${singleUser.totalFollowers}",
+                                  style: const TextStyle(
+                                      color: black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                                sizeVertical(5),
+                                const Text(
+                                  "Followers",
+                                  style: TextStyle(
+                                      color: lightGrey,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                       Expanded(
                         child: Container(
                           alignment: Alignment.centerLeft,
-                          child: Column(
-                            children: [
-                              Text(
-                                "${singleUser.totalFollowing}",
-                                style: const TextStyle(
-                                    color: black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                              ),
-                              sizeVertical(5),
-                              const Text(
-                                "Following",
-                                style: TextStyle(
-                                    color: lightGrey,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15),
-                              ),
-                            ],
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, PageConsts.followingPage,
+                                  arguments: singleUser);
+                            },
+                            child: Column(
+                              children: [
+                                Text(
+                                  "${singleUser.totalFollowing}",
+                                  style: const TextStyle(
+                                      color: black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
+                                sizeVertical(5),
+                                const Text(
+                                  "Following",
+                                  style: TextStyle(
+                                      color: lightGrey,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -181,6 +200,23 @@ class _SingleUserProfileMainWigdetState
                     style: const TextStyle(color: lightGrey, fontSize: 15),
                   ),
                   sizeVertical(10),
+                  _currentUid == singleUser.uid
+                      ? Container()
+                      : ButtonContainerWidget(
+                          text: singleUser.followers!.contains(_currentUid)
+                              ? "UnFollow"
+                              : "Follow",
+                          color: singleUser.followers!.contains(_currentUid)
+                              ? black.withOpacity(.4)
+                              : darkBlueColor,
+                          onTapListener: () {
+                            BlocProvider.of<UserCubit>(context)
+                                .followUnFollowUser(
+                                    user: AnimalEntity(
+                                        uid: _currentUid,
+                                        otherUid: widget.otherUserId));
+                          },
+                        ),
                   singleUser.uid == _currentUid
                       ? const TabBar(
                           tabs: [

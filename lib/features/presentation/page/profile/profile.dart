@@ -96,48 +96,60 @@ class ProfilePage extends StatelessWidget {
                 ),
                 Expanded(
                   child: Container(
-                    child: Column(
-                      children: [
-                        Text(
-                          "${currentUser.totalFollowers}",
-                          style: const TextStyle(
-                              color: black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
-                        ),
-                        sizeVertical(5),
-                        const Text(
-                          "Followers",
-                          style: TextStyle(
-                              color: lightGrey,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15),
-                        ),
-                      ],
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, PageConsts.followersPage,
+                            arguments: currentUser);
+                      },
+                      child: Column(
+                        children: [
+                          Text(
+                            "${currentUser.totalFollowers}",
+                            style: const TextStyle(
+                                color: black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20),
+                          ),
+                          sizeVertical(5),
+                          const Text(
+                            "Followers",
+                            style: TextStyle(
+                                color: lightGrey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
                 Expanded(
                   child: Container(
                     alignment: Alignment.centerLeft,
-                    child: Column(
-                      children: [
-                        Text(
-                          "${currentUser.totalFollowing}",
-                          style: const TextStyle(
-                              color: black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
-                        ),
-                        sizeVertical(5),
-                        const Text(
-                          "Following",
-                          style: TextStyle(
-                              color: lightGrey,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15),
-                        ),
-                      ],
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, PageConsts.followingPage,
+                            arguments: currentUser);
+                      },
+                      child: Column(
+                        children: [
+                          Text(
+                            "${currentUser.totalFollowing}",
+                            style: const TextStyle(
+                                color: black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20),
+                          ),
+                          sizeVertical(5),
+                          const Text(
+                            "Following",
+                            style: TextStyle(
+                                color: lightGrey,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

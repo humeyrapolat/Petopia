@@ -29,7 +29,6 @@ import 'package:petopia/features/presentation/cubit/credential/credential_cubit.
 import 'package:petopia/features/presentation/cubit/resetPassword/reset_password_cubit.dart';
 import 'package:petopia/features/presentation/cubit/user/get_single_user/get_single_user_cubit.dart';
 import 'package:petopia/features/presentation/cubit/user/user_cubit.dart';
-
 import 'features/domain/usecases/firebase_usecases/post/create_post_usecase.dart';
 import 'features/domain/usecases/firebase_usecases/post/delete_post_usecase.dart';
 import 'features/domain/usecases/firebase_usecases/post/like_post_usecase.dart';
@@ -40,9 +39,12 @@ import 'features/domain/usecases/firebase_usecases/replay/create_replay_usecase.
 import 'features/domain/usecases/firebase_usecases/replay/delete_replay_usecase.dart';
 import 'features/domain/usecases/firebase_usecases/replay/like_replay_usecase.dart';
 import 'features/domain/usecases/firebase_usecases/replay/update_replay_usecase.dart';
+import 'features/domain/usecases/firebase_usecases/user/follow_unfollow_user_usecase.dart';
+import 'features/domain/usecases/firebase_usecases/user/get_single_other_user_usecase.dart';
 import 'features/presentation/cubit/post/get_single_post/get_single_post_cubit.dart';
 import 'features/presentation/cubit/post/post_cubit.dart';
 import 'features/presentation/cubit/replay/replay_cubit.dart';
+import 'features/presentation/cubit/user/get_single_other_user/get_single_other_user_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -64,7 +66,14 @@ Future<void> init() async {
   );
 
   sl.registerFactory(
-    () => UserCubit(updateUserUseCase: sl.call(), getUsersUseCase: sl.call()),
+    () => UserCubit(
+        updateUserUseCase: sl.call(),
+        getUsersUseCase: sl.call(),
+        followUnfollowUseCase: sl.call()),
+  );
+
+  sl.registerFactory(
+    () => GetSingleOtherUserCubit(getSingleOtherUserUseCase: sl.call()),
   );
 
   sl.registerFactory(
@@ -90,9 +99,7 @@ Future<void> init() async {
   );
 
   sl.registerFactory(
-        () => GetSinglePostCubit(
-        readSinglePostUseCase: sl.call()
-    ),
+    () => GetSinglePostCubit(readSinglePostUseCase: sl.call()),
   );
 
   // Comment Cubit Injection
@@ -108,13 +115,12 @@ Future<void> init() async {
 
   // Replay Cubit Injection
   sl.registerFactory(
-        () => ReplayCubit(
+    () => ReplayCubit(
         createReplayUseCase: sl.call(),
         deleteReplayUseCase: sl.call(),
         likeReplayUseCase: sl.call(),
         readReplaysUseCase: sl.call(),
-        updateReplayUseCase: sl.call()
-    ),
+        updateReplayUseCase: sl.call()),
   );
 
   // Use Cases
@@ -129,6 +135,9 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetSingleUserUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => ResetPasswordUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => ReadSinglePostUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => FollowUnfollowUseCase(repository: sl.call()));
+  sl.registerLazySingleton(
+      () => GetSingleOtherUserUseCase(repository: sl.call()));
 
   //Cloud Storage
   sl.registerLazySingleton(

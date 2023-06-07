@@ -17,6 +17,8 @@ abstract class FirebaseRemoteDataSource {
   Stream<List<AnimalEntity>> getUsers(AnimalEntity animal);
   Stream<List<AnimalEntity>> getSingleUser(String uid);
   Future<String> getCurrentUid();
+  Future<void> followUnfollowUser(AnimalEntity user);
+  Stream<List<AnimalEntity>> getSingleOtherUser(String otherUid);
   Future<void> createUser(AnimalEntity animal);
   Future<void> updateUser(AnimalEntity animal);
 

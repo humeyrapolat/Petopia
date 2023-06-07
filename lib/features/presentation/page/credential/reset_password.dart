@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:petopia/features/presentation/cubit/resetPassword/reset_password_cubit.dart';
 
 import '../../../../util/consts.dart';
@@ -36,90 +37,119 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       body: BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
         listener: (context, resetPasswordState) {
           if (resetPasswordState is ResetPasswordSuccess) {
-            BlocProvider.of<ResetPasswordCubit>(context)
-                .passwordReset(email: _emailController.text);
-          }
-          if (resetPasswordState is ResetPasswordFailure) {
-            toast("Invalid Email");
-          }
-        },
-        builder: (context, credentialState) {
-          if (credentialState is ResetPasswordSuccess) {
-            return BlocBuilder<ResetPasswordCubit, ResetPasswordState>(
-              builder: (context, resetPasswordState) {
-                if (resetPasswordState is ResetPasswordSuccess) {
-                  return const AlertDialog(
-                    content:
-                        Text("Password reset link sent! Check your email."),
-                  );
-                } else {
-                  return _bodyWidget();
-                }
-              },
+            // Şifre sıfırlama başarılı olduğunda yapılacak işlemler
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Password Reset'),
+                content:
+                    const Text('Password reset link sent! Check your email.'),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+            );
+          } else if (resetPasswordState is ResetPasswordFailure) {
+            // Şifre sıfırlama başarısız olduğunda yapılacak işlemler
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Password Reset'),
+                content: const Text('Invalid Email. Please try again.'),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
             );
           }
-          return _bodyWidget();
+        },
+        builder: (context, resetPasswordState) {
+          return _buildBody();
         },
       ),
     );
   }
 
-  _bodyWidget() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40.0),
-          child: Text(
-            "Enter Your Email and we will send you a password reset link",
-            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold,),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        sizeVertical(20),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 25.0),
-          child: FormContainerWidget(
-            controller: _emailController,
-            hintText: 'Email',
-            inputType: TextInputType.emailAddress,
-          ),
-        ),
-        sizeVertical(20),
-        ElevatedButton(
-          onPressed: () {
-            _resetPassword();
-          },
-          style: ButtonStyle(
-            elevation: MaterialStateProperty.all<double>(5),
-            backgroundColor: MaterialStateProperty.all<Color>(darkPurpleColor),
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
+  Widget _buildBody() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Enter your email address to reset your password',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ),
-          child: const Text(
-            "Reset Password",
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+            SizedBox(height: 16),
+            FormContainerWidget(
+              controller: _emailController,
+              hintText: 'Email',
+              inputType: TextInputType.emailAddress,
             ),
-          ),
+            SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                _resetPassword();
+              },
+              style: ButtonStyle(
+                elevation: MaterialStateProperty.all<double>(5),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(darkPurpleColor),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+              child: const Text(
+                'Reset Password',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
-   _resetPassword() {
-    BlocProvider.of<ResetPasswordCubit>(context)
-        .passwordReset(email: _emailController.text)
-        .then((value) => _clear());
-  }
-
-  _clear() {
-    setState(() {
-      _emailController.clear();
-    });
+  void _resetPassword() {
+    final email = _emailController.text.trim();
+    if (email.isNotEmpty) {
+      BlocProvider.of<ResetPasswordCubit>(context).resetPasswordUseCase(email);
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Reset Password'),
+          content: const Text('Please enter your email.'),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
+    }
   }
 }

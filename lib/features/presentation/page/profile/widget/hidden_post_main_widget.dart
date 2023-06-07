@@ -9,16 +9,16 @@ import 'package:petopia/profile_widget.dart';
 import 'package:petopia/util/consts.dart';
 import 'package:petopia/injection_container.dart' as di;
 
-class SharedPostMainWidget extends StatefulWidget {
+class HiddenPostMainWidget extends StatefulWidget {
   final AnimalEntity currentUser;
 
-  const SharedPostMainWidget({super.key, required this.currentUser});
+  const HiddenPostMainWidget({super.key, required this.currentUser});
 
   @override
-  State<SharedPostMainWidget> createState() => _SharedPostMainWidgetState();
+  State<HiddenPostMainWidget> createState() => _HiddenPostMainWidgetState();
 }
 
-class _SharedPostMainWidgetState extends State<SharedPostMainWidget> {
+class _HiddenPostMainWidgetState extends State<HiddenPostMainWidget> {
   @override
   void initState() {
     print("current user : ${widget.currentUser}");
@@ -35,7 +35,7 @@ class _SharedPostMainWidgetState extends State<SharedPostMainWidget> {
           final posts = postState.posts
               .where((post) =>
                   post.creatorUid == widget.currentUser.uid &&
-                  post.isPrivate == false)
+                  post.isPrivate != false)
               .toList();
           return GridView.builder(
               itemCount: posts.length,

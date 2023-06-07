@@ -1,5 +1,5 @@
 import 'package:petopia/features/domain/entities/post/post_entity.dart';
-import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/storage/upload_image_to_storage_usecase.dart';
 import 'package:petopia/features/presentation/cubit/post/post_cubit.dart';
 import 'package:petopia/features/presentation/page/profile/widget/profile_form_widget.dart';
@@ -15,7 +15,7 @@ import 'package:petopia/util/consts.dart';
 import 'package:uuid/uuid.dart';
 
 class UploadPostMainWidget extends StatefulWidget {
-  final UserEntity currentUser;
+  final AnimalEntity currentUser;
   const UploadPostMainWidget({super.key, required this.currentUser});
 
   @override
@@ -26,6 +26,7 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
   final TextEditingController _descriptionController = TextEditingController();
   bool isUploading = false;
   File? _image;
+  bool isPrivate = false;
 
   @override
   void dispose() {
@@ -80,7 +81,7 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
                     Text(
                       widget.currentUser.username!,
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                     sizeVertical(10),
@@ -93,6 +94,30 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
                     ProfileFormWidget(
                       title: "Description",
                       controller: _descriptionController,
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Make it private',
+                          style: TextStyle(
+                            color: Colors.black,
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Switch(
+                          value: isPrivate,
+                          onChanged: (value) {
+                            setState(() {
+                              print("1************isPrivate: $isPrivate");
+
+                              isPrivate = value;
+                              print("2************isPrivate: $isPrivate");
+                            });
+                          },
+                        ),
+                      ],
                     ),
                     sizeVertical(10),
                     isUploading == true
@@ -153,6 +178,7 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
   }
 
   _createSubmitPost({required String image}) {
+    print("3************isPrivate: $isPrivate");
     BlocProvider.of<PostCubit>(context)
         .createPost(
           post: PostEntity(
@@ -166,6 +192,7 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
             totalLikes: 0,
             username: widget.currentUser.username,
             userProfileUrl: widget.currentUser.profileUrl,
+            isPrivate: isPrivate,
           ),
         )
         .then((value) => _clear());
@@ -176,6 +203,7 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
       _image = null;
       _descriptionController.clear();
       isUploading = false;
+      isPrivate = false;
     });
   }
 
@@ -191,11 +219,13 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
             width: 150,
             height: 150,
             decoration: BoxDecoration(
-                color: darkPinkColor.withOpacity(.3),
-                shape: BoxShape.circle
-            ),
+                color: darkPinkColor.withOpacity(.3), shape: BoxShape.circle),
             child: Center(
-              child: Icon(Icons.upload, color: darkPinkColor, size: 40,),
+              child: Icon(
+                Icons.upload,
+                color: darkPinkColor,
+                size: 40,
+              ),
             ),
           ),
         ),

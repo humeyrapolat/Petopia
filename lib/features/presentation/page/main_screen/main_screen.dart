@@ -1,18 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:petopia/features/domain/entities/app_entity.dart';
 import 'package:petopia/features/presentation/cubit/user/get_single_user/get_single_user_cubit.dart';
 import 'package:petopia/features/presentation/page/announcement/announcement.dart';
 import 'package:petopia/features/presentation/page/home_page/home_page.dart';
-import 'package:petopia/features/presentation/page/home_page/post/comments/comments_page.dart';
+import 'package:petopia/features/presentation/page/home_page/post/upload_post_page.dart';
 import 'package:petopia/features/presentation/page/home_page/search/search.dart';
 import 'package:petopia/features/presentation/page/profile/profile.dart';
 import 'package:petopia/util/consts.dart';
-
-import '../home_page/post/upload_post_page.dart';
 
 class MainScreen extends StatefulWidget {
   final String uid;
@@ -64,25 +60,33 @@ class _MainScreenState extends State<MainScreen> {
                   backgroundColor: white,
                   items: const [
                     BottomNavigationBarItem(
-                        icon: Icon(Iconsax.home,
-                            color: darkPurpleColor,size: 25,),
-                        label: "",),
+                      icon: Icon(
+                        Iconsax.home,
+                        color: darkPurpleColor,
+                        size: 25,
+                      ),
+                      label: "",
+                    ),
                     BottomNavigationBarItem(
-                        icon: Icon(Iconsax.flash,
-                            color: darkPurpleColor,size: 25),
-                        label: "",),
+                      icon:
+                          Icon(Iconsax.flash, color: darkPurpleColor, size: 25),
+                      label: "",
+                    ),
                     BottomNavigationBarItem(
-                        icon: Icon(Iconsax.add_circle,
-                            color: darkPurpleColor,size: 25),
-                        label: "",),
+                      icon: Icon(Iconsax.add_circle,
+                          color: darkPurpleColor, size: 25),
+                      label: "",
+                    ),
                     BottomNavigationBarItem(
-                        icon: Icon(Iconsax.pet4, color: darkPurpleColor,size: 25),
-                        label: "",),
+                      icon:
+                          Icon(Iconsax.pet4, color: darkPurpleColor, size: 25),
+                      label: "",
+                    ),
                     BottomNavigationBarItem(
-                        icon: Icon(Iconsax.user,
-                            color: darkPurpleColor,size: 25),
-                        label: "",)
-                        ,
+                      icon:
+                          Icon(Iconsax.user, color: darkPurpleColor, size: 25),
+                      label: "",
+                    ),
                   ],
                   onTap: navigationTapped,
                 ),
@@ -96,9 +100,7 @@ class _MainScreenState extends State<MainScreen> {
                   UploadPostPage(
                     currentUser: currentUser,
                   ),
-                  CommentPage(
-                    appEntity: AppEntity(currentUser: currentUser),
-                  ),
+                  const Announcement(),
                   ProfilePage(currentUser: currentUser),
                 ],
               ));

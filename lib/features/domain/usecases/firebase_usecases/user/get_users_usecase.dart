@@ -1,4 +1,4 @@
-import 'package:petopia/features/domain/entities/user/user_entity.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/features/domain/repo/firebase_repository.dart';
 
 class GetUsersUseCase {
@@ -6,7 +6,7 @@ class GetUsersUseCase {
 
   GetUsersUseCase({required this.repository});
 
-  Stream<List<UserEntity>>  call(UserEntity user) {
+  Stream<List<AnimalEntity>> call(AnimalEntity user) {
     return repository.getUsers(user);
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:petopia/features/presentation/cubit/auth/auth_cubit.dart';
@@ -5,6 +6,9 @@ import 'package:petopia/features/presentation/cubit/credential/credential_cubit.
 import 'package:petopia/features/presentation/page/main_screen/main_screen.dart';
 import 'package:petopia/features/presentation/widgets/form_container_widget.dart';
 import 'package:petopia/util/consts.dart';
+import 'package:petopia/util/validator.dart';
+
+import 'styled_loading_screen.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -16,8 +20,8 @@ class SignInPage extends StatefulWidget {
 class _SignInPageState extends State<SignInPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
-  bool _isSignIn = false;
+  bool isLoading = false;
+  bool _autoFocus = true;
 
   @override
   void dispose() {
@@ -26,37 +30,45 @@ class _SignInPageState extends State<SignInPage> {
     super.dispose();
   }
 
+  bool _checkIfTextFieldsEmpty() =>
+      _emailController.text.isEmpty || _passwordController.text.isEmpty;
+
+  void _onPasswordTextFieldSubmit(value) =>
+      _checkIfTextFieldsEmpty() ? null : _signIn();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: lightPinkColor,
-      body: BlocConsumer<CredentialCubit, CredentialState>(
-        listener: (context, credentialState) {
-          if (credentialState is CredentialSuccess) {
-            BlocProvider.of<AuthCubit>(context).loggedIn();
-          }
-          if (credentialState is CredentialFailure) {
-            toast("Invalid Email and Password");
-          }
-        },
-        builder: (context, credentialState) {
-          if (credentialState is CredentialSuccess) {
-            return BlocBuilder<AuthCubit, AuthState>(
-              builder: (context, authState) {
-                if (authState is Authenticated) {
-                  return MainScreen(
-                    uid: authState.uid,
-                  );
-                } else {
-                  return _bodyWidget();
+    return isLoading
+        ? const StyledLoadingScreen()
+        : Scaffold(
+            backgroundColor: white,
+            body: BlocConsumer<CredentialCubit, CredentialState>(
+              listener: (context, credentialState) {
+                if (credentialState is CredentialSuccess) {
+                  BlocProvider.of<AuthCubit>(context).loggedIn();
+                }
+                if (credentialState is CredentialFailure) {
+                  toast("Invalid Email and Password");
                 }
               },
-            );
-          }
-          return _bodyWidget();
-        },
-      ),
-    );
+              builder: (context, credentialState) {
+                if (credentialState is CredentialSuccess) {
+                  return BlocBuilder<AuthCubit, AuthState>(
+                    builder: (context, authState) {
+                      if (authState is Authenticated) {
+                        return MainScreen(
+                          uid: authState.uid,
+                        );
+                      } else {
+                        return _bodyWidget();
+                      }
+                    },
+                  );
+                }
+                return _bodyWidget();
+              },
+            ),
+          );
   }
 
   _bodyWidget() {
@@ -77,12 +89,16 @@ class _SignInPageState extends State<SignInPage> {
           FormContainerWidget(
             controller: _emailController,
             hintText: 'Email',
+            autofocus: _autoFocus,
+            validator: Validator.onEmailValidation,
             inputType: TextInputType.emailAddress,
           ),
           sizeVertical(10),
           FormContainerWidget(
             controller: _passwordController,
             hintText: 'Password',
+            onFieldSubmitted: _onPasswordTextFieldSubmit,
+            validator: Validator.onPasswordValidation,
             isPasswordField: true,
           ),
           sizeVertical(10),
@@ -93,9 +109,9 @@ class _SignInPageState extends State<SignInPage> {
                 onTap: () {
                   Navigator.pushNamed(context, PageConsts.resetPasswordPage);
                 },
-                child: const Text("Reset Password",
+                child: const Text("Forget Password",
                     style: TextStyle(
-                      color: darkPinkColor,
+                      color: black,
                       fontWeight: FontWeight.bold,
                     )),
               ),
@@ -103,25 +119,25 @@ class _SignInPageState extends State<SignInPage> {
           ),
           sizeVertical(15),
           ElevatedButton(
-            onPressed: () {
-              _signIn();
-            },
+            onPressed: _checkIfTextFieldsEmpty() ? null : () => _signIn(),
             style: ButtonStyle(
-              elevation: MaterialStateProperty.all<double>(5),
               backgroundColor: MaterialStateProperty.all<Color>(darkPinkColor),
+              elevation: MaterialStateProperty.all<double>(5),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10.0),
                 ),
               ),
             ),
-            child: const Text(
-              "Sign In",
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+            child: isLoading
+                ? const CupertinoActivityIndicator()
+                : const Text(
+                    "Sign In",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
           ),
           sizeVertical(10),
           Row(
@@ -150,22 +166,26 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 
-  void _signIn() {
-    setState(() {
-      _isSignIn = true;
-    });
-
-    BlocProvider.of<CredentialCubit>(context)
-        .signInUser(
-            email: _emailController.text, password: _passwordController.text)
-        .then((value) => _clear());
+  Future<void> _signIn() async {
+    if (!isLoading) {
+      _autoFocus = false;
+      setState(() {
+        isLoading = true;
+      });
+      BlocProvider.of<CredentialCubit>(context)
+          .signInUser(
+              email: _emailController.text, password: _passwordController.text)
+          .then((value) {
+        _clear();
+      });
+    }
   }
 
   _clear() {
     setState(() {
       _emailController.clear();
       _passwordController.clear();
-      _isSignIn = false;
+      isLoading = false;
     });
   }
 }

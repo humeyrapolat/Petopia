@@ -29,45 +29,37 @@ class _SignInPageState extends State<SignInPage> {
     super.dispose();
   }
 
-  bool _checkIfTextFieldsEmpty() =>
-      _emailController.text.isEmpty || _passwordController.text.isEmpty;
-
-  void _onPasswordTextFieldSubmit(value) =>
-      _checkIfTextFieldsEmpty() ? null : _signIn();
-
   @override
   Widget build(BuildContext context) {
-    return isLoading
-        ? const StyledLoadingScreen()
-        : Scaffold(
-            backgroundColor: white,
-            body: BlocConsumer<CredentialCubit, CredentialState>(
-              listener: (context, credentialState) {
-                if (credentialState is CredentialSuccess) {
-                  BlocProvider.of<AuthCubit>(context).loggedIn();
-                }
-                if (credentialState is CredentialFailure) {
-                  toast("Invalid Email and Password");
-                }
-              },
-              builder: (context, credentialState) {
-                if (credentialState is CredentialSuccess) {
-                  return BlocBuilder<AuthCubit, AuthState>(
-                    builder: (context, authState) {
-                      if (authState is Authenticated) {
-                        return MainScreen(
-                          uid: authState.uid,
-                        );
-                      } else {
-                        return _bodyWidget();
-                      }
-                    },
+    return Scaffold(
+      backgroundColor: white,
+      body: BlocConsumer<CredentialCubit, CredentialState>(
+        listener: (context, credentialState) {
+          if (credentialState is CredentialSuccess) {
+            BlocProvider.of<AuthCubit>(context).loggedIn();
+          }
+          if (credentialState is CredentialFailure) {
+            toast("Invalid Email and Password");
+          }
+        },
+        builder: (context, credentialState) {
+          if (credentialState is CredentialSuccess) {
+            return BlocBuilder<AuthCubit, AuthState>(
+              builder: (context, authState) {
+                if (authState is Authenticated) {
+                  return MainScreen(
+                    uid: authState.uid,
                   );
+                } else {
+                  return _bodyWidget();
                 }
-                return _bodyWidget();
               },
-            ),
-          );
+            );
+          }
+          return _bodyWidget();
+        },
+      ),
+    );
   }
 
   _bodyWidget() {
@@ -79,10 +71,7 @@ class _SignInPageState extends State<SignInPage> {
           Flexible(flex: 2, child: Container()),
           const Text(
             'Petopia',
-            style: TextStyle(
-                color: darkPinkColor,
-                fontSize: 30,
-                fontWeight: FontWeight.bold),
+            style: TextStyle(color: darkPinkColor, fontSize: 30, fontWeight: FontWeight.bold),
           ),
           sizeVertical(30),
           FormContainerWidget(
@@ -94,7 +83,6 @@ class _SignInPageState extends State<SignInPage> {
           FormContainerWidget(
             controller: _passwordController,
             hintText: 'Password',
-            onFieldSubmitted: _onPasswordTextFieldSubmit,
             isPasswordField: true,
           ),
           sizeVertical(10),
@@ -115,7 +103,7 @@ class _SignInPageState extends State<SignInPage> {
           ),
           sizeVertical(15),
           ElevatedButton(
-            onPressed: _checkIfTextFieldsEmpty() ? null : () => _signIn(),
+            onPressed: () => _signIn(),
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all<Color>(darkPinkColor),
               elevation: MaterialStateProperty.all<double>(5),
@@ -145,8 +133,7 @@ class _SignInPageState extends State<SignInPage> {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.pushNamedAndRemoveUntil(
-                      context, PageConsts.signUpPage, (route) => false);
+                  Navigator.pushNamedAndRemoveUntil(context, PageConsts.signUpPage, (route) => false);
                 },
                 child: const Text(" Sign Up",
                     style: TextStyle(
@@ -168,8 +155,7 @@ class _SignInPageState extends State<SignInPage> {
         isLoading = true;
       });
       BlocProvider.of<CredentialCubit>(context)
-          .signInUser(
-              email: _emailController.text, password: _passwordController.text)
+          .signInUser(email: _emailController.text, password: _passwordController.text)
           .then((value) {
         _clear();
       });

@@ -24,6 +24,18 @@ class HomePage extends StatelessWidget {
             padding: const EdgeInsets.only(right: 10.0),
             child: GestureDetector(
               onTap: () {
+                Navigator.pushNamed(context, PageConsts.matchPage);
+              },
+              child: const Icon(
+                Iconsax.star,
+                color: lightPinkColor,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: GestureDetector(
+              onTap: () {
                 Navigator.pushNamed(context, PageConsts.chatPage);
               },
               child: const Icon(
@@ -31,7 +43,7 @@ class HomePage extends StatelessWidget {
                 color: lightPinkColor,
               ),
             ),
-          )
+          ),
         ],
       ),
       body: BlocProvider<PostCubit>(

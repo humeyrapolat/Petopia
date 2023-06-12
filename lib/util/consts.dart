@@ -60,6 +60,7 @@ class PageConsts {
 
   //match
   static const String matchPage = "matchPage";
+  static const String matchedPage = "matchedPage";
 
   //profile
   static const String profilePage = "profilePage";

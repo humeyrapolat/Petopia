@@ -248,13 +248,13 @@ class _SingleUserProfileMainWigdetState
                   Expanded(
                       child: TabBarView(
                     children: [
-                      SharedPostPage(currentUser: singleUser),
-                      HiddenPostPage(
-                        currentUser: singleUser,
-                      ),
-                      LikedPostPage(
-                        currentUser: singleUser,
-                      ),
+                      if (singleUser.uid == _currentUid) ...[
+                        SharedPostPage(currentUser: singleUser),
+                        HiddenPostPage(currentUser: singleUser),
+                        LikedPostPage(currentUser: singleUser),
+                      ] else ...[
+                        SharedPostPage(currentUser: singleUser),
+                      ],
                     ],
                   ))
                 ],

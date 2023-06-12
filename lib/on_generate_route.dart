@@ -28,6 +28,7 @@ import 'features/domain/entities/replay/replay_entity.dart';
 import 'features/presentation/page/announcement/adoption.dart';
 import 'features/presentation/page/home_page/post/comments/edit_comment_page.dart';
 import 'features/presentation/page/home_page/post/comments/edit_replay_page.dart';
+import 'features/presentation/page/match/matched_page.dart';
 import 'features/presentation/page/profile/followers_page.dart';
 import 'features/presentation/page/profile/following_page.dart';
 
@@ -180,6 +181,13 @@ class OnGenerateRoute {
         {
           return routeBuilder(
             const MatchPage(),
+          );
+        }
+
+      case PageConsts.matchedPage:
+        {
+          return routeBuilder(
+            const MatchedPage(),
           );
         }
 

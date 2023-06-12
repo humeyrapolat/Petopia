@@ -35,22 +35,32 @@ class _EditProfilePageState extends State<EditProfilePage> {
     'Female',
   ];
 
-  final List<String> typeItems = [
-    'Cat',
-    'Dog',
-  ];
+  final List<String> typeItems = ['Cat', 'Dog', 'Rabbit'];
 
-  final List<String> breedItems = [
-    "Labrador Retriever",
-    "German Shepherd",
-    "Bulldog",
-    "Poodle",
-    "Golden Retriever",
+  final List<String> catBreeds = [
     "Siamese",
     "Persian",
-    "Maine Coon",
+    "Scottish Fold",
+    "British",
     "Bengal",
-    "Sphynx",
+    "Others",
+  ];
+
+  final List<String> dogBreeds = [
+    "Labrador Retriever",
+    "Golden Retriever",
+    "Bulldog",
+    "Poodle",
+    "Terrier",
+    "Others"
+  ];
+
+  final List<String> rabbitBreeds = [
+    "Alaska",
+    "Holland Lop",
+    "French Lop",
+    "Blanc de Hotot",
+    "Others",
   ];
 
   @override
@@ -156,7 +166,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ProfileDropdownWidget(
                 title: "Breed",
                 controller: _breedController,
-                list: breedItems,
+                list: _getSelectedBreedsList(),
               ),
               sizeVertical(10),
               ProfileDropdownWidget(
@@ -188,6 +198,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
         ),
       ),
     );
+  }
+
+  List<String> _getSelectedBreedsList() {
+    final type = _typeController?.text;
+    if (type == "Cat") {
+      return catBreeds;
+    } else if (type == "Dog") {
+      return dogBreeds;
+    } else if (type == "Rabbit") {
+      return rabbitBreeds;
+    } else {
+      return [];
+    }
   }
 
   _updateUserProfileData() {

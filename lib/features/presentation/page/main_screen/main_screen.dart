@@ -23,6 +23,8 @@ class _MainScreenState extends State<MainScreen> {
 
   late PageController pageController;
 
+  bool? resizeToAvoidBottomInset;
+
   @override
   void initState() {
     BlocProvider.of<GetSingleUserCubit>(context).getSingleUser(uid: widget.uid);
@@ -53,57 +55,91 @@ class _MainScreenState extends State<MainScreen> {
         if (getSingleUserState is GetSingleUserLoaded) {
           final currentUser = getSingleUserState.user;
           return Scaffold(
-              backgroundColor: white,
-              bottomNavigationBar: Padding(
-                padding: const EdgeInsets.only(top: 5),
-                child: CupertinoTabBar(
-                  backgroundColor: white,
-                  items: const [
-                    BottomNavigationBarItem(
-                      icon: Icon(
-                        Iconsax.home,
-                        color: darkPurpleColor,
-                        size: 25,
-                      ),
-                      label: "",
-                    ),
-                    BottomNavigationBarItem(
-                      icon:
-                          Icon(Iconsax.flash, color: darkPurpleColor, size: 25),
-                      label: "",
-                    ),
-                    BottomNavigationBarItem(
-                      icon: Icon(Iconsax.add_circle,
-                          color: darkPurpleColor, size: 25),
-                      label: "",
-                    ),
-                    BottomNavigationBarItem(
-                      icon:
-                          Icon(Iconsax.pet4, color: darkPurpleColor, size: 25),
-                      label: "",
-                    ),
-                    BottomNavigationBarItem(
-                      icon:
-                          Icon(Iconsax.user, color: darkPurpleColor, size: 25),
-                      label: "",
-                    ),
+            resizeToAvoidBottomInset: false,
+            backgroundColor: white,
+            body: Stack(
+              children: [
+                PageView(
+                  controller: pageController,
+                  onPageChanged: onPageChanged,
+                  children: [
+                    const HomePage(),
+                    const SearchPage(),
+                    const Announcement(),
+                    ProfilePage(currentUser: currentUser),
                   ],
-                  onTap: navigationTapped,
                 ),
+              ],
+            ),
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: darkPurpleColor,
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 25,
               ),
-              body: PageView(
-                controller: pageController,
-                onPageChanged: onPageChanged,
-                children: [
-                  const HomePage(),
-                  const SearchPage(),
-                  UploadPostPage(
-                    currentUser: currentUser,
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        UploadPostPage(currentUser: currentUser),
                   ),
-                  const Announcement(),
-                  ProfilePage(currentUser: currentUser),
+                );
+              },
+            ),
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerDocked,
+            bottomNavigationBar: BottomAppBar(
+              shape: const CircularNotchedRectangle(),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Iconsax.home,
+                      color: darkPurpleColor,
+                      size: 25,
+                    ),
+                    onPressed: () {
+                      navigationTapped(0);
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Iconsax.flash,
+                      color: darkPurpleColor,
+                      size: 25,
+                    ),
+                    onPressed: () {
+                      navigationTapped(1);
+                    },
+                  ),
+                  const SizedBox(), // Boş bir SizedBox ekleyerek ortadaki boşluğu oluşturuyoruz
+                  IconButton(
+                    icon: const Icon(
+                      Iconsax.pet4,
+                      color: darkPurpleColor,
+                      size: 25,
+                    ),
+                    onPressed: () {
+                      navigationTapped(2);
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(
+                      Iconsax.user,
+                      color: darkPurpleColor,
+                      size: 25,
+                    ),
+                    onPressed: () {
+                      navigationTapped(3);
+                    },
+                  ),
                 ],
-              ));
+              ),
+            ),
+          );
         }
         return const Center(
           child: CircularProgressIndicator(),

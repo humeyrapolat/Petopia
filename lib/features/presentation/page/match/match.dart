@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:petopia/util/consts.dart';
+import 'package:petopia/injection_container.dart' as di;
 
 import '../../../domain/entities/animal/animal_entity.dart';
+import '../../../domain/usecases/firebase_usecases/user/get_current_uid_usecase.dart';
+import '../../cubit/user/get_single_other_user/get_single_other_user_cubit.dart';
 import '../../cubit/user/user_cubit.dart';
 
 class MatchPage extends StatefulWidget {
@@ -14,9 +17,16 @@ class MatchPage extends StatefulWidget {
 
 class _MatchPageState extends State<MatchPage> {
   int currentIndex = 0;
+  String _currentUid = "";
 
   @override
   void initState() {
+    di.sl<GetCurrentUidUseCase>().call().then((value) {
+      setState(() {
+        _currentUid = value;
+      });
+    });
+
     BlocProvider.of<UserCubit>(context).getUsers(user: const AnimalEntity());
     super.initState();
   }
@@ -65,7 +75,7 @@ class _MatchPageState extends State<MatchPage> {
                   child: Text('No users available.'),
                 );
               }
-              final AnimalEntity user = users[currentIndex];
+              final AnimalEntity animal = users[currentIndex];
               return Center(
                 child: SingleChildScrollView(
                   child: Padding(
@@ -79,13 +89,15 @@ class _MatchPageState extends State<MatchPage> {
                           ),
                           child: Column(
                             children: [
+                              const SizedBox(height: 16.0),
                               Container(
                                 width: 200,
                                 height: 250,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(16),
                                   image: DecorationImage(
-                                    image: NetworkImage(user.profileUrl ?? ''),
+                                    image:
+                                        NetworkImage(animal.profileUrl ?? ''),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -96,18 +108,10 @@ class _MatchPageState extends State<MatchPage> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
-                                      user.username ?? '',
+                                      animal.username ?? '',
                                       style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8.0),
-                                    Text(
-                                      user.name ?? '',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.grey[600],
                                       ),
                                     ),
                                     const SizedBox(height: 8.0),
@@ -118,7 +122,7 @@ class _MatchPageState extends State<MatchPage> {
                                         const Icon(Icons.pets, size: 16),
                                         const SizedBox(width: 4.0),
                                         Text(
-                                          user.type ?? '',
+                                          animal.type ?? '',
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey[600],
@@ -127,7 +131,7 @@ class _MatchPageState extends State<MatchPage> {
                                         const SizedBox(width: 10.0),
                                         const Text("Breed: "),
                                         Text(
-                                          user.breed ?? '',
+                                          animal.breed ?? '',
                                           style: TextStyle(
                                             fontSize: 14,
                                             color: Colors.grey[600],
@@ -154,11 +158,10 @@ class _MatchPageState extends State<MatchPage> {
                             ),
                             IconButton(
                               onPressed: () {
-                                // Burada kalp ikonuna basıldığında bir işlem yapabilirsiniz.
-                                // Örneğin, beğendiğiniz bir kullanıcıyı favorilere eklemek veya
-                                // eşleşme işlemi gerçekleştirmek için bir fonksiyon çağırabilirsiniz.
-                                // Ardından bir sonraki kullanıcıya geçmek için changeUser fonksiyonunu kullanabilirsiniz.
-                                changeUser((currentIndex + 1) % users.length);
+                                BlocProvider.of<UserCubit>(context).getFavUsers(
+                                    user: AnimalEntity(
+                                        uid: _currentUid,
+                                        otherUid: animal.uid));
                               },
                               icon:
                                   const Icon(Icons.favorite, color: Colors.red),

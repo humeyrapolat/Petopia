@@ -82,6 +82,7 @@ class FirebaseConsts {
   static const String comments = "comments";
   static const String likes = "likes";
   static const String followers = "followers";
+  static const String favorites = "favorites";
   static const String following = "following";
   static const String feed = "feed";
   static const String replay = "replay";

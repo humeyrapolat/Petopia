@@ -40,6 +40,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         website: user.website,
         profileUrl: profileUrl,
         followers: user.followers,
+        favorites: user.favorites,
         type: user.type,
         gender: user.gender,
         breed: user.breed,
@@ -210,6 +211,9 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     }
     if (user.followers != null) {
       userInformation["followers"] = user.followers;
+    }
+    if (user.favorites != null) {
+      userInformation["favorites"] = user.favorites;
     }
     if (user.following != null) {
       userInformation["following"] = user.following;
@@ -722,5 +726,28 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       replayInfo['description'] = replay.description;
 
     replayCollection.doc(replay.replayId).update(replayInfo);
+  }
+
+  @override
+  Future<void> getFavUsers(AnimalEntity user) async {
+    final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
+
+    final myDocRef = await userCollection.doc(user.uid).get();
+    final otherUserDocRef = await userCollection.doc(user.otherUid).get();
+
+    if (myDocRef.exists && otherUserDocRef.exists) {
+      List myfavoriteList = myDocRef.get("favorites");
+
+      // My Following List
+      if (myfavoriteList.contains(user.otherUid)) {
+      } else {
+        userCollection.doc(user.uid).update({
+          "favorites": FieldValue.arrayUnion([user.otherUid])
+        }).then((value) {
+          final userCollection =
+              firebaseFirestore.collection(FirebaseConsts.users).doc(user.uid);
+        });
+      }
+    }
   }
 }

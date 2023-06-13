@@ -22,6 +22,8 @@ abstract class FirebaseRepository {
   Future<void> createUser(AnimalEntity user);
   Future<void> updateUser(AnimalEntity user);
   Future<void> followUnfollowUser(AnimalEntity user);
+  // Match
+  Future<void> getFavUsers(AnimalEntity user);
 
   //Cloud Storage
   Future<String> uploadImageToStorage(

@@ -126,4 +126,8 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
   @override
   Stream<List<AnimalEntity>> getSingleOtherUser(String otherUid) =>
       remoteDataSource.getSingleOtherUser(otherUid);
+
+  @override
+  Future<void> getFavUsers(AnimalEntity user) async =>
+      remoteDataSource.getFavUsers(user);
 }

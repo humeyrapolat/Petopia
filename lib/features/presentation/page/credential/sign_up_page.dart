@@ -551,6 +551,7 @@ class _SignUpPageState extends State<SignUpPage> {
             totalFollowers: 0,
             website: "",
             following: [],
+            favorites: [],
             name: _nameController.text,
             imageFile: _image,
           ),

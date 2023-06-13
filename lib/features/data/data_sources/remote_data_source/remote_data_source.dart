@@ -21,6 +21,8 @@ abstract class FirebaseRemoteDataSource {
   Stream<List<AnimalEntity>> getSingleOtherUser(String otherUid);
   Future<void> createUser(AnimalEntity animal);
   Future<void> updateUser(AnimalEntity animal);
+  // Match
+  Future<void> getFavUsers(AnimalEntity user);
 
   //Cloud Storage
   Future<String> uploadImageToStorage(

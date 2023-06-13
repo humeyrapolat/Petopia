@@ -15,6 +15,7 @@ class AnimalModel extends AnimalEntity {
   final String? profileUrl;
   final List? followers;
   final List? following;
+  final List? favorites;
   final num? totalFollowers;
   final num? totalFollowing;
   final num? totalPosts;
@@ -33,6 +34,7 @@ class AnimalModel extends AnimalEntity {
       this.profileUrl,
       this.followers,
       this.following,
+      this.favorites,
       this.totalFollowers,
       this.totalFollowing,
       this.totalPosts})
@@ -50,6 +52,7 @@ class AnimalModel extends AnimalEntity {
           profileUrl: profileUrl,
           followers: followers,
           following: following,
+          favorites: favorites,
           totalFollowers: totalFollowers,
           totalFollowing: totalFollowing,
           totalPosts: totalPosts,
@@ -72,6 +75,7 @@ class AnimalModel extends AnimalEntity {
         profileUrl: snapshot['profileUrl'],
         followers: List.from(snap.get('followers')),
         following: List.from(snap.get('following')),
+        favorites: List.from(snap.get('favorites')),
         totalFollowers: snapshot['totalFollowers'],
         totalFollowing: snapshot['totalFollowing'],
         totalPosts: snapshot['totalPosts']);
@@ -92,6 +96,7 @@ class AnimalModel extends AnimalEntity {
       'profileUrl': profileUrl,
       'followers': followers,
       'following': following,
+      'favorites': favorites,
       'totalFollowers': totalFollowers,
       'totalFollowing': totalFollowing,
       'totalPosts': totalPosts,

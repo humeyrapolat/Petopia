@@ -397,36 +397,39 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 sizeHorizontal(26),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Date",
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                    ),
-                    sizeHorizontal(8),
-                    Text(_dateTime.toString().substring(0, 10),
-                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
-                    sizeHorizontal(1),
-                    IconButton(
-                      onPressed: () {
-                        /*  DatePicker.showDatePicker(context,
-                            showTitleActions: true,
-                            minTime: DateTime(2018, 3, 5),
-                            maxTime: DateTime(2050, 12, 31), onChanged: (date) {
-                          setState(() {
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Date",
+                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                      sizeHorizontal(8),
+                      Text(_dateTime.toString().substring(0, 10),
+                          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
+                      sizeHorizontal(1),
+                      IconButton(
+                        onPressed: () {
+                          /*  DatePicker.showDatePicker(context,
+                              showTitleActions: true,
+                              minTime: DateTime(2018, 3, 5),
+                              maxTime: DateTime(2050, 12, 31), onChanged: (date) {
+                            setState(() {
+                              _dateTime = date;
+                              _dateController.text =
+                                  date.toString().substring(0, 10);
+                            });
+                          }, onConfirm: (date) {
                             _dateTime = date;
-                            _dateController.text =
-                                date.toString().substring(0, 10);
-                          });
-                        }, onConfirm: (date) {
-                          _dateTime = date;
-                        }, currentTime: _dateTime, locale: LocaleType.tr);
-                      },*/
-                      },
-                      icon: const Icon(Icons.calendar_today),
-                    ),
-                  ],
+                          }, currentTime: _dateTime, locale: LocaleType.tr);
+                        },*/
+                        },
+                        icon: const Icon(Icons.calendar_today),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

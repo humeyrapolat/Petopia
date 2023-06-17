@@ -28,9 +28,13 @@ class ProfilePage extends StatelessWidget {
               style: const TextStyle(color: black),
             ),
           ),
-          leading: const Icon(
-            Ionicons.ios_megaphone,
-          ),
+          leading: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, PageConsts.emergencyCallPage);
+              },
+              child: const Icon(
+                Ionicons.ios_megaphone,
+              )),
           actions: [
             Padding(
               padding: const EdgeInsets.only(right: 10.0),

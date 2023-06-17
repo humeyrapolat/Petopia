@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/get_fav_users_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/get_users_usecase.dart';
@@ -54,9 +55,10 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> getFavUsers({required AnimalEntity user}) async {
+  Future<void> getFavUsers(
+      {required BuildContext context, required AnimalEntity user}) async {
     try {
-      await getFavUsersUseCase.call(user);
+      await getFavUsersUseCase.call(context, user);
     } on SocketException catch (_) {
       emit(UserFailure());
     } catch (_) {

@@ -18,6 +18,7 @@ class MatchPage extends StatefulWidget {
 class _MatchPageState extends State<MatchPage> {
   int currentIndex = 0;
   String _currentUid = "";
+  Set<String?> dismissedUsers = Set<String?>();
 
   @override
   void initState() {
@@ -50,20 +51,6 @@ class _MatchPageState extends State<MatchPage> {
                 Icons.arrow_back,
                 size: 32,
               )),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, PageConsts.matchedPage);
-                },
-                child: const Icon(
-                  Icons.done,
-                  color: lightPinkColor,
-                ),
-              ),
-            ),
-          ],
         ),
         backgroundColor: lightBlueColor,
         body: BlocBuilder<UserCubit, UserState>(
@@ -76,6 +63,7 @@ class _MatchPageState extends State<MatchPage> {
                 );
               }
               final AnimalEntity animal = users[currentIndex];
+              // if (animal.uid != _currentUid) {
               return Center(
                 child: SingleChildScrollView(
                   child: Padding(
@@ -90,15 +78,22 @@ class _MatchPageState extends State<MatchPage> {
                           child: Column(
                             children: [
                               const SizedBox(height: 16.0),
-                              Container(
-                                width: 200,
-                                height: 250,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  image: DecorationImage(
-                                    image:
-                                        NetworkImage(animal.profileUrl ?? ''),
-                                    fit: BoxFit.cover,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.pushNamed(
+                                      context, PageConsts.singleUserProfilePage,
+                                      arguments: animal.uid);
+                                },
+                                child: Container(
+                                  width: 200,
+                                  height: 250,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16),
+                                    image: DecorationImage(
+                                      image:
+                                          NetworkImage(animal.profileUrl ?? ''),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -158,10 +153,15 @@ class _MatchPageState extends State<MatchPage> {
                             ),
                             IconButton(
                               onPressed: () {
-                                BlocProvider.of<UserCubit>(context).getFavUsers(
-                                    user: AnimalEntity(
-                                        uid: _currentUid,
-                                        otherUid: animal.uid));
+                                if (animal.uid != _currentUid) {
+                                  BlocProvider.of<UserCubit>(context)
+                                      .getFavUsers(
+                                          context: context,
+                                          user: AnimalEntity(
+                                              uid: _currentUid,
+                                              otherUid: animal.uid));
+                                  changeUser((currentIndex + 1) % users.length);
+                                }
                               },
                               icon:
                                   const Icon(Icons.favorite, color: Colors.red),
@@ -173,6 +173,7 @@ class _MatchPageState extends State<MatchPage> {
                   ),
                 ),
               );
+              // }
             }
             return const Center(
               child: CircularProgressIndicator(),

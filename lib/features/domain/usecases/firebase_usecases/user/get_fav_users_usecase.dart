@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+
 import '../../../entities/animal/animal_entity.dart';
 import '../../../repo/firebase_repository.dart';
 
@@ -6,7 +8,7 @@ class GetFavUsersUseCase {
 
   GetFavUsersUseCase({required this.repository});
 
-  Future<void> call(AnimalEntity user) {
-    return repository.getFavUsers(user);
+  Future<void> call(BuildContext context, AnimalEntity user) {
+    return repository.getFavUsers(context, user);
   }
 }

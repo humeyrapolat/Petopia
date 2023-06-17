@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/widgets.dart';
 import 'package:petopia/features/data/data_sources/remote_data_source/remote_data_source.dart';
 import 'package:petopia/features/domain/entities/comment/comment_entity.dart';
 import 'package:petopia/features/domain/entities/post/post_entity.dart';
@@ -128,6 +129,6 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
       remoteDataSource.getSingleOtherUser(otherUid);
 
   @override
-  Future<void> getFavUsers(AnimalEntity user) async =>
-      remoteDataSource.getFavUsers(user);
+  Future<void> getFavUsers(BuildContext context, AnimalEntity user) async =>
+      remoteDataSource.getFavUsers(context, user);
 }

@@ -4,28 +4,23 @@ import 'package:iconsax/iconsax.dart';
 import 'package:petopia/util/consts.dart';
 
 import '../../../domain/entities/animal/animal_entity.dart';
+import '../../cubit/user/get_single_other_user/get_single_other_user_cubit.dart';
 import '../../cubit/user/user_cubit.dart';
 
 class MatchedPage extends StatefulWidget {
-  const MatchedPage({Key? key}) : super(key: key);
+  const MatchedPage({super.key, required this.otherUserId});
+  final String otherUserId;
 
   @override
   _MatchedPageState createState() => _MatchedPageState();
 }
 
 class _MatchedPageState extends State<MatchedPage> {
-  int currentIndex = 0;
-
   @override
   void initState() {
-    BlocProvider.of<UserCubit>(context).getUsers(user: const AnimalEntity());
+    BlocProvider.of<GetSingleOtherUserCubit>(context)
+        .getSingleOtherUser(otherUid: widget.otherUserId);
     super.initState();
-  }
-
-  void changeUser(int index) {
-    setState(() {
-      currentIndex = index;
-    });
   }
 
   @override
@@ -44,16 +39,10 @@ class _MatchedPageState extends State<MatchedPage> {
           ),
         ),
         backgroundColor: lightBlueColor,
-        body: BlocBuilder<UserCubit, UserState>(
+        body: BlocBuilder<GetSingleOtherUserCubit, GetSingleOtherUserState>(
           builder: (context, userState) {
-            if (userState is UserLoaded) {
-              final List<AnimalEntity> users = userState.users;
-              if (users.isEmpty) {
-                return const Center(
-                  child: Text('No users available.'),
-                );
-              }
-              final AnimalEntity user = users[currentIndex];
+            if (userState is GetSingleOtherUserLoaded) {
+              final singleUser = userState.otherUser;
               return Center(
                 child: SingleChildScrollView(
                   child: Padding(
@@ -90,7 +79,8 @@ class _MatchedPageState extends State<MatchedPage> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(16),
                                   image: DecorationImage(
-                                    image: NetworkImage(user.profileUrl ?? ''),
+                                    image: NetworkImage(
+                                        singleUser.profileUrl ?? ''),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -101,7 +91,7 @@ class _MatchedPageState extends State<MatchedPage> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
-                                      user.username ?? '',
+                                      singleUser.username ?? '',
                                       style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -131,12 +121,8 @@ class _MatchedPageState extends State<MatchedPage> {
                                         TextButton.icon(
                                           icon: const Icon(Iconsax.arrow5),
                                           label: const Text('Keep Swiping'),
-                                          onPressed: () {
-                                            Navigator.pushNamed(
-                                              context,
-                                              PageConsts.matchPage,
-                                            );
-                                          },
+                                          onPressed: () =>
+                                              Navigator.pop(context),
                                         ),
                                       ],
                                     ),

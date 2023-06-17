@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/widgets.dart';
 import 'package:petopia/features/domain/entities/comment/comment_entity.dart';
 import 'package:petopia/features/domain/entities/post/post_entity.dart';
 import 'package:petopia/features/domain/entities/replay/replay_entity.dart';
@@ -22,7 +23,7 @@ abstract class FirebaseRemoteDataSource {
   Future<void> createUser(AnimalEntity animal);
   Future<void> updateUser(AnimalEntity animal);
   // Match
-  Future<void> getFavUsers(AnimalEntity user);
+  Future<void> getFavUsers(BuildContext context, AnimalEntity user);
 
   //Cloud Storage
   Future<String> uploadImageToStorage(

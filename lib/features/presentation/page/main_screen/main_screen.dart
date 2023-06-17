@@ -65,7 +65,9 @@ class _MainScreenState extends State<MainScreen> {
                   children: [
                     const HomePage(),
                     const SearchPage(),
-                    const Announcement(),
+                    Announcement(
+                      currentUser: currentUser,
+                    ),
                     ProfilePage(currentUser: currentUser),
                   ],
                 ),
@@ -82,14 +84,12 @@ class _MainScreenState extends State<MainScreen> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) =>
-                        UploadPostPage(currentUser: currentUser),
+                    builder: (context) => UploadPostPage(currentUser: currentUser),
                   ),
                 );
               },
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerDocked,
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
             bottomNavigationBar: BottomAppBar(
               shape: const CircularNotchedRectangle(),
               child: Row(

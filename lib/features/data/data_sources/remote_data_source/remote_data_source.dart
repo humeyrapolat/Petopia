@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:petopia/features/domain/entities/adoption/adoption_entity.dart';
 import 'package:petopia/features/domain/entities/comment/comment_entity.dart';
+import 'package:petopia/features/domain/entities/lost/lost_entity.dart';
 import 'package:petopia/features/domain/entities/post/post_entity.dart';
 import 'package:petopia/features/domain/entities/replay/replay_entity.dart';
 import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
@@ -23,8 +25,7 @@ abstract class FirebaseRemoteDataSource {
   Future<void> updateUser(AnimalEntity animal);
 
   //Cloud Storage
-  Future<String> uploadImageToStorage(
-      File? file, bool isPost, String childName);
+  Future<String> uploadImageToStorage(File? file, bool isPost, String childName);
 
   //Post
   Future<void> createPost(PostEntity post);
@@ -33,6 +34,21 @@ abstract class FirebaseRemoteDataSource {
   Future<void> updatePost(PostEntity post);
   Future<void> deletePost(PostEntity post);
   Future<void> likePost(PostEntity post);
+
+  //Adoption
+  Future<void> createAdoption(AdoptionEntity adoption);
+  Stream<List<AdoptionEntity>> readAdoption(AdoptionEntity adoption);
+  Stream<List<AdoptionEntity>> readSingleAdoption(String adoptionId);
+  Future<void> updateAdoption(AdoptionEntity adoption);
+  Future<void> deleteAdoption(AdoptionEntity adoption);
+  Future<void> likeAdoption(AdoptionEntity adoption);
+
+  //Lost
+  Future<void> createLost(LostEntity lost);
+  Stream<List<LostEntity>> readLost(LostEntity lost);
+  Stream<List<LostEntity>> readSingleLost(String lostId);
+  Future<void> updateLost(LostEntity lost);
+  Future<void> deleteLost(LostEntity lost);
 
   // Comment
   Future<void> createComment(CommentEntity comment);

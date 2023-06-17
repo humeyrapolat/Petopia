@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/features/presentation/page/announcement/adoption.dart';
 import 'package:petopia/features/presentation/page/announcement/create_dialogs/adoption_dialog.dart';
 import 'package:petopia/features/presentation/page/announcement/lost_animal.dart';
@@ -7,14 +8,15 @@ import 'package:petopia/features/presentation/page/announcement/create_dialogs/l
 import 'package:petopia/util/consts.dart';
 
 class Announcement extends StatefulWidget {
-  const Announcement({super.key});
+  final AnimalEntity currentUser;
+
+  const Announcement({super.key, required this.currentUser});
 
   @override
   _AnnouncementState createState() => _AnnouncementState();
 }
 
-class _AnnouncementState extends State<Announcement>
-    with SingleTickerProviderStateMixin {
+class _AnnouncementState extends State<Announcement> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late ScrollController _scrollViewController;
 
@@ -46,8 +48,7 @@ class _AnnouncementState extends State<Announcement>
                   onTap: () {
                     _openAnnouncementBottomModalSheet(context);
                   },
-                  child: const Icon(Ionicons.md_megaphone,
-                      color: lightBlueGreenColor),
+                  child: const Icon(Ionicons.md_megaphone, color: lightBlueGreenColor),
                 ),
               ),
               backgroundColor: darkGreenColor,
@@ -74,7 +75,7 @@ class _AnnouncementState extends State<Announcement>
         body: TabBarView(
           controller: _tabController,
           children: const [
-            LostAnimalPage(),
+            AdoptionPage(),
             LostAnimalPage(),
           ],
         ),
@@ -99,10 +100,7 @@ class _AnnouncementState extends State<Announcement>
                       padding: EdgeInsets.only(left: 10.0),
                       child: Text(
                         "Create Announcement",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: darkGreenColor),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: darkGreenColor),
                       ),
                     ),
                     const SizedBox(
@@ -122,16 +120,13 @@ class _AnnouncementState extends State<Announcement>
                           onTap: () {
                             showDialog(
                                 context: context,
-                                builder: (context) => LostAnimalDialog());
+                                builder: (context) => LostAnimalDialog(currentUser: widget.currentUser));
 
                             // lost oluşturma sayfası
                           },
                           child: const Text(
                             "Lost Animal Announcement",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16,
-                                color: darkGreenColor),
+                            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: darkGreenColor),
                           ),
                         ),
                       ),
@@ -148,14 +143,13 @@ class _AnnouncementState extends State<Announcement>
                         onTap: () {
                           showDialog(
                               context: context,
-                              builder: (context) => AdoptionAnimalDialog());
+                              builder: (context) => AdoptionAnimalDialog(
+                                    currentUser: widget.currentUser,
+                                  ));
                         },
                         child: const Text(
                           "Adoption Animal",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: darkGreenColor),
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: darkGreenColor),
                         ),
                       ),
                     ),

@@ -1,7 +1,20 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petopia/features/domain/entities/adoption/adoption_entity.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
+import 'package:petopia/features/presentation/cubit/adoption/adoption_cubit.dart';
+import 'package:uuid/uuid.dart';
 
-class AdoptionAnimalDialog extends StatelessWidget {
+class AdoptionAnimalDialog extends StatefulWidget {
+  final AnimalEntity currentUser;
+
+  const AdoptionAnimalDialog({super.key, required this.currentUser});
+
+  @override
+  State<AdoptionAnimalDialog> createState() => _AdoptionAnimalDialogState();
+}
+
+class _AdoptionAnimalDialogState extends State<AdoptionAnimalDialog> {
   String sehir = "";
   String hayvanTuru = "";
   int hayvanYasi = 0;
@@ -9,7 +22,7 @@ class AdoptionAnimalDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Hayvan Sahiplenme Formu'),
+      title: const Text('Hayvan Sahiplendirme Formu'),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -42,8 +55,7 @@ class AdoptionAnimalDialog extends StatelessWidget {
       actions: [
         ElevatedButton(
           onPressed: () {
-            // İlanı gönderme işlemleri burada gerçekleştirilebilir
-            Navigator.of(context).pop();
+            _createAdoption(context);
           },
           child: const Text('Gönder'),
         ),
@@ -55,5 +67,29 @@ class AdoptionAnimalDialog extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  _createAdoption(BuildContext context) {
+    BlocProvider.of<AdoptionCubit>(context)
+        .createAdoption(
+            adoption: AdoptionEntity(
+      city: sehir,
+      type: hayvanTuru,
+      age: hayvanYasi,
+      adoptionPostId: const Uuid().v1(),
+      creatorUid: widget.currentUser.uid,
+    ))
+        .then((value) {
+      _clear();
+      Navigator.of(context).pop();
+    });
+  }
+
+  _clear() {
+    setState(() {
+      sehir = "";
+      hayvanTuru = "";
+      hayvanYasi = 0;
+    });
   }
 }

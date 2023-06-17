@@ -31,7 +31,9 @@ class _SignUpPageState extends State<SignUpPage> {
 
   DateTime _dateTime = DateTime.now();
   String selectedType = "";
-
+  String? selectedBreed;
+  String? selectedGender;
+  List<String> selectedBreeds = [];
   bool _isSigningUp = false;
   bool isLoading = false;
 
@@ -51,14 +53,7 @@ class _SignUpPageState extends State<SignUpPage> {
     "Others",
   ];
 
-  final List<String> dogBreeds = [
-    "Labrador Retriever",
-    "Golden Retriever",
-    "Bulldog",
-    "Poodle",
-    "Terrier",
-    "Others"
-  ];
+  final List<String> dogBreeds = ["Labrador Retriever", "Golden Retriever", "Bulldog", "Poodle", "Terrier", "Others"];
 
   final List<String> rabbitBreeds = [
     "Alaska",
@@ -68,9 +63,11 @@ class _SignUpPageState extends State<SignUpPage> {
     "Others",
   ];
 
-  void updateBreeds(String type) {
+  updateBreedsList(String type) {
     setState(() {
+      selectedBreeds = [];
       selectedType = type;
+      selectedBreed = null; // Bu satırı ekleyin
       if (type == "Cat") {
         selectedBreeds = catBreeds;
       } else if (type == "Dog") {
@@ -82,10 +79,6 @@ class _SignUpPageState extends State<SignUpPage> {
       }
     });
   }
-
-  List<String> selectedBreeds = [];
-
-  String? selectedValue;
 
   @override
   void dispose() {
@@ -104,8 +97,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Future selectImage() async {
     try {
-      final pickedFile =
-          await ImagePicker.platform.getImage(source: ImageSource.gallery);
+      final pickedFile = await ImagePicker.platform.getImage(source: ImageSource.gallery);
       setState(() {
         if (pickedFile != null) {
           _image = File(pickedFile.path);
@@ -163,8 +155,8 @@ class _SignUpPageState extends State<SignUpPage> {
               child: Stack(
                 children: [
                   SizedBox(
-                    width: 70,
-                    height: 70,
+                    width: 90,
+                    height: 90,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(35),
                       child: profileWidget(image: _image),
@@ -184,38 +176,38 @@ class _SignUpPageState extends State<SignUpPage> {
                 ],
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 55),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 150,
-                  height: 50,
-                  child: FormContainerWidget(
-                    controller: _usernameController,
-                    hintText: 'Username',
-                    inputType: TextInputType.name,
-                  ),
-                ),
-                sizeHorizontal(50),
-                SizedBox(
-                  width: 150,
-                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.08,
                   child: FormContainerWidget(
                     controller: _nameController,
                     hintText: 'Name',
+                    inputType: TextInputType.name,
+                  ),
+                ),
+                sizeHorizontal(15),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.08,
+                  child: FormContainerWidget(
+                    controller: _usernameController,
+                    hintText: 'Username',
                     inputType: TextInputType.emailAddress,
                   ),
                 ),
               ],
             ),
-            sizeVertical(20),
+            sizeVertical(15),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  width: 150,
-                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.08,
                   child: DropdownButtonFormField2(
                     decoration: InputDecoration(
                       //Add isDense true and zero Padding.
@@ -251,11 +243,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       return null;
                     },
                     onChanged: (value) {
-                      updateBreeds(value.toString());
-                      _typeController.text = value.toString();
+                      _breedController.text = "";
+
+                      updateBreedsList(value!);
+                      _typeController.text = value;
                     },
                     onSaved: (value) {
-                      selectedValue = value.toString();
+                      selectedType = value!;
                     },
                     buttonStyleData: const ButtonStyleData(
                       height: 60,
@@ -275,10 +269,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                 ),
-                sizeHorizontal(50),
+                sizeHorizontal(15),
                 Container(
-                  width: 150,
-                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.08,
                   child: DropdownButtonFormField2(
                     decoration: InputDecoration(
                       //Add isDense true and zero Padding.
@@ -314,11 +308,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       return null;
                     },
                     onChanged: (value) {
-                      _genderController.text = value.toString();
+                      _genderController.text = value!;
                     },
-                    onSaved: (value) {
-                      selectedValue = value.toString();
-                    },
+                    onSaved: (value) {},
                     buttonStyleData: const ButtonStyleData(
                       height: 60,
                       padding: EdgeInsets.only(left: 20, right: 10),
@@ -341,11 +333,11 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             const SizedBox(height: 15),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  width: 150,
-                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.08,
                   child: DropdownButtonFormField2(
                     decoration: InputDecoration(
                       //Add isDense true and zero Padding.
@@ -381,10 +373,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       return null;
                     },
                     onChanged: (value) {
-                      _breedController.text = value.toString();
+                      _breedController.text = value!;
                     },
                     onSaved: (value) {
-                      selectedValue = value.toString();
+                      selectedBreed = value;
                     },
                     buttonStyleData: const ButtonStyleData(
                       height: 60,
@@ -406,17 +398,15 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 sizeHorizontal(26),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const Text(
                       "Date",
-                      style:
-                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                     ),
                     sizeHorizontal(8),
                     Text(_dateTime.toString().substring(0, 10),
-                        style: const TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w500)),
+                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
                     sizeHorizontal(1),
                     IconButton(
                       onPressed: () {
@@ -441,25 +431,30 @@ class _SignUpPageState extends State<SignUpPage> {
               ],
             ),
             const SizedBox(height: 15),
-            SizedBox(
-              width: 365,
-              height: 50,
-              child: FormContainerWidget(
-                controller: _emailController,
-                hintText: 'Email',
-                inputType: TextInputType.emailAddress,
-              ),
-            ),
-            sizeVertical(15),
-            SizedBox(
-              width: 365,
-              height: 50,
-              child: FormContainerWidget(
-                controller: _passwordController,
-                hintText: 'Password',
-                inputType: TextInputType.visiblePassword,
-                isPasswordField: true,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.08,
+                  child: FormContainerWidget(
+                    controller: _emailController,
+                    hintText: 'Email',
+                    inputType: TextInputType.emailAddress,
+                  ),
+                ),
+                sizeHorizontal(15),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.08,
+                  child: FormContainerWidget(
+                    controller: _passwordController,
+                    hintText: 'Password',
+                    inputType: TextInputType.visiblePassword,
+                    isPasswordField: true,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 15),
             ElevatedButton(
@@ -468,8 +463,7 @@ class _SignUpPageState extends State<SignUpPage> {
               },
               style: ButtonStyle(
                 elevation: MaterialStateProperty.all<double>(5),
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(darkPinkColor),
+                backgroundColor: MaterialStateProperty.all<Color>(darkPinkColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -494,13 +488,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, PageConsts.signInPage, (route) => false);
+                    Navigator.pushNamedAndRemoveUntil(context, PageConsts.signInPage, (route) => false);
                   },
                   child: const Text(
                     "Sign In.",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: darkPinkColor),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: darkPinkColor),
                   ),
                 ),
               ],
@@ -511,10 +503,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     children: [
                       const Text(
                         "Please wait",
-                        style: TextStyle(
-                            color: black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                        style: TextStyle(color: black, fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                       sizeHorizontal(10),
                       const CircularProgressIndicator()

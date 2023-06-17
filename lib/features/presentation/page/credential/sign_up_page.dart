@@ -335,7 +335,7 @@ class _SignUpPageState extends State<SignUpPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.45,
                   height: MediaQuery.of(context).size.height * 0.08,
                   child: DropdownButtonFormField2(
@@ -396,9 +396,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                 ),
-                sizeHorizontal(26),
+                sizeHorizontal(15),
                 Container(
                   width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.08,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

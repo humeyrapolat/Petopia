@@ -1,6 +1,16 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
+import 'package:petopia/features/domain/entities/lost/lost_entity.dart';
+import 'package:petopia/features/presentation/cubit/lost/lost_cubit.dart';
 
 class LostAnimalDialog extends StatefulWidget {
+  final AnimalEntity currentUser;
+
+  const LostAnimalDialog({super.key, required this.currentUser});
+
   @override
   _LostAnimalDialogState createState() => _LostAnimalDialogState();
 }
@@ -8,6 +18,8 @@ class LostAnimalDialog extends StatefulWidget {
 class _LostAnimalDialogState extends State<LostAnimalDialog> {
   late String selectedCity;
   late String selectedDistrict;
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
 
   //TODO : Kullanıcı kaydı oluştururken kullanıcının adres bilgisini alalım
   // böylece il ve ilçe seçimlerini otomatik olarak yapabiliriz
@@ -37,18 +49,12 @@ class _LostAnimalDialogState extends State<LostAnimalDialog> {
           // Görsel yükleme alanı
           // Buraya görsel yükleme için bir widget ekleyebilirsiniz
 
-          const TextField(
-            decoration: InputDecoration(
+          TextField(
+            controller: _nameController,
+            decoration: const InputDecoration(
               labelText: 'İsim',
             ),
           ),
-
-          const TextField(
-            decoration: InputDecoration(
-              labelText: 'Açıklama',
-            ),
-          ),
-
           DropdownButtonFormField<String>(
             value: selectedCity,
             decoration: const InputDecoration(
@@ -67,7 +73,6 @@ class _LostAnimalDialogState extends State<LostAnimalDialog> {
               });
             },
           ),
-
           if (selectedCity != null)
             DropdownButtonFormField<String>(
               value: selectedDistrict,
@@ -91,6 +96,7 @@ class _LostAnimalDialogState extends State<LostAnimalDialog> {
       actions: [
         ElevatedButton(
           onPressed: () {
+            _createLost(context);
             // İlanı gönderme işlemleri burada gerçekleştirilebilir
             Navigator.of(context).pop();
           },
@@ -104,6 +110,31 @@ class _LostAnimalDialogState extends State<LostAnimalDialog> {
         ),
       ],
     );
+  }
+
+  _createLost(BuildContext context) {
+    BlocProvider.of<LostCubit>(context)
+        .createLost(
+            lost: LostEntity(
+                city: selectedCity,
+                age: 1,
+                creatorUid: widget.currentUser.uid,
+                name: _nameController.text,
+                date: DateTime.now(),
+                lostAnimalId: widget.currentUser.uid! + Random().nextInt(100).toString(),
+                imageUrl: "url",
+                isKnowName: true))
+        .then((value) {
+      _clear();
+      Navigator.of(context).pop();
+    });
+  }
+
+  _clear() {
+    setState(() {
+      selectedCity = cities[0];
+      selectedDistrict = districts[selectedCity]![0];
+    });
   }
 }
 

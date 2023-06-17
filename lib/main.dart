@@ -2,8 +2,10 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petopia/features/presentation/cubit/adoption/adoption_cubit.dart';
 import 'package:petopia/features/presentation/cubit/auth/auth_cubit.dart';
 import 'package:petopia/features/presentation/cubit/credential/credential_cubit.dart';
+import 'package:petopia/features/presentation/cubit/lost/lost_cubit.dart';
 import 'package:petopia/features/presentation/cubit/resetPassword/reset_password_cubit.dart';
 import 'package:petopia/features/presentation/cubit/user/get_single_user/get_single_user_cubit.dart';
 import 'package:petopia/features/presentation/cubit/user/user_cubit.dart';
@@ -46,6 +48,8 @@ class MyApp extends StatelessWidget {
           create: (context) => di.sl<ResetPasswordCubit>(),
         ),
         BlocProvider(create: (_) => di.sl<GetSingleOtherUserCubit>()),
+        BlocProvider(create: (_) => di.sl<AdoptionCubit>()),
+        BlocProvider(create: (_) => di.sl<LostCubit>()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -20,13 +20,12 @@ class ProfilePage extends StatelessWidget {
       child: Scaffold(
         backgroundColor: white,
         appBar: AppBar(
+          centerTitle: true,
           backgroundColor: darkBlueGreenColor,
           elevation: 0,
-          title: Center(
-            child: Text(
-              "${currentUser.username}".toUpperCase(),
-              style: const TextStyle(color: black),
-            ),
+          title: Text(
+            "${currentUser.username}".toUpperCase(),
+            style: const TextStyle(color: black),
           ),
           leading: const Icon(
             Ionicons.ios_megaphone,
@@ -77,18 +76,12 @@ class ProfilePage extends StatelessWidget {
                       children: [
                         Text(
                           "${currentUser.totalPosts}",
-                          style: const TextStyle(
-                              color: black,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20),
+                          style: const TextStyle(color: black, fontWeight: FontWeight.bold, fontSize: 20),
                         ),
                         sizeVertical(5),
                         const Text(
                           "Posts",
-                          style: TextStyle(
-                              color: lightGrey,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15),
+                          style: TextStyle(color: lightGrey, fontWeight: FontWeight.bold, fontSize: 15),
                         ),
                       ],
                     ),
@@ -98,25 +91,18 @@ class ProfilePage extends StatelessWidget {
                   child: Container(
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, PageConsts.followersPage,
-                            arguments: currentUser);
+                        Navigator.pushNamed(context, PageConsts.followersPage, arguments: currentUser);
                       },
                       child: Column(
                         children: [
                           Text(
                             "${currentUser.totalFollowers}",
-                            style: const TextStyle(
-                                color: black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
+                            style: const TextStyle(color: black, fontWeight: FontWeight.bold, fontSize: 20),
                           ),
                           sizeVertical(5),
                           const Text(
                             "Followers",
-                            style: TextStyle(
-                                color: lightGrey,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15),
+                            style: TextStyle(color: lightGrey, fontWeight: FontWeight.bold, fontSize: 15),
                           ),
                         ],
                       ),
@@ -128,25 +114,18 @@ class ProfilePage extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: GestureDetector(
                       onTap: () {
-                        Navigator.pushNamed(context, PageConsts.followingPage,
-                            arguments: currentUser);
+                        Navigator.pushNamed(context, PageConsts.followingPage, arguments: currentUser);
                       },
                       child: Column(
                         children: [
                           Text(
                             "${currentUser.totalFollowing}",
-                            style: const TextStyle(
-                                color: black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
+                            style: const TextStyle(color: black, fontWeight: FontWeight.bold, fontSize: 20),
                           ),
                           sizeVertical(5),
                           const Text(
                             "Following",
-                            style: TextStyle(
-                                color: lightGrey,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15),
+                            style: TextStyle(color: lightGrey, fontWeight: FontWeight.bold, fontSize: 15),
                           ),
                         ],
                       ),
@@ -217,8 +196,7 @@ class ProfilePage extends StatelessWidget {
                     child: Center(
                       child: Text(
                         "More options",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -243,9 +221,7 @@ class ProfilePage extends StatelessWidget {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(
-                                  context, PageConsts.editProfilePage,
-                                  arguments: currentUser)
+                          Navigator.pushNamed(context, PageConsts.editProfilePage, arguments: currentUser)
                               .whenComplete(() {
                             Navigator.pop(context);
                           });
@@ -277,8 +253,7 @@ class ProfilePage extends StatelessWidget {
                       GestureDetector(
                         onTap: () {
                           BlocProvider.of<AuthCubit>(context).loggedOut();
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, PageConsts.signInPage, (route) => false);
+                          Navigator.pushNamedAndRemoveUntil(context, PageConsts.signInPage, (route) => false);
                         },
                         child: Container(
                           alignment: Alignment.center,

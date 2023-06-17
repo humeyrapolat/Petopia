@@ -79,6 +79,8 @@ class PageConsts {
 class FirebaseConsts {
   static const String users = "users";
   static const String post = "post";
+  static const String adoption = "adoption";
+  static const String lost = "lost";
   static const String comments = "comments";
   static const String likes = "likes";
   static const String followers = "followers";

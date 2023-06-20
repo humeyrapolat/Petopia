@@ -52,6 +52,8 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         totalFollowers: user.totalFollowers,
         totalFollowing: user.totalFollowing,
         totalPosts: user.totalPosts,
+        lostPosts: user.lostPosts,
+        adoptionPosts: user.adoptionPosts,
       ).toJson();
 
       if (!userDoc.exists) {
@@ -91,6 +93,8 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         totalFollowers: user.totalFollowers,
         totalFollowing: user.totalFollowing,
         totalPosts: user.totalPosts,
+        lostPosts: user.lostPosts,
+        adoptionPosts: user.adoptionPosts,
       ).toJson();
 
       if (!userDoc.exists) {

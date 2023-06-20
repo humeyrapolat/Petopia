@@ -21,7 +21,6 @@ class AnimalModel extends AnimalEntity {
   final num? totalFollowing;
   final num? totalPosts;
   final List<String>? likedPosts;
-
   final List<String>? lostPosts;
   final List<String>? adoptionPosts;
 
@@ -75,27 +74,30 @@ class AnimalModel extends AnimalEntity {
     var snapshot = snap.data() as Map<String, dynamic>;
 
     return AnimalModel(
-        uid: snapshot['uid'],
-        username: snapshot['username'],
-        name: snapshot['name'],
-        bio: snapshot['bio'],
-        website: snapshot['website'],
-        email: snapshot['email'],
-        city: snapshot['city'],
-        district: snapshot['district'],
-        birthdate: snapshot['birthdate'],
-        breed: snapshot['breed'],
-        gender: snapshot['gender'],
-        type: snapshot['type'],
-        profileUrl: snapshot['profileUrl'],
-        likedPosts: List.from(snap.get('likedPosts')),
-        followers: List.from(snap.get('followers')),
-        following: List.from(snap.get('following')),
-        totalFollowers: snapshot['totalFollowers'],
-        totalFollowing: snapshot['totalFollowing'],
-        totalPosts: snapshot['totalPosts'],
-        lostPosts: List.from(snap.get('lostPosts')),
-        adoptionPosts: List.from(snap.get('adoptionPosts')));
+      uid: snapshot['uid'],
+      username: snapshot['username'],
+      name: snapshot['name'],
+      bio: snapshot['bio'],
+      website: snapshot['website'],
+      email: snapshot['email'],
+      city: snapshot['city'],
+      district: snapshot['district'],
+      birthdate: snapshot['birthdate'],
+      breed: snapshot['breed'],
+      gender: snapshot['gender'],
+      type: snapshot['type'],
+      profileUrl: snapshot['profileUrl'],
+      likedPosts: List.from(snap.get('likedPosts')),
+      followers: List.from(snap.get('followers')),
+      following: List.from(snap.get('following')),
+      totalFollowers: snapshot['totalFollowers'],
+      totalFollowing: snapshot['totalFollowing'],
+      totalPosts: snapshot['totalPosts'],
+      lostPosts: List.from(snap.get('lostPosts')),
+      adoptionPosts: List.from(
+        snap.get('adoptionPosts'),
+      ),
+    );
   }
 
   Map<String, dynamic> toJson() {

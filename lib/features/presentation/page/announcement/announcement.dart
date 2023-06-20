@@ -4,7 +4,7 @@ import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/features/presentation/page/announcement/adoption.dart';
 import 'package:petopia/features/presentation/page/announcement/create_dialogs/adoption_dialog.dart';
 import 'package:petopia/features/presentation/page/announcement/lost_animal.dart';
-import 'package:petopia/features/presentation/page/announcement/create_dialogs/lost_animal_dialog.dart';
+import 'package:petopia/features/presentation/page/announcement/create_dialogs/founded_lost_animal_dialog.dart';
 import 'package:petopia/util/consts.dart';
 
 class Announcement extends StatefulWidget {
@@ -48,17 +48,19 @@ class _AnnouncementState extends State<Announcement> with SingleTickerProviderSt
                   onTap: () {
                     _openAnnouncementBottomModalSheet(context);
                   },
-                  child: const Icon(Ionicons.md_megaphone, color: lightBlueGreenColor),
+                  child: const Icon(Ionicons.md_megaphone, color: white),
                 ),
               ),
-              backgroundColor: darkGreenColor,
-              foregroundColor: lightGreenColor,
+              backgroundColor: darkPurpleColor,
+              foregroundColor: white,
               title: const Text('Announcement'),
               pinned: true,
               floating: true,
               forceElevated: boxIsScrolled,
               bottom: TabBar(
-                indicatorColor: darkPinkColor,
+                unselectedLabelColor: white,
+                labelColor: black,
+                indicatorColor: darkBlueGreenColor,
                 tabs: const <Widget>[
                   Tab(
                     text: "Adoption Pet",
@@ -74,9 +76,11 @@ class _AnnouncementState extends State<Announcement> with SingleTickerProviderSt
         },
         body: TabBarView(
           controller: _tabController,
-          children: const [
-            AdoptionPage(),
-            LostAnimalPage(),
+          children: [
+            const AdoptionPage(),
+            FoundedLostAnimalPage(
+              currentUser: widget.currentUser,
+            ),
           ],
         ),
       ),
@@ -88,8 +92,8 @@ class _AnnouncementState extends State<Announcement> with SingleTickerProviderSt
         context: context,
         builder: (context) {
           return Container(
-            height: 150,
-            decoration: BoxDecoration(color: white.withOpacity(.8)),
+            height: 140,
+            decoration: BoxDecoration(color: lightBlueGreenColor),
             child: SingleChildScrollView(
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 10),
@@ -100,15 +104,12 @@ class _AnnouncementState extends State<Announcement> with SingleTickerProviderSt
                       padding: EdgeInsets.only(left: 10.0),
                       child: Text(
                         "Create Announcement",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: darkGreenColor),
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: darkBlueGreenColor),
                       ),
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
                     const Divider(
-                      thickness: 1,
-                      color: darkGreenColor,
+                      thickness: 0.3,
+                      color: lightGrey,
                     ),
                     const SizedBox(
                       height: 8,
@@ -125,18 +126,17 @@ class _AnnouncementState extends State<Announcement> with SingleTickerProviderSt
                             // lost oluşturma sayfası
                           },
                           child: const Text(
-                            "Lost Animal Announcement",
-                            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: darkGreenColor),
+                            "Lost animal",
+                            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: darkPurpleColor),
                           ),
                         ),
                       ),
                     ),
                     sizeVertical(7),
                     const Divider(
-                      thickness: 1,
-                      color: darkGreenColor,
+                      thickness: 0.3,
+                      color: lightGrey,
                     ),
-                    sizeVertical(7),
                     Padding(
                       padding: const EdgeInsets.only(left: 10.0),
                       child: InkWell(
@@ -149,7 +149,7 @@ class _AnnouncementState extends State<Announcement> with SingleTickerProviderSt
                         },
                         child: const Text(
                           "Adoption Animal",
-                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: darkGreenColor),
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: darkPurpleColor),
                         ),
                       ),
                     ),

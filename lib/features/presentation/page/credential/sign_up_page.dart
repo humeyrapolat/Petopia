@@ -24,58 +24,44 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _breedController = TextEditingController();
-  final TextEditingController _typeController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
 
   DateTime _dateTime = DateTime.now();
   String selectedType = "";
+  String selectedCity = "";
+  String? selectedDistrict;
   String? selectedBreed;
   String? selectedGender;
   List<String> selectedBreeds = [];
+  List<String> selectedDistricts = [];
   bool _isSigningUp = false;
   bool isLoading = false;
 
-  final List<String> genderItems = [
-    'Male',
-    'Female',
-  ];
-
-  final List<String> typeItems = ['Cat', 'Dog', 'Rabbit'];
-
-  final List<String> catBreeds = [
-    "Siamese",
-    "Persian",
-    "Scottish Fold",
-    "British",
-    "Bengal",
-    "Others",
-  ];
-
-  final List<String> dogBreeds = ["Labrador Retriever", "Golden Retriever", "Bulldog", "Poodle", "Terrier", "Others"];
-
-  final List<String> rabbitBreeds = [
-    "Alaska",
-    "Holland Lop",
-    "French Lop",
-    "Blanc de Hotot",
-    "Others",
-  ];
-
   updateBreedsList(String type) {
     setState(() {
-      selectedBreeds = [];
-      selectedType = type;
-      selectedBreed = null; // Bu satırı ekleyin
       if (type == "Cat") {
-        selectedBreeds = catBreeds;
+        selectedBreeds = ListConst().catBreeds;
       } else if (type == "Dog") {
-        selectedBreeds = dogBreeds;
+        selectedBreeds = ListConst().dogBreeds;
       } else if (type == "Rabbit") {
-        selectedBreeds = rabbitBreeds;
+        selectedBreeds = ListConst().rabbitBreeds;
       } else {
         selectedBreeds = [];
+      }
+    });
+  }
+
+  updateDisctrictList(String type) {
+    setState(() {
+      if (type == "Istanbul") {
+        selectedDistricts = ListConst().istanbulDistrict;
+      } else if (type == "Antalya") {
+        selectedDistricts = ListConst().antalyaDistrict;
+      } else if (type == "Izmır") {
+        selectedDistricts = ListConst().izmirDistrict;
+      } else {
+        selectedDistricts = [];
       }
     });
   }
@@ -86,10 +72,8 @@ class _SignUpPageState extends State<SignUpPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _nameController.dispose();
-    _breedController.dispose();
     _dateController.dispose();
     _genderController.dispose();
-    _typeController.dispose();
     super.dispose();
   }
 
@@ -225,7 +209,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       'Type',
                       style: TextStyle(fontSize: 14),
                     ),
-                    items: typeItems
+                    items: ListConst()
+                        .typeItems
                         .map((item) => DropdownMenuItem<String>(
                               value: item,
                               child: Text(
@@ -243,14 +228,10 @@ class _SignUpPageState extends State<SignUpPage> {
                       return null;
                     },
                     onChanged: (value) {
-                      _breedController.text = "";
-
                       updateBreedsList(value!);
-                      _typeController.text = value;
+                      selectedType = value;
                     },
-                    onSaved: (value) {
-                      selectedType = value!;
-                    },
+                    onSaved: (value) {},
                     buttonStyleData: const ButtonStyleData(
                       height: 60,
                       padding: EdgeInsets.only(left: 20, right: 10),
@@ -287,10 +268,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     isExpanded: true,
                     hint: const Text(
-                      'Gender',
+                      'Breeds',
                       style: TextStyle(fontSize: 14),
                     ),
-                    items: genderItems
+                    items: selectedBreeds
                         .map((item) => DropdownMenuItem<String>(
                               value: item,
                               child: Text(
@@ -303,12 +284,12 @@ class _SignUpPageState extends State<SignUpPage> {
                         .toList(),
                     validator: (value) {
                       if (value == null) {
-                        return 'Please select gender.';
+                        return 'Please select breed.';
                       }
                       return null;
                     },
                     onChanged: (value) {
-                      _genderController.text = value!;
+                      selectedBreed = value;
                     },
                     onSaved: (value) {},
                     buttonStyleData: const ButtonStyleData(
@@ -331,7 +312,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
               ],
             ),
-            const SizedBox(height: 15),
+            sizeVertical(15),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -352,10 +333,11 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     isExpanded: true,
                     hint: const Text(
-                      "Breed",
+                      'City',
                       style: TextStyle(fontSize: 14),
                     ),
-                    items: selectedBreeds
+                    items: ListConst()
+                        .cityItems
                         .map((item) => DropdownMenuItem<String>(
                               value: item,
                               child: Text(
@@ -368,16 +350,141 @@ class _SignUpPageState extends State<SignUpPage> {
                         .toList(),
                     validator: (value) {
                       if (value == null) {
-                        return 'Please select breed .';
+                        return 'Please select city.';
                       }
                       return null;
                     },
                     onChanged: (value) {
-                      _breedController.text = value!;
+                      updateDisctrictList(value!);
+                      selectedCity = value;
                     },
-                    onSaved: (value) {
-                      selectedBreed = value;
+                    onSaved: (value) {},
+                    buttonStyleData: const ButtonStyleData(
+                      height: 60,
+                      padding: EdgeInsets.only(left: 20, right: 10),
+                    ),
+                    iconStyleData: const IconStyleData(
+                      icon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.black45,
+                      ),
+                      iconSize: 30,
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                  ),
+                ),
+                sizeHorizontal(15),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.08,
+                  child: DropdownButtonFormField2(
+                    decoration: InputDecoration(
+                      //Add isDense true and zero Padding.
+                      //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
+                      isDense: true,
+                      contentPadding: EdgeInsets.zero,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      //Add more decoration as you want here
+                      //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
+                    ),
+                    isExpanded: true,
+                    hint: const Text(
+                      'District',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    items: selectedDistricts
+                        .map((item) => DropdownMenuItem<String>(
+                              value: item,
+                              child: Text(
+                                item,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Please select district.';
+                      }
+                      return null;
                     },
+                    onChanged: (value) {
+                      selectedDistrict = value;
+                    },
+                    onSaved: (value) {},
+                    buttonStyleData: const ButtonStyleData(
+                      height: 60,
+                      padding: EdgeInsets.only(left: 20, right: 10),
+                    ),
+                    iconStyleData: const IconStyleData(
+                      icon: Icon(
+                        Icons.arrow_drop_down,
+                        color: Colors.black45,
+                      ),
+                      iconSize: 30,
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            sizeVertical(15),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.08,
+                  child: DropdownButtonFormField2(
+                    decoration: InputDecoration(
+                      //Add isDense true and zero Padding.
+                      //Add Horizontal padding using buttonPadding and Vertical padding by increasing buttonHeight instead of add Padding here so that The whole TextField Button become clickable, and also the dropdown menu open under The whole TextField Button.
+                      isDense: true,
+                      contentPadding: EdgeInsets.zero,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      //Add more decoration as you want here
+                      //Add label If you want but add hint outside the decoration to be aligned in the button perfectly.
+                    ),
+                    isExpanded: true,
+                    hint: const Text(
+                      'Gender',
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    items: ListConst()
+                        .genderItems
+                        .map((item) => DropdownMenuItem<String>(
+                              value: item,
+                              child: Text(
+                                item,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Please select gender.';
+                      }
+                      return null;
+                    },
+                    onChanged: (value) {
+                      _genderController.text = value!;
+                    },
+                    onSaved: (value) {},
                     buttonStyleData: const ButtonStyleData(
                       height: 60,
                       padding: EdgeInsets.only(left: 20, right: 10),
@@ -536,14 +643,19 @@ class _SignUpPageState extends State<SignUpPage> {
             username: _usernameController.text,
             totalPosts: 0,
             birthdate: _dateController.text,
-            type: _typeController.text,
+            type: selectedType,
+            city: selectedCity,
+            district: selectedDistrict,
             gender: _genderController.text,
-            breed: _breedController.text,
+            breed: selectedBreed,
             totalFollowing: 0,
+            likedPosts: [],
             followers: [],
             totalFollowers: 0,
             website: "",
             following: [],
+            lostPosts: [],
+            adoptionPosts: [],
             name: _nameController.text,
             imageFile: _image,
           ),
@@ -553,14 +665,19 @@ class _SignUpPageState extends State<SignUpPage> {
 
   _clearControllers() {
     setState(() {
+      selectedCity = "";
+      selectedBreed = "";
+      selectedDistrict = "";
+      selectedGender = "";
+      selectedType = "";
+      _image = null;
+      selectedBreeds = [];
       _usernameController.clear();
       _emailController.clear();
       _passwordController.clear();
       _nameController.clear();
-      _breedController.clear();
       _dateController.clear();
       _genderController.clear();
-      _typeController.clear();
       _isSigningUp = false;
     });
   }

@@ -36,6 +36,8 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         uid: uid,
         name: user.name,
         email: user.email,
+        city: user.city,
+        district: user.district,
         bio: user.bio,
         following: user.following,
         username: user.username,
@@ -46,6 +48,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         gender: user.gender,
         breed: user.breed,
         birthdate: user.birthdate,
+        likedPosts: user.likedPosts,
         totalFollowers: user.totalFollowers,
         totalFollowing: user.totalFollowing,
         totalPosts: user.totalPosts,
@@ -71,6 +74,8 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       final newUser = AnimalModel(
         name: user.name,
         email: user.email,
+        city: user.city,
+        district: user.district,
         uid: uid,
         bio: user.bio,
         profileUrl: user.profileUrl,
@@ -82,6 +87,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         gender: user.gender,
         breed: user.breed,
         birthdate: user.birthdate,
+        likedPosts: user.likedPosts,
         totalFollowers: user.totalFollowers,
         totalFollowing: user.totalFollowing,
         totalPosts: user.totalPosts,
@@ -205,6 +211,15 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     }
     if (user.following != null) {
       userInformation["following"] = user.following;
+    }
+    if (user.likedPosts != null) {
+      userInformation["likedPost"] = user.likedPosts;
+    }
+    if (user.lostPosts != null) {
+      userInformation["lostPosts"] = user.lostPosts;
+    }
+    if (user.adoptionPosts != null) {
+      userInformation["adoptionPosts"] = user.adoptionPosts;
     }
     if (user.totalFollowers != null) {
       userInformation["totalFollowers"] = user.totalFollowers;
@@ -392,6 +407,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   @override
   Future<void> likePost(PostEntity post) async {
     final postCollection = firebaseFirestore.collection(FirebaseConsts.post);
+    final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
 
     final currentUid = await getCurrentUid();
     final postRef = await postCollection.doc(post.postId).get();
@@ -404,10 +420,20 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
           "likes": FieldValue.arrayRemove([currentUid]),
           "totalLikes": totalLikes - 1
         });
+
+        // burada beğenine aynı zamanda kullanıcının beğendiği postların listesine ekleniyor
+        userCollection.doc(currentUid).update({
+          "likedPosts": FieldValue.arrayRemove([post.postId])
+        });
       } else {
         postCollection.doc(post.postId).update({
           "likes": FieldValue.arrayUnion([currentUid]),
           "totalLikes": totalLikes + 1
+        });
+
+        // burada beğenine aynı zamanda kullanıcının beğendiği postların listesine ekleniyor
+        userCollection.doc(currentUid).update({
+          "likedPosts": FieldValue.arrayUnion([post.postId])
         });
       }
     }
@@ -698,13 +724,14 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       type: adoption.type,
       age: adoption.age,
       adoptionPostId: adoption.adoptionPostId,
+      profileUrl: adoption.profileUrl,
     ).toJson();
 
     try {
       final adoptinDocRef = await adoptionCollection.doc(adoption.adoptionPostId).get();
 
       if (!adoptinDocRef.exists) {
-        adoptionCollection.doc(adoption.adoptionPostId).set(newAdoption);
+        adoptionCollection.doc(adoption.adoptionPostId).set(newAdoption).then((value) {});
       } else {
         adoptionCollection.doc(adoption.adoptionPostId).update(newAdoption);
       }
@@ -775,25 +802,32 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   @override
   Future<void> createLost(LostEntity lost) async {
     final lostCollection = firebaseFirestore.collection(FirebaseConsts.lost);
+    final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
+    final currentUid = await getCurrentUid();
 
     final newLost = LostModel(
-            creatorUid: lost.creatorUid,
-            city: lost.city,
-            age: lost.age,
-            lostAnimalId: lost.lostAnimalId,
-            imageUrl: lost.imageUrl,
-            name: lost.name,
-            date: DateTime.now(),
-            isKnowName: lost.isKnowName)
-        .toJson();
+      creatorUid: lost.creatorUid,
+      city: lost.city,
+      lostAnimalId: lost.lostAnimalId,
+      imageUrl: lost.imageUrl,
+      date: DateTime.now(),
+      district: lost.district,
+      isWithMe: lost.isWithMe,
+      description: lost.description,
+      isinjured: lost.isinjured,
+    ).toJson();
 
     try {
       final lostDocRef = await lostCollection.doc(lost.lostAnimalId).get();
 
       if (!lostDocRef.exists) {
-        lostCollection.doc(lost.lostAnimalId).set(newLost);
+        lostCollection.doc(lost.lostAnimalId).set(newLost).then((value) {
+          userCollection.doc(currentUid).update({
+            "lostPosts": FieldValue.arrayUnion([lost.imageUrl])
+          });
+        });
       } else {
-        lostCollection.doc(lost.lostAnimalId).update(newLost);
+        lostCollection.doc(lost.lostAnimalId).update(newLost).then((value) {});
       }
     } catch (e) {
       toast("some error occured $e ");
@@ -803,11 +837,17 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   @override
   Future<void> deleteLost(LostEntity lost) async {
     final lostCollection = firebaseFirestore.collection(FirebaseConsts.lost);
+    final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
+    final currentUid = await getCurrentUid();
 
     try {
       final adoptinDocRef = await lostCollection.doc(lost.lostAnimalId).get();
       if (adoptinDocRef.exists) {
-        lostCollection.doc(lost.lostAnimalId).delete();
+        lostCollection.doc(lost.lostAnimalId).delete().then((value) {
+          userCollection.doc(currentUid).update({
+            "lostPosts": FieldValue.arrayRemove([lost.imageUrl])
+          });
+        });
       }
     } catch (e) {
       toast("some error occured $e");

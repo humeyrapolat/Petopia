@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
@@ -6,7 +8,10 @@ class AdoptionEntity extends Equatable {
   final String? creatorUid;
   final String? city;
   final String? type;
-  final num? age;
+  final String? age;
+  final String? profileUrl;
+
+  final File? image;
 
   const AdoptionEntity({
     this.adoptionPostId,
@@ -14,6 +19,8 @@ class AdoptionEntity extends Equatable {
     this.city,
     this.type,
     this.age,
+    this.image,
+    this.profileUrl,
   });
 
   @override
@@ -23,5 +30,7 @@ class AdoptionEntity extends Equatable {
         city,
         type,
         age,
+        image,
+        profileUrl,
       ];
 }

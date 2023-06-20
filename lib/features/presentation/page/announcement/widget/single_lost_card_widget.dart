@@ -30,24 +30,67 @@ class _SinglePagelostEntityCardWidget extends State<SinglePageLostCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 50,
-      child: ListTile(
+    return Card(
+      elevation: 3,
+      shadowColor: Colors.grey.withOpacity(0.5),
+      child: InkWell(
         onLongPress: () => deletelostEntity(),
         onTap: () {
           Navigator.pushNamed(context, PageConsts.chatPage);
         },
-        title: Text(
-          widget.lostEntity.city!,
-          style: const TextStyle(color: darkGreenColor, fontWeight: FontWeight.bold),
-        ),
-        subtitle: Text(
-          widget.lostEntity.name!,
-          style: const TextStyle(color: darkGreenColor, fontWeight: FontWeight.bold),
-        ),
-        trailing: const Icon(
-          Iconsax.message,
-          color: darkGreenColor,
+        child: Padding(
+          padding: const EdgeInsets.all(6.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    sizeVertical(10),
+                    Text(
+                      widget.lostEntity.description!,
+                      style: const TextStyle(color: black, fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                    const SizedBox(height: 8.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Icon(
+                          Iconsax.location,
+                          color: Colors.grey,
+                        ),
+                        sizeHorizontal(8),
+                        Text(
+                          widget.lostEntity.city!,
+                          style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              sizeVertical(10),
+              Container(
+                width: 350,
+                height: 250,
+                decoration: BoxDecoration(
+                  shape: BoxShape.rectangle,
+                  image: DecorationImage(
+                    image: NetworkImage(widget.lostEntity.imageUrl ??
+                        "https://i.pinimg.com/474x/4b/2a/7f/4b2a7fd2bc5fcddd91a28d3421b418b2.jpg"),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8.0),
+              const Icon(
+                Iconsax.call,
+                color: black,
+              ),
+            ],
+          ),
         ),
       ),
     );

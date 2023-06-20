@@ -39,24 +39,19 @@ class _SearchMainWidgetState extends State<SearchMainWidget> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: darkBlueColor,
+        backgroundColor: white,
         body: BlocBuilder<UserCubit, UserState>(
           builder: (context, userState) {
             if (userState is UserLoaded) {
               final filterAllUsers = userState.users
                   .where((user) =>
                       user.username!.startsWith(_searchController.text) ||
-                      user.username!
-                          .toLowerCase()
-                          .startsWith(_searchController.text.toLowerCase()) ||
+                      user.username!.toLowerCase().startsWith(_searchController.text.toLowerCase()) ||
                       user.username!.contains(_searchController.text) ||
-                      user.username!
-                          .toLowerCase()
-                          .contains(_searchController.text.toLowerCase()))
+                      user.username!.toLowerCase().contains(_searchController.text.toLowerCase()))
                   .toList();
               return Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -71,32 +66,25 @@ class _SearchMainWidgetState extends State<SearchMainWidget> {
                                 itemBuilder: (context, index) {
                                   return GestureDetector(
                                     onTap: () {
-                                      Navigator.pushNamed(context,
-                                          PageConsts.singleUserProfilePage,
+                                      Navigator.pushNamed(context, PageConsts.singleUserProfilePage,
                                           arguments: filterAllUsers[index].uid);
                                     },
                                     child: Row(
                                       children: [
                                         Container(
-                                          margin: const EdgeInsets.symmetric(
-                                              vertical: 10),
+                                          margin: const EdgeInsets.symmetric(vertical: 10),
                                           width: 40,
                                           height: 40,
                                           child: ClipRRect(
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            child: profileWidget(
-                                                imageUrl: filterAllUsers[index]
-                                                    .profileUrl),
+                                            borderRadius: BorderRadius.circular(20),
+                                            child: profileWidget(imageUrl: filterAllUsers[index].profileUrl),
                                           ),
                                         ),
                                         sizeHorizontal(10),
                                         Text(
                                           "${filterAllUsers[index].username}",
-                                          style: const TextStyle(
-                                              color: black,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600),
+                                          style:
+                                              const TextStyle(color: black, fontSize: 15, fontWeight: FontWeight.w600),
                                         )
                                       ],
                                     ),
@@ -112,31 +100,24 @@ class _SearchMainWidgetState extends State<SearchMainWidget> {
                                       itemCount: posts.length,
                                       physics: const ScrollPhysics(),
                                       shrinkWrap: true,
-                                      gridDelegate:
-                                          const SliverGridDelegateWithFixedCrossAxisCount(
-                                              crossAxisCount: 3,
-                                              crossAxisSpacing: 5,
-                                              mainAxisSpacing: 5),
+                                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 3, crossAxisSpacing: 5, mainAxisSpacing: 5),
                                       itemBuilder: (context, index) {
                                         return GestureDetector(
                                           onTap: () {
-                                            Navigator.pushNamed(context,
-                                                PageConsts.postDetailPage,
+                                            Navigator.pushNamed(context, PageConsts.postDetailPage,
                                                 arguments: posts[index].postId);
                                           },
                                           child: SizedBox(
                                             width: 100,
                                             height: 100,
-                                            child: profileWidget(
-                                                imageUrl:
-                                                    posts[index].postImageUrl),
+                                            child: profileWidget(imageUrl: posts[index].postImageUrl),
                                           ),
                                         );
                                       }),
                                 );
                               } else {
-                                return const Center(
-                                    child: CircularProgressIndicator());
+                                return const Center(child: CircularProgressIndicator());
                               }
                             },
                           )

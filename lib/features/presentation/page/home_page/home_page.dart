@@ -16,7 +16,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
-        backgroundColor: darkPinkColor,
+        backgroundColor: darkPurpleColor,
         title: const Text("PETOPIA"),
         actions: [
           Padding(
@@ -63,7 +63,8 @@ class HomePage extends StatelessWidget {
                   : ListView.builder(
                       itemCount: postState.posts.length,
                       itemBuilder: (context, index) {
-                        final post = postState.posts[index];
+                        final post = postState.posts.where((element) => element!.isPrivate == false).toList()[index];
+
                         return BlocProvider(
                           create: (context) => di.sl<PostCubit>(),
                           child: SinglePagePostCardWidget(post: post),

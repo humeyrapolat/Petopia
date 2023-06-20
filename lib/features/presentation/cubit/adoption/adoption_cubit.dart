@@ -33,7 +33,7 @@ class AdoptionCubit extends Cubit<AdoptionState> {
     }
   }
 
-  Future<void> createAdoption({required AdoptionEntity adoption}) async {
+  Future<void> createAdoption(AdoptionEntity adoption) async {
     try {
       await createAdoptionUseCase.call(adoption);
     } on SocketException catch (_) {

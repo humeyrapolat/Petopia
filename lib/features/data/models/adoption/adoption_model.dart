@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:petopia/features/domain/entities/adoption/adoption_entity.dart';
 import 'package:petopia/features/domain/entities/post/post_entity.dart';
@@ -7,7 +9,8 @@ class AdoptionModel extends AdoptionEntity {
   final String? creatorUid;
   final String? city;
   final String? type;
-  final num? age;
+  final String? age;
+  final String? profileUrl;
 
   const AdoptionModel({
     this.adoptionPostId,
@@ -15,13 +18,14 @@ class AdoptionModel extends AdoptionEntity {
     this.city,
     this.type,
     this.age,
+    this.profileUrl,
   }) : super(
-          adoptionPostId: adoptionPostId,
-          creatorUid: creatorUid,
-          city: city,
-          type: type,
-          age: age,
-        );
+            adoptionPostId: adoptionPostId,
+            creatorUid: creatorUid,
+            city: city,
+            type: type,
+            age: age,
+            profileUrl: profileUrl);
 
   factory AdoptionModel.fromSnapshot(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
@@ -32,6 +36,7 @@ class AdoptionModel extends AdoptionEntity {
       city: snapshot['city'],
       type: snapshot['type'],
       age: snapshot['age'],
+      profileUrl: snapshot['profileUrl'],
     );
   }
 
@@ -41,5 +46,6 @@ class AdoptionModel extends AdoptionEntity {
         "city": city,
         "type": type,
         "age": age,
+        "profileUrl": profileUrl,
       };
 }

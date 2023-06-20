@@ -16,8 +16,7 @@ class SinglePagePostCardWidget extends StatefulWidget {
   const SinglePagePostCardWidget({super.key, required this.post});
 
   @override
-  State<SinglePagePostCardWidget> createState() =>
-      _SinglePagePostCardWidgetState();
+  State<SinglePagePostCardWidget> createState() => _SinglePagePostCardWidgetState();
 }
 
 class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
@@ -46,8 +45,7 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
             children: [
               GestureDetector(
                 onTap: () {
-                  Navigator.pushNamed(context, PageConsts.singleUserProfilePage,
-                      arguments: widget.post.creatorUid);
+                  Navigator.pushNamed(context, PageConsts.singleUserProfilePage, arguments: widget.post.creatorUid);
                 },
                 child: Row(
                   children: [
@@ -56,15 +54,13 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
                       height: 30,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(15),
-                        child: profileWidget(
-                            imageUrl: "${widget.post.userProfileUrl}"),
+                        child: profileWidget(imageUrl: "${widget.post.userProfileUrl}"),
                       ),
                     ),
                     sizeHorizontal(10),
                     Text(
                       widget.post.username!,
-                      style: const TextStyle(
-                          color: black, fontWeight: FontWeight.bold),
+                      style: const TextStyle(color: black, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -123,13 +119,19 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
                 children: [
                   GestureDetector(
                     onTap: _likePost,
-                    child: Icon(
-                      widget.post.likes!.contains(_currentUUid)
-                          ? Icons.favorite
-                          : Icons.favorite_outline,
-                      color: widget.post.likes!.contains(_currentUUid)
-                          ? Colors.red
-                          : darkGrey,
+                    child: Row(
+                      children: [
+                        widget.post.totalLikes != 0
+                            ? Text(
+                                "${widget.post.totalLikes!}",
+                                style: const TextStyle(color: black, fontWeight: FontWeight.bold),
+                              )
+                            : const SizedBox(width: 0, height: 0),
+                        Icon(
+                          widget.post.likes!.contains(_currentUUid) ? Icons.favorite : Icons.favorite_outline,
+                          color: widget.post.likes!.contains(_currentUUid) ? Colors.red : darkGrey,
+                        ),
+                      ],
                     ),
                   ),
                   sizeHorizontal(10),
@@ -141,15 +143,27 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
                             postId: widget.post.postId,
                           ));
                     },
-                    child: const Icon(
-                      Feather.message_circle,
-                      color: darkGrey,
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, PageConsts.commentPage,
+                                arguments: AppEntity(
+                                  uid: _currentUUid,
+                                  postId: widget.post.postId,
+                                ));
+                          },
+                          child: Text(
+                            widget.post.totalComments == 0 ? "" : "${widget.post.totalComments}",
+                            style: const TextStyle(color: black, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const Icon(
+                          Feather.message_circle,
+                          color: darkGrey,
+                        ),
+                      ],
                     ),
-                  ),
-                  sizeHorizontal(10),
-                  const Icon(
-                    Feather.send,
-                    color: darkGrey,
                   ),
                 ],
               ),
@@ -160,18 +174,12 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
             ],
           ),
           sizeVertical(10),
-          Text(
-            "${widget.post.totalLikes!} likes",
-            style: const TextStyle(color: black, fontWeight: FontWeight.bold),
-          ),
-          sizeVertical(10),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Text(
                 widget.post.username!,
-                style:
-                    const TextStyle(color: black, fontWeight: FontWeight.bold),
+                style: const TextStyle(color: black, fontWeight: FontWeight.bold),
               ),
               sizeHorizontal(10),
               Text(
@@ -181,26 +189,6 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
             ],
           ),
           sizeVertical(10),
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, PageConsts.commentPage,
-                  arguments: AppEntity(
-                    uid: _currentUUid,
-                    postId: widget.post.postId,
-                  ));
-            },
-            child: Text(
-              widget.post.totalComments == 0
-                  ? "No Comments"
-                  : "View all ${widget.post.totalComments} comments",
-              style: const TextStyle(color: black),
-            ),
-          ),
-          sizeVertical(10),
-          Text(
-            DateFormat('dd MMM yyyy').format(widget.post.createAt!.toDate()),
-            style: const TextStyle(color: black),
-          ),
         ],
       ),
     );
@@ -220,85 +208,69 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
                 margin: const EdgeInsets.symmetric(
                   vertical: 10,
                 ),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(
-                          "More Options",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: white),
-                        ),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Text(
+                      "More Options",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: white),
+                    ),
+                  ),
+                  sizeVertical(10),
+                  const Divider(
+                    thickness: 1,
+                    color: black,
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: GestureDetector(
+                      onTap: () {
+                        _deletePost();
+                      },
+                      child: const Text(
+                        "Delete Post ",
+                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: white),
                       ),
-                      sizeVertical(10),
-                      const Divider(
-                        thickness: 1,
-                        color: black,
+                    ),
+                  ),
+                  sizeVertical(7),
+                  const Divider(
+                    thickness: 1,
+                    color: black,
+                  ),
+                  sizeVertical(7),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, PageConsts.updatePostPage, arguments: post);
+                      },
+                      child: const Text(
+                        "Update Post ",
+                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: white),
                       ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: GestureDetector(
-                          onTap: () {
-                            _deletePost();
-                          },
-                          child: const Text(
-                            "Delete Post ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16,
-                                color: white),
-                          ),
-                        ),
-                      ),
-                      sizeVertical(7),
-                      const Divider(
-                        thickness: 1,
-                        color: black,
-                      ),
-                      sizeVertical(7),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, PageConsts.updatePostPage,
-                                arguments: post);
-                          },
-                          child: const Text(
-                            "Update Post ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16,
-                                color: white),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      sizeVertical(7),
-                      const Divider(
-                        thickness: 1,
-                        color: black,
-                      ),
-                      sizeVertical(7),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(
-                          "Logout",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: white),
-                        ),
-                      )
-                    ]),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  sizeVertical(7),
+                  const Divider(
+                    thickness: 1,
+                    color: black,
+                  ),
+                  sizeVertical(7),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Text(
+                      "Logout",
+                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: white),
+                    ),
+                  )
+                ]),
               ),
             ),
           );
@@ -312,7 +284,6 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
   }
 
   _likePost() {
-    BlocProvider.of<PostCubit>(context)
-        .likePost(post: PostEntity(postId: widget.post.postId));
+    BlocProvider.of<PostCubit>(context).likePost(post: PostEntity(postId: widget.post.postId));
   }
 }

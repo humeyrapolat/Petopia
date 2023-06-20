@@ -7,29 +7,36 @@ class LostModel extends LostEntity {
   final String? lostAnimalId;
   final String? creatorUid;
   final String? city;
-  final String? imageUrl;
-  final String? name;
+  final String? district;
   final DateTime? date;
-  final int? age;
-  final bool? isKnowName;
+  final String? description;
+  final bool? isWithMe;
+  final bool? isinjured;
+  final String? imageUrl;
+  final bool? isMine;
 
-  const LostModel({
-    this.lostAnimalId,
-    this.creatorUid,
-    this.city,
-    this.age,
-    this.imageUrl,
-    this.name,
-    this.date,
-    this.isKnowName,
-  }) : super(
+  const LostModel(
+      {this.lostAnimalId,
+      this.creatorUid,
+      this.city,
+      this.imageUrl,
+      this.date,
+      this.district,
+      this.description,
+      this.isWithMe,
+      this.isinjured,
+      this.isMine})
+      : super(
           creatorUid: creatorUid,
           city: city,
-          age: age,
           imageUrl: imageUrl,
-          name: name,
           date: date,
-          isKnowName: isKnowName,
+          district: district,
+          description: description,
+          isWithMe: isWithMe,
+          isinjured: isinjured,
+          lostAnimalId: lostAnimalId,
+          isMine: isMine,
         );
 
   factory LostModel.fromSnapshot(DocumentSnapshot snap) {
@@ -39,11 +46,13 @@ class LostModel extends LostEntity {
       lostAnimalId: snap.id,
       creatorUid: snapshot['creatorUid'],
       city: snapshot['city'],
-      age: snapshot['age'],
       imageUrl: snapshot['imageUrl'],
-      name: snapshot['name'],
       date: snapshot['date'].toDate(),
-      isKnowName: snapshot['isKnowName'],
+      district: snapshot['district'],
+      description: snapshot['description'],
+      isWithMe: snapshot['isWithMe'],
+      isinjured: snapshot['isInjured'],
+      isMine: snapshot['isMine'],
     );
   }
 
@@ -51,10 +60,12 @@ class LostModel extends LostEntity {
         'lostAnimalId': lostAnimalId,
         'creatorUid': creatorUid,
         'city': city,
-        'age': age,
         'imageUrl': imageUrl,
-        'name': name,
         'date': date,
-        'isKnowName': isKnowName,
+        'district': district,
+        'description': description,
+        'isWithMe': isWithMe,
+        'isInjured': isinjured,
+        'isMine': isMine,
       };
 }

@@ -8,6 +8,8 @@ class AnimalModel extends AnimalEntity {
   final String? bio;
   final String? website;
   final String? email;
+  final String? city;
+  final String? district;
   final String? birthdate;
   final String? breed;
   final String? gender;
@@ -19,6 +21,9 @@ class AnimalModel extends AnimalEntity {
   final num? totalFollowers;
   final num? totalFollowing;
   final num? totalPosts;
+  final List<String>? likedPosts;
+  final List<String>? lostPosts;
+  final List<String>? adoptionPosts;
 
   const AnimalModel(
       {this.uid,
@@ -27,6 +32,8 @@ class AnimalModel extends AnimalEntity {
       this.bio,
       this.website,
       this.email,
+      this.city,
+      this.district,
       this.birthdate,
       this.breed,
       this.gender,
@@ -37,7 +44,10 @@ class AnimalModel extends AnimalEntity {
       this.favorites,
       this.totalFollowers,
       this.totalFollowing,
-      this.totalPosts})
+      this.likedPosts,
+      this.totalPosts,
+      this.lostPosts,
+      this.adoptionPosts})
       : super(
           uid: uid,
           username: username,
@@ -45,6 +55,8 @@ class AnimalModel extends AnimalEntity {
           bio: bio,
           website: website,
           email: email,
+          city: city,
+          district: district,
           birthdate: birthdate,
           breed: breed,
           gender: gender,
@@ -53,9 +65,12 @@ class AnimalModel extends AnimalEntity {
           followers: followers,
           following: following,
           favorites: favorites,
+          likedPosts: likedPosts,
           totalFollowers: totalFollowers,
           totalFollowing: totalFollowing,
           totalPosts: totalPosts,
+          lostPosts: lostPosts,
+          adoptionPosts: adoptionPosts,
         );
 
   factory AnimalModel.fromSnapshot(DocumentSnapshot snap) {
@@ -89,17 +104,22 @@ class AnimalModel extends AnimalEntity {
       'bio': bio,
       'website': website,
       'email': email,
+      'city': city,
+      'district': district,
       'birthdate': birthdate,
       'breed': breed,
       'gender': gender,
       'type': type,
       'profileUrl': profileUrl,
+      'likedPosts': likedPosts,
       'followers': followers,
       'following': following,
       'favorites': favorites,
       'totalFollowers': totalFollowers,
       'totalFollowing': totalFollowing,
       'totalPosts': totalPosts,
+      'lostPosts': lostPosts,
+      'adoptionPosts': adoptionPosts,
     };
   }
 }

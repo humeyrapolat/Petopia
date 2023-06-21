@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_icons_null_safety/flutter_icons_null_safety.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:petopia/features/presentation/page/home_page/post/widgets/single_post_card_widget.dart';
 import 'package:petopia/injection_container.dart' as di;
@@ -17,7 +16,7 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
-        backgroundColor: darkPinkColor,
+        backgroundColor: darkPurpleColor,
         title: const Text("PETOPIA"),
         actions: [
           Padding(
@@ -47,8 +46,7 @@ class HomePage extends StatelessWidget {
         ],
       ),
       body: BlocProvider<PostCubit>(
-        create: (context) =>
-            di.sl<PostCubit>()..getPosts(post: const PostEntity()),
+        create: (context) => di.sl<PostCubit>()..getPosts(post: const PostEntity()),
         child: BlocBuilder<PostCubit, PostState>(
           builder: (context, postState) {
             if (postState is PostLoading) {
@@ -65,7 +63,8 @@ class HomePage extends StatelessWidget {
                   : ListView.builder(
                       itemCount: postState.posts.length,
                       itemBuilder: (context, index) {
-                        final post = postState.posts[index];
+                        final post = postState.posts.where((element) => element!.isPrivate == false).toList()[index];
+
                         return BlocProvider(
                           create: (context) => di.sl<PostCubit>(),
                           child: SinglePagePostCardWidget(post: post),
@@ -86,8 +85,7 @@ class HomePage extends StatelessWidget {
     return const Center(
       child: Text(
         "No Posts Yet",
-        style: TextStyle(
-            color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
       ),
     );
   }

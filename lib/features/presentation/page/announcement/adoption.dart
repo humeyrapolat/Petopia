@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:petopia/features/domain/entities/adoption/adoption_entity.dart';
+import 'package:petopia/features/presentation/cubit/adoption/adoption_cubit.dart';
 import 'package:petopia/util/consts.dart';
+import 'package:petopia/injection_container.dart' as di;
+
+import 'widget/single_adoption_card_widget.dart';
 
 class AdoptionPage extends StatelessWidget {
   const AdoptionPage({super.key});
@@ -8,69 +14,47 @@ class AdoptionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
-      child: ListView(padding: const EdgeInsets.all(8), children: <Widget>[
-        SizedBox(
-          height: 50,
-          child: ListTile(
-            leading: Container(
-              width: 30,
-              height: 30,
-              decoration: const BoxDecoration(
-                  color: Colors.grey, shape: BoxShape.circle),
-            ),
-            title: const Text(
-              "Username - Adopt Description",
-              style:
-                  TextStyle(color: darkGreenColor, fontWeight: FontWeight.bold),
-            ),
-            trailing: const Icon(
-              Iconsax.message,
-              color: darkGreenColor,
-            ),
-          ),
+      body: BlocProvider<AdoptionCubit>(
+        create: (context) => di.sl<AdoptionCubit>()..getAdoptions(adoption: const AdoptionEntity()),
+        child: BlocBuilder<AdoptionCubit, AdoptionState>(
+          builder: (context, adoptionState) {
+            if (adoptionState is AdoptionLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            if (adoptionState is AdoptionFailure) {
+              toast("Some Failure occured while creating the post");
+            }
+            if (adoptionState is AdoptionLoaded) {
+              return adoptionState.adoptions.isEmpty
+                  ? _noPostsYetWidget()
+                  : ListView.builder(
+                      itemCount: adoptionState.adoptions.length,
+                      itemBuilder: (context, index) {
+                        final adoption = adoptionState.adoptions[index];
+                        return BlocProvider(
+                          create: (context) => di.sl<AdoptionCubit>(),
+                          child: SinglePageAdoptionCardWidget(adoption: adoption),
+                        );
+                      },
+                    );
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
         ),
-        SizedBox(
-          height: 50,
-          child: ListTile(
-            leading: Container(
-              width: 30,
-              height: 30,
-              decoration: const BoxDecoration(
-                  color: Colors.grey, shape: BoxShape.circle),
-            ),
-            title: const Text(
-              "Username - Adopt Description",
-              style:
-                  TextStyle(color: darkGreenColor, fontWeight: FontWeight.bold),
-            ),
-            trailing: const Icon(
-              Iconsax.message,
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 50,
-          child: ListTile(
-            leading: Container(
-              width: 30,
-              height: 30,
-              decoration: const BoxDecoration(
-                  color: Colors.grey, shape: BoxShape.circle),
-            ),
-            title: const Text(
-              "Username - Adopt Description",
-              style:
-                  TextStyle(color: darkGreenColor, fontWeight: FontWeight.bold),
-            ),
-            trailing: const Icon(
-              Iconsax.message,
-              color: darkGreenColor,
-            ),
-          ),
-        )
-      ]),
-    ));
+      ),
+    );
+  }
+
+  _noPostsYetWidget() {
+    return const Center(
+      child: Text(
+        "No animal for adoption yet! You can be the first one",
+        style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18),
+      ),
+    );
   }
 }

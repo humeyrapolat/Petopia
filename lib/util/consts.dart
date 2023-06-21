@@ -79,6 +79,8 @@ class PageConsts {
 class FirebaseConsts {
   static const String users = "users";
   static const String post = "post";
+  static const String adoption = "adoption";
+  static const String lost = "lost";
   static const String comments = "comments";
   static const String likes = "likes";
   static const String followers = "followers";
@@ -100,4 +102,36 @@ void toast(String message) {
     textColor: black,
     fontSize: 16.0,
   );
+}
+
+class ListConst {
+  final List<String> genderItems = [
+    'Male',
+    'Female',
+  ];
+
+  final List<String> typeItems = ['Cat', 'Dog', 'Rabbit'];
+  final List<String> cityItems = ["Istanbul", "Izmır", "Antalya", "Other"];
+  final List<String> istanbulDistrict = ["Kadıköy", "Sisli", "Maltepe", "Bebek", "Other"];
+  final List<String> izmirDistrict = ["Konak", "Bornova", "Buca", "Cesme", "Other"];
+  final List<String> antalyaDistrict = ["Muratpasa", "Konyaalti", "Kepez", "Dosemealti", "Other"];
+
+  final List<String> catBreeds = [
+    "Siamese",
+    "Persian",
+    "Scottish Fold",
+    "British",
+    "Bengal",
+    "Others",
+  ];
+
+  final List<String> dogBreeds = ["Labrador Retriever", "Golden Retriever", "Bulldog", "Poodle", "Terrier", "Others"];
+
+  final List<String> rabbitBreeds = [
+    "Alaska",
+    "Holland Lop",
+    "French Lop",
+    "Blanc de Hotot",
+    "Others",
+  ];
 }

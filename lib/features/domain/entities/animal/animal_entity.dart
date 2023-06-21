@@ -8,6 +8,8 @@ class AnimalEntity extends Equatable {
   final String? name;
   final String? bio;
   final String? website;
+  final String? city;
+  final String? district;
   final String? email;
   final String? birthdate;
   final String? breed;
@@ -20,6 +22,9 @@ class AnimalEntity extends Equatable {
   final num? totalFollowers;
   final num? totalFollowing;
   final num? totalPosts;
+  final List<String>? likedPosts;
+  final List<String>? lostPosts;
+  final List<String>? adoptionPosts;
 
   final File? imageFile;
   final String? password;
@@ -32,6 +37,8 @@ class AnimalEntity extends Equatable {
     this.name,
     this.bio,
     this.website,
+    this.city,
+    this.district,
     this.email,
     this.birthdate,
     this.breed,
@@ -46,6 +53,9 @@ class AnimalEntity extends Equatable {
     this.totalPosts,
     this.password,
     this.otherUid,
+    this.likedPosts,
+    this.adoptionPosts,
+    this.lostPosts,
   });
 
   @override
@@ -57,6 +67,8 @@ class AnimalEntity extends Equatable {
         bio,
         website,
         email,
+        city,
+        district,
         birthdate,
         breed,
         gender,
@@ -70,5 +82,8 @@ class AnimalEntity extends Equatable {
         totalPosts,
         password,
         otherUid,
+        likedPosts,
+        adoptionPosts,
+        lostPosts,
       ];
 }

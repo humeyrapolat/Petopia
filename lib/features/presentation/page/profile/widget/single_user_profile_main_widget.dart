@@ -23,12 +23,10 @@ class SingleUserProfileMainWigdet extends StatefulWidget {
   const SingleUserProfileMainWigdet({super.key, required this.otherUserId});
 
   @override
-  State<SingleUserProfileMainWigdet> createState() =>
-      _SingleUserProfileMainWigdetState();
+  State<SingleUserProfileMainWigdet> createState() => _SingleUserProfileMainWigdetState();
 }
 
-class _SingleUserProfileMainWigdetState
-    extends State<SingleUserProfileMainWigdet> {
+class _SingleUserProfileMainWigdetState extends State<SingleUserProfileMainWigdet> {
   String _currentUid = "";
 
   @override
@@ -38,8 +36,7 @@ class _SingleUserProfileMainWigdetState
         _currentUid = value;
       });
     });
-    BlocProvider.of<GetSingleOtherUserCubit>(context)
-        .getSingleOtherUser(otherUid: widget.otherUserId);
+    BlocProvider.of<GetSingleOtherUserCubit>(context).getSingleOtherUser(otherUid: widget.otherUserId);
     super.initState();
   }
 
@@ -54,13 +51,12 @@ class _SingleUserProfileMainWigdetState
             return Scaffold(
               backgroundColor: white,
               appBar: AppBar(
+                centerTitle: true,
                 backgroundColor: darkBlueGreenColor,
                 elevation: 0,
-                title: Center(
-                  child: Text(
-                    "${singleUser.username}".toUpperCase(),
-                    style: const TextStyle(color: black),
-                  ),
+                title: Text(
+                  "${singleUser.username}".toUpperCase(),
+                  style: const TextStyle(color: black),
                 ),
                 leading: const Icon(
                   Ionicons.ios_megaphone,
@@ -71,8 +67,7 @@ class _SingleUserProfileMainWigdetState
                           padding: const EdgeInsets.only(right: 10.0),
                           child: InkWell(
                               onTap: () {
-                                _openBottomModalSheet(
-                                    context: context, currentUser: singleUser);
+                                _openBottomModalSheet(context: context, currentUser: singleUser);
                               },
                               child: const Icon(
                                 Icons.menu,
@@ -114,18 +109,12 @@ class _SingleUserProfileMainWigdetState
                             children: [
                               Text(
                                 "${singleUser.totalPosts}",
-                                style: const TextStyle(
-                                    color: black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
+                                style: const TextStyle(color: black, fontWeight: FontWeight.bold, fontSize: 20),
                               ),
                               sizeVertical(5),
                               const Text(
                                 "Posts",
-                                style: TextStyle(
-                                    color: lightGrey,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15),
+                                style: TextStyle(color: lightGrey, fontWeight: FontWeight.bold, fontSize: 15),
                               ),
                             ],
                           ),
@@ -135,26 +124,18 @@ class _SingleUserProfileMainWigdetState
                         child: Container(
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, PageConsts.followersPage,
-                                  arguments: singleUser);
+                              Navigator.pushNamed(context, PageConsts.followersPage, arguments: singleUser);
                             },
                             child: Column(
                               children: [
                                 Text(
                                   "${singleUser.totalFollowers}",
-                                  style: const TextStyle(
-                                      color: black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
+                                  style: const TextStyle(color: black, fontWeight: FontWeight.bold, fontSize: 20),
                                 ),
                                 sizeVertical(5),
                                 const Text(
                                   "Followers",
-                                  style: TextStyle(
-                                      color: lightGrey,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15),
+                                  style: TextStyle(color: lightGrey, fontWeight: FontWeight.bold, fontSize: 15),
                                 ),
                               ],
                             ),
@@ -166,26 +147,18 @@ class _SingleUserProfileMainWigdetState
                           alignment: Alignment.centerLeft,
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, PageConsts.followingPage,
-                                  arguments: singleUser);
+                              Navigator.pushNamed(context, PageConsts.followingPage, arguments: singleUser);
                             },
                             child: Column(
                               children: [
                                 Text(
                                   "${singleUser.totalFollowing}",
-                                  style: const TextStyle(
-                                      color: black,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20),
+                                  style: const TextStyle(color: black, fontWeight: FontWeight.bold, fontSize: 20),
                                 ),
                                 sizeVertical(5),
                                 const Text(
                                   "Following",
-                                  style: TextStyle(
-                                      color: lightGrey,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 15),
+                                  style: TextStyle(color: lightGrey, fontWeight: FontWeight.bold, fontSize: 15),
                                 ),
                               ],
                             ),
@@ -203,18 +176,11 @@ class _SingleUserProfileMainWigdetState
                   _currentUid == singleUser.uid
                       ? Container()
                       : ButtonContainerWidget(
-                          text: singleUser.followers!.contains(_currentUid)
-                              ? "UnFollow"
-                              : "Follow",
-                          color: singleUser.followers!.contains(_currentUid)
-                              ? black.withOpacity(.4)
-                              : darkBlueColor,
+                          text: singleUser.followers!.contains(_currentUid) ? "UnFollow" : "Follow",
+                          color: singleUser.followers!.contains(_currentUid) ? black.withOpacity(.4) : darkBlueColor,
                           onTapListener: () {
                             BlocProvider.of<UserCubit>(context)
-                                .followUnFollowUser(
-                                    user: AnimalEntity(
-                                        uid: _currentUid,
-                                        otherUid: widget.otherUserId));
+                                .followUnFollowUser(user: AnimalEntity(uid: _currentUid, otherUid: widget.otherUserId));
                           },
                         ),
                   singleUser.uid == _currentUid
@@ -269,8 +235,7 @@ class _SingleUserProfileMainWigdetState
     );
   }
 
-  _openBottomModalSheet(
-      {required BuildContext context, required AnimalEntity currentUser}) {
+  _openBottomModalSheet({required BuildContext context, required AnimalEntity currentUser}) {
     return showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -286,8 +251,7 @@ class _SingleUserProfileMainWigdetState
                     child: Center(
                       child: Text(
                         "More options",
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -312,9 +276,7 @@ class _SingleUserProfileMainWigdetState
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(
-                                  context, PageConsts.editProfilePage,
-                                  arguments: currentUser)
+                          Navigator.pushNamed(context, PageConsts.editProfilePage, arguments: currentUser)
                               .whenComplete(() {
                             Navigator.pop(context);
                           });
@@ -346,8 +308,7 @@ class _SingleUserProfileMainWigdetState
                       GestureDetector(
                         onTap: () {
                           BlocProvider.of<AuthCubit>(context).loggedOut();
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, PageConsts.signInPage, (route) => false);
+                          Navigator.pushNamedAndRemoveUntil(context, PageConsts.signInPage, (route) => false);
                         },
                         child: Container(
                           alignment: Alignment.center,

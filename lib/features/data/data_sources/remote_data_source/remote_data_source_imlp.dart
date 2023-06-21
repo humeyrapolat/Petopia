@@ -5,11 +5,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:petopia/features/data/data_sources/remote_data_source/remote_data_source.dart';
+import 'package:petopia/features/data/models/adoption/adoption_model.dart';
 import 'package:petopia/features/data/models/comment/comment_model.dart';
+import 'package:petopia/features/data/models/lost/lost_model.dart';
 import 'package:petopia/features/data/models/posts/post_model.dart';
 import 'package:petopia/features/data/models/replay/replay_model.dart';
 import 'package:petopia/features/data/models/animal/animal_model.dart';
+import 'package:petopia/features/domain/entities/adoption/adoption_entity.dart';
 import 'package:petopia/features/domain/entities/comment/comment_entity.dart';
+import 'package:petopia/features/domain/entities/lost/lost_entity.dart';
 import 'package:petopia/features/domain/entities/post/post_entity.dart';
 import 'package:petopia/features/domain/entities/replay/replay_entity.dart';
 import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
@@ -22,9 +26,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   FirebaseStorage firebaseStorage;
 
   FirebaseRemoteDataSourceImpl(
-      {required this.firebaseFirestore,
-      required this.firebaseAuth,
-      required this.firebaseStorage});
+      {required this.firebaseFirestore, required this.firebaseAuth, required this.firebaseStorage});
 
   Future<void> createUserWithImage(AnimalEntity user, String profileUrl) async {
     final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
@@ -34,6 +36,8 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         uid: uid,
         name: user.name,
         email: user.email,
+        city: user.city,
+        district: user.district,
         bio: user.bio,
         following: user.following,
         username: user.username,
@@ -45,9 +49,12 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         gender: user.gender,
         breed: user.breed,
         birthdate: user.birthdate,
+        likedPosts: user.likedPosts,
         totalFollowers: user.totalFollowers,
         totalFollowing: user.totalFollowing,
         totalPosts: user.totalPosts,
+        lostPosts: user.lostPosts,
+        adoptionPosts: user.adoptionPosts,
       ).toJson();
 
       if (!userDoc.exists) {
@@ -70,6 +77,8 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       final newUser = AnimalModel(
         name: user.name,
         email: user.email,
+        city: user.city,
+        district: user.district,
         uid: uid,
         bio: user.bio,
         profileUrl: user.profileUrl,
@@ -81,9 +90,12 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         gender: user.gender,
         breed: user.breed,
         birthdate: user.birthdate,
+        likedPosts: user.likedPosts,
         totalFollowers: user.totalFollowers,
         totalFollowing: user.totalFollowing,
         totalPosts: user.totalPosts,
+        lostPosts: user.lostPosts,
+        adoptionPosts: user.adoptionPosts,
       ).toJson();
 
       if (!userDoc.exists) {
@@ -101,15 +113,10 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
 
   @override
   Stream<List<AnimalEntity>> getSingleUser(String uid) {
-    final userCollection = firebaseFirestore
-        .collection(FirebaseConsts.users)
-        .where("uid", isEqualTo: uid)
-        .limit(1);
+    final userCollection = firebaseFirestore.collection(FirebaseConsts.users).where("uid", isEqualTo: uid).limit(1);
     return userCollection.snapshots().map(
       (querySnapsoht) {
-        return querySnapsoht.docs
-            .map((e) => AnimalModel.fromSnapshot(e))
-            .toList();
+        return querySnapsoht.docs.map((e) => AnimalModel.fromSnapshot(e)).toList();
       },
     );
   }
@@ -119,9 +126,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
     return userCollection.snapshots().map(
       (querySnapsoht) {
-        return querySnapsoht.docs
-            .map((e) => AnimalModel.fromSnapshot(e))
-            .toList();
+        return querySnapsoht.docs.map((e) => AnimalModel.fromSnapshot(e)).toList();
       },
     );
   }
@@ -133,8 +138,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   Future<void> signInUser(AnimalEntity user) async {
     try {
       if (user.email!.isNotEmpty && user.password!.isNotEmpty) {
-        await firebaseAuth.signInWithEmailAndPassword(
-            email: user.email!, password: user.password!);
+        await firebaseAuth.signInWithEmailAndPassword(email: user.email!, password: user.password!);
       } else {
         print("Email and password can't be empty");
       }
@@ -165,13 +169,11 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   Future<void> signUpUser(AnimalEntity user) async {
     try {
       await firebaseAuth
-          .createUserWithEmailAndPassword(
-              email: user.email!, password: user.password!)
+          .createUserWithEmailAndPassword(email: user.email!, password: user.password!)
           .then((currentUser) async {
         if (currentUser.user?.uid != null) {
           if (user.imageFile != null) {
-            uploadImageToStorage(user.imageFile, false, "profileImages")
-                .then((profileUrl) {
+            uploadImageToStorage(user.imageFile, false, "profileImages").then((profileUrl) {
               createUserWithImage(user, profileUrl);
             });
           } else {
@@ -218,6 +220,15 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     if (user.following != null) {
       userInformation["following"] = user.following;
     }
+    if (user.likedPosts != null) {
+      userInformation["likedPost"] = user.likedPosts;
+    }
+    if (user.lostPosts != null) {
+      userInformation["lostPosts"] = user.lostPosts;
+    }
+    if (user.adoptionPosts != null) {
+      userInformation["adoptionPosts"] = user.adoptionPosts;
+    }
     if (user.totalFollowers != null) {
       userInformation["totalFollowers"] = user.totalFollowers;
     }
@@ -244,19 +255,14 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   }
 
   @override
-  Future<String> uploadImageToStorage(
-      File? file, bool isPost, String childName) async {
-    Reference ref = firebaseStorage
-        .ref()
-        .child(childName)
-        .child(firebaseAuth.currentUser!.uid);
+  Future<String> uploadImageToStorage(File? file, bool isPost, String childName) async {
+    Reference ref = firebaseStorage.ref().child(childName).child(firebaseAuth.currentUser!.uid);
     if (isPost) {
       String id = Uuid().v1();
       ref = ref.child(id);
     }
     final uploadTask = ref.putFile(file!);
-    final imageUrl =
-        (await uploadTask.whenComplete(() {})).ref.getDownloadURL();
+    final imageUrl = (await uploadTask.whenComplete(() {})).ref.getDownloadURL();
 
     return await imageUrl;
   }
@@ -277,8 +283,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         userCollection.doc(user.uid).update({
           "following": FieldValue.arrayRemove([user.otherUid])
         }).then((value) {
-          final userCollection =
-              firebaseFirestore.collection(FirebaseConsts.users).doc(user.uid);
+          final userCollection = firebaseFirestore.collection(FirebaseConsts.users).doc(user.uid);
 
           userCollection.get().then((value) {
             if (value.exists) {
@@ -292,8 +297,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         userCollection.doc(user.uid).update({
           "following": FieldValue.arrayUnion([user.otherUid])
         }).then((value) {
-          final userCollection =
-              firebaseFirestore.collection(FirebaseConsts.users).doc(user.uid);
+          final userCollection = firebaseFirestore.collection(FirebaseConsts.users).doc(user.uid);
 
           userCollection.get().then((value) {
             if (value.exists) {
@@ -310,9 +314,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         userCollection.doc(user.otherUid).update({
           "followers": FieldValue.arrayRemove([user.uid])
         }).then((value) {
-          final userCollection = firebaseFirestore
-              .collection(FirebaseConsts.users)
-              .doc(user.otherUid);
+          final userCollection = firebaseFirestore.collection(FirebaseConsts.users).doc(user.otherUid);
 
           userCollection.get().then((value) {
             if (value.exists) {
@@ -326,9 +328,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         userCollection.doc(user.otherUid).update({
           "followers": FieldValue.arrayUnion([user.uid])
         }).then((value) {
-          final userCollection = firebaseFirestore
-              .collection(FirebaseConsts.users)
-              .doc(user.otherUid);
+          final userCollection = firebaseFirestore.collection(FirebaseConsts.users).doc(user.otherUid);
 
           userCollection.get().then((value) {
             if (value.exists) {
@@ -344,12 +344,11 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
 
   @override
   Stream<List<AnimalEntity>> getSingleOtherUser(String otherUid) {
-    final userCollection = firebaseFirestore
-        .collection(FirebaseConsts.users)
-        .where("uid", isEqualTo: otherUid)
-        .limit(1);
-    return userCollection.snapshots().map((querySnapshot) =>
-        querySnapshot.docs.map((e) => AnimalModel.fromSnapshot(e)).toList());
+    final userCollection =
+        firebaseFirestore.collection(FirebaseConsts.users).where("uid", isEqualTo: otherUid).limit(1);
+    return userCollection
+        .snapshots()
+        .map((querySnapshot) => querySnapshot.docs.map((e) => AnimalModel.fromSnapshot(e)).toList());
   }
 
   @override
@@ -375,9 +374,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
 
       if (!postDocRef.exists) {
         postCollection.doc(post.postId).set(newPost).then((value) {
-          final userCollection = firebaseFirestore
-              .collection(FirebaseConsts.users)
-              .doc(post.creatorUid);
+          final userCollection = firebaseFirestore.collection(FirebaseConsts.users).doc(post.creatorUid);
 
           userCollection.get().then((value) {
             if (value.exists) {
@@ -398,8 +395,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   @override
   Future<void> deletePost(PostEntity post) async {
     final postCollection = firebaseFirestore.collection(FirebaseConsts.post);
-    final userCollection =
-        firebaseFirestore.collection(FirebaseConsts.users).doc(post.creatorUid);
+    final userCollection = firebaseFirestore.collection(FirebaseConsts.users).doc(post.creatorUid);
 
     try {
       final postDocRef = await postCollection.doc(post.postId).get();
@@ -419,6 +415,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   @override
   Future<void> likePost(PostEntity post) async {
     final postCollection = firebaseFirestore.collection(FirebaseConsts.post);
+    final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
 
     final currentUid = await getCurrentUid();
     final postRef = await postCollection.doc(post.postId).get();
@@ -431,10 +428,20 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
           "likes": FieldValue.arrayRemove([currentUid]),
           "totalLikes": totalLikes - 1
         });
+
+        // burada beğenine aynı zamanda kullanıcının beğendiği postların listesine ekleniyor
+        userCollection.doc(currentUid).update({
+          "likedPosts": FieldValue.arrayRemove([post.postId])
+        });
       } else {
         postCollection.doc(post.postId).update({
           "likes": FieldValue.arrayUnion([currentUid]),
           "totalLikes": totalLikes + 1
+        });
+
+        // burada beğenine aynı zamanda kullanıcının beğendiği postların listesine ekleniyor
+        userCollection.doc(currentUid).update({
+          "likedPosts": FieldValue.arrayUnion([post.postId])
         });
       }
     }
@@ -442,11 +449,10 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
 
   @override
   Stream<List<PostEntity>> readPost(PostEntity post) {
-    final postCollection = firebaseFirestore
-        .collection(FirebaseConsts.post)
-        .orderBy("createAt", descending: true);
-    return postCollection.snapshots().map((querySnapshot) =>
-        querySnapshot.docs.map((e) => PostModel.fromSnapshot(e)).toList());
+    final postCollection = firebaseFirestore.collection(FirebaseConsts.post).orderBy("createAt", descending: true);
+    return postCollection
+        .snapshots()
+        .map((querySnapshot) => querySnapshot.docs.map((e) => PostModel.fromSnapshot(e)).toList());
   }
 
   @override
@@ -455,8 +461,9 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         .collection(FirebaseConsts.post)
         .orderBy("createAt", descending: true)
         .where("postId", isEqualTo: postId);
-    return postCollection.snapshots().map((querySnapshot) =>
-        querySnapshot.docs.map((e) => PostModel.fromSnapshot(e)).toList());
+    return postCollection
+        .snapshots()
+        .map((querySnapshot) => querySnapshot.docs.map((e) => PostModel.fromSnapshot(e)).toList());
   }
 
   @override
@@ -475,10 +482,8 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
 
   @override
   Future<void> createComment(CommentEntity comment) async {
-    final commentCollection = firebaseFirestore
-        .collection(FirebaseConsts.post)
-        .doc(comment.postId)
-        .collection(FirebaseConsts.comments);
+    final commentCollection =
+        firebaseFirestore.collection(FirebaseConsts.post).doc(comment.postId).collection(FirebaseConsts.comments);
 
     final newComment = CommentModel(
             userProfileUrl: comment.userProfileUrl,
@@ -493,14 +498,11 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         .toJson();
 
     try {
-      final commentDocRef =
-          await commentCollection.doc(comment.commentId).get();
+      final commentDocRef = await commentCollection.doc(comment.commentId).get();
 
       if (!commentDocRef.exists) {
         commentCollection.doc(comment.commentId).set(newComment).then((value) {
-          final postCollection = firebaseFirestore
-              .collection(FirebaseConsts.post)
-              .doc(comment.postId);
+          final postCollection = firebaseFirestore.collection(FirebaseConsts.post).doc(comment.postId);
 
           postCollection.get().then((value) {
             if (value.exists) {
@@ -520,16 +522,12 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
 
   @override
   Future<void> deleteComment(CommentEntity comment) async {
-    final commentCollection = firebaseFirestore
-        .collection(FirebaseConsts.post)
-        .doc(comment.postId)
-        .collection(FirebaseConsts.comments);
+    final commentCollection =
+        firebaseFirestore.collection(FirebaseConsts.post).doc(comment.postId).collection(FirebaseConsts.comments);
 
     try {
       commentCollection.doc(comment.commentId).delete().then((value) {
-        final postCollection = firebaseFirestore
-            .collection(FirebaseConsts.post)
-            .doc(comment.postId);
+        final postCollection = firebaseFirestore.collection(FirebaseConsts.post).doc(comment.postId);
 
         postCollection.get().then((value) {
           if (value.exists) {
@@ -546,10 +544,8 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
 
   @override
   Future<void> likeComment(CommentEntity comment) async {
-    final commentCollection = firebaseFirestore
-        .collection(FirebaseConsts.post)
-        .doc(comment.postId)
-        .collection(FirebaseConsts.comments);
+    final commentCollection =
+        firebaseFirestore.collection(FirebaseConsts.post).doc(comment.postId).collection(FirebaseConsts.comments);
     final currentUid = await getCurrentUid();
 
     final commentRef = await commentCollection.doc(comment.commentId).get();
@@ -575,21 +571,19 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         .doc(postId)
         .collection(FirebaseConsts.comments)
         .orderBy("createAt", descending: true);
-    return commentCollection.snapshots().map((querySnapshot) =>
-        querySnapshot.docs.map((e) => CommentModel.fromSnapshot(e)).toList());
+    return commentCollection
+        .snapshots()
+        .map((querySnapshot) => querySnapshot.docs.map((e) => CommentModel.fromSnapshot(e)).toList());
   }
 
   @override
   Future<void> updateComment(CommentEntity comment) async {
-    final commentCollection = firebaseFirestore
-        .collection(FirebaseConsts.post)
-        .doc(comment.postId)
-        .collection(FirebaseConsts.comments);
+    final commentCollection =
+        firebaseFirestore.collection(FirebaseConsts.post).doc(comment.postId).collection(FirebaseConsts.comments);
 
     Map<String, dynamic> commentInfo = Map();
 
-    if (comment.description != "" && comment.description != null)
-      commentInfo["description"] = comment.description;
+    if (comment.description != "" && comment.description != null) commentInfo["description"] = comment.description;
 
     commentCollection.doc(comment.commentId).update(commentInfo);
   }
@@ -707,8 +701,9 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         .collection(FirebaseConsts.comments)
         .doc(replay.commentId)
         .collection(FirebaseConsts.replay);
-    return replayCollection.snapshots().map((querySnapshot) =>
-        querySnapshot.docs.map((e) => ReplayModel.fromSnapshot(e)).toList());
+    return replayCollection
+        .snapshots()
+        .map((querySnapshot) => querySnapshot.docs.map((e) => ReplayModel.fromSnapshot(e)).toList());
   }
 
   @override
@@ -722,8 +717,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
 
     Map<String, dynamic> replayInfo = Map();
 
-    if (replay.description != "" && replay.description != null)
-      replayInfo['description'] = replay.description;
+    if (replay.description != "" && replay.description != null) replayInfo['description'] = replay.description;
 
     replayCollection.doc(replay.replayId).update(replayInfo);
   }
@@ -741,19 +735,176 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
 
       // My Favorites List
       if (myfavoriteList.contains(user.otherUid)) {
-        if (myfavoriteList.contains(user.otherUid) &&
-            otherUserFavoriteList.contains(user.uid)) {
-          Navigator.pushNamed(context, PageConsts.matchedPage,
-              arguments: user.otherUid);
+        if (myfavoriteList.contains(user.otherUid) && otherUserFavoriteList.contains(user.uid)) {
+          Navigator.pushNamed(context, PageConsts.matchedPage, arguments: user.otherUid);
         } else {}
       } else {
         userCollection.doc(user.uid).update({
           "favorites": FieldValue.arrayUnion([user.otherUid])
         }).then((value) {
-          final userCollection =
-              firebaseFirestore.collection(FirebaseConsts.users).doc(user.uid);
+          final userCollection = firebaseFirestore.collection(FirebaseConsts.users).doc(user.uid);
         });
       }
     }
+  }
+
+  Future<void> createAdoption(AdoptionEntity adoption) async {
+    final adoptionCollection = firebaseFirestore.collection(FirebaseConsts.adoption);
+
+    final newAdoption = AdoptionModel(
+      creatorUid: adoption.creatorUid,
+      city: adoption.city,
+      type: adoption.type,
+      age: adoption.age,
+      adoptionPostId: adoption.adoptionPostId,
+      profileUrl: adoption.profileUrl,
+    ).toJson();
+
+    try {
+      final adoptinDocRef = await adoptionCollection.doc(adoption.adoptionPostId).get();
+
+      if (!adoptinDocRef.exists) {
+        adoptionCollection.doc(adoption.adoptionPostId).set(newAdoption).then((value) {});
+      } else {
+        adoptionCollection.doc(adoption.adoptionPostId).update(newAdoption);
+      }
+    } catch (e) {
+      toast("some error occured $e ");
+    }
+  }
+
+  @override
+  Future<void> deleteAdoption(AdoptionEntity adoption) async {
+    final adoptionCollection = firebaseFirestore.collection(FirebaseConsts.adoption);
+
+    try {
+      final adoptinDocRef = await adoptionCollection.doc(adoption.adoptionPostId).get();
+      if (adoptinDocRef.exists) {
+        adoptionCollection.doc(adoption.adoptionPostId).delete();
+      }
+    } catch (e) {
+      toast("some error occured $e");
+    }
+  }
+
+  @override
+  Future<void> likeAdoption(AdoptionEntity adoption) async {
+    /* final adoptionCollection = firebaseFirestore.collection(FirebaseConsts.adoption);
+
+    final currentUid = await getCurrentUid();
+    final adoptionRef = await adoptionCollection.doc(adoption.adoptionPostId).get();
+
+    if (adoptionRef.exists) {
+      List likes = adoptionRef.get("likes");
+      } else {
+        postCollection.doc(post.postId).update({
+          "likes": FieldValue.arrayUnion([currentUid]),
+          "totalLikes": totalLikes + 1
+        });
+      }
+    }*/
+  }
+
+  @override
+  Stream<List<AdoptionEntity>> readAdoption(AdoptionEntity adoption) {
+    final adoptionCollection = firebaseFirestore.collection(FirebaseConsts.adoption);
+
+    return adoptionCollection
+        .snapshots()
+        .map((querySnapshot) => querySnapshot.docs.map((e) => AdoptionModel.fromSnapshot(e)).toList());
+  }
+
+  @override
+  Stream<List<AdoptionEntity>> readSingleAdoption(String adoptionId) {
+    final adoptionCollection = firebaseFirestore
+        .collection(FirebaseConsts.adoption)
+        .orderBy("createAt", descending: true)
+        .orderBy("createAt", descending: true)
+        .where("postId", isEqualTo: adoptionId);
+    return adoptionCollection
+        .snapshots()
+        .map((querySnapshot) => querySnapshot.docs.map((e) => AdoptionModel.fromSnapshot(e)).toList());
+  }
+
+  @override
+  Future<void> updateAdoption(AdoptionEntity adoption) {
+    // TODO: implement updateAdoption
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> createLost(LostEntity lost) async {
+    final lostCollection = firebaseFirestore.collection(FirebaseConsts.lost);
+    final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
+    final currentUid = await getCurrentUid();
+
+    final newLost = LostModel(
+      creatorUid: lost.creatorUid,
+      city: lost.city,
+      lostAnimalId: lost.lostAnimalId,
+      imageUrl: lost.imageUrl,
+      date: DateTime.now(),
+      district: lost.district,
+      isWithMe: lost.isWithMe,
+      description: lost.description,
+      isinjured: lost.isinjured,
+    ).toJson();
+
+    try {
+      final lostDocRef = await lostCollection.doc(lost.lostAnimalId).get();
+
+      if (!lostDocRef.exists) {
+        lostCollection.doc(lost.lostAnimalId).set(newLost).then((value) {
+          userCollection.doc(currentUid).update({
+            "lostPosts": FieldValue.arrayUnion([lost.imageUrl])
+          });
+        });
+      } else {
+        lostCollection.doc(lost.lostAnimalId).update(newLost).then((value) {});
+      }
+    } catch (e) {
+      toast("some error occured $e ");
+    }
+  }
+
+  @override
+  Future<void> deleteLost(LostEntity lost) async {
+    final lostCollection = firebaseFirestore.collection(FirebaseConsts.lost);
+    final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
+    final currentUid = await getCurrentUid();
+
+    try {
+      final adoptinDocRef = await lostCollection.doc(lost.lostAnimalId).get();
+      if (adoptinDocRef.exists) {
+        lostCollection.doc(lost.lostAnimalId).delete().then((value) {
+          userCollection.doc(currentUid).update({
+            "lostPosts": FieldValue.arrayRemove([lost.imageUrl])
+          });
+        });
+      }
+    } catch (e) {
+      toast("some error occured $e");
+    }
+  }
+
+  @override
+  Stream<List<LostEntity>> readLost(LostEntity lost) {
+    final lostCollection = firebaseFirestore.collection(FirebaseConsts.lost);
+
+    return lostCollection
+        .snapshots()
+        .map((querySnapshot) => querySnapshot.docs.map((e) => LostModel.fromSnapshot(e)).toList());
+  }
+
+  @override
+  Stream<List<LostEntity>> readSingleLost(String adoptionId) {
+    // TODO: implement readSingleLost
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateLost(LostEntity adoption) {
+    // TODO: implement updateLost
+    throw UnimplementedError();
   }
 }

@@ -11,7 +11,7 @@ class SearchWidget extends StatelessWidget {
       width: double.infinity,
       height: 45,
       decoration: BoxDecoration(
-        color: lightBlueColor.withOpacity(.3),
+        color: darkPurpleColor.withOpacity(.3),
         borderRadius: BorderRadius.circular(15),
       ),
       child: TextFormField(
@@ -21,10 +21,10 @@ class SearchWidget extends StatelessWidget {
             border: InputBorder.none,
             prefixIcon: Icon(
               Icons.search,
-              color: lightBlueColor,
+              color: black,
             ),
             hintText: "Search",
-            hintStyle: TextStyle(color: lightBlueColor, fontSize: 15)),
+            hintStyle: TextStyle(color: black, fontSize: 15)),
       ),
     );
   }

@@ -65,9 +65,13 @@ class OnGenerateRoute {
 
       case PageConsts.lostAnimalPage:
         {
-          return routeBuilder(
-            const LostAnimalPage(),
-          );
+          if (args is AnimalEntity) {
+            return routeBuilder(FoundedLostAnimalPage(
+              currentUser: args,
+            ));
+          } else {
+            return routeBuilder(const NoPageFound());
+          }
         }
       case PageConsts.chatPage:
         {

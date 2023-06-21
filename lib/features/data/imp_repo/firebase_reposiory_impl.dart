@@ -24,6 +24,8 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
   @override
   Stream<List<AnimalEntity>> getUsers(AnimalEntity user) => remoteDataSource.getUsers(user);
 
+  Stream<List<AnimalEntity>> getOtherUsers(String userId) => remoteDataSource.getOtherUsers(userId);
+
   @override
   Future<bool> isSignIn() async => await remoteDataSource.isSignIn();
 
@@ -104,8 +106,7 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
   Stream<List<AnimalEntity>> getSingleOtherUser(String otherUid) => remoteDataSource.getSingleOtherUser(otherUid);
 
   @override
-  Future<void> getFavUsers(BuildContext context, AnimalEntity user) async =>
-      remoteDataSource.getFavUsers(context, user);
+  Future<bool> getFavUsers(AnimalEntity user) async => remoteDataSource.getFavUsers(user);
 
   @override
   Future<void> createAdoption(AdoptionEntity adoption) async => remoteDataSource.createAdoption(adoption);

@@ -8,7 +8,7 @@ class GetFavUsersUseCase {
 
   GetFavUsersUseCase({required this.repository});
 
-  Future<void> call(BuildContext context, AnimalEntity user) {
-    return repository.getFavUsers(context, user);
+  Future<bool> call(AnimalEntity user) {
+    return repository.getFavUsers(user);
   }
 }

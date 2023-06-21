@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
 import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/get_fav_users_usecase.dart';
+import 'package:petopia/features/domain/usecases/firebase_usecases/user/get_other_user_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/get_users_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/update_user_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/follow_unfollow_user_usecase.dart';
@@ -14,17 +15,33 @@ class UserCubit extends Cubit<UserState> {
   final GetUsersUseCase getUsersUseCase;
   final GetFavUsersUseCase getFavUsersUseCase;
   final FollowUnfollowUseCase followUnfollowUseCase;
-  UserCubit(
-      {required this.followUnfollowUseCase,
-      required this.updateUserUseCase,
-      required this.getFavUsersUseCase,
-      required this.getUsersUseCase})
-      : super(UserInitial());
+  final GetOtherUsersUseCase getOtherUsersUseCase;
+  UserCubit({
+    required this.followUnfollowUseCase,
+    required this.updateUserUseCase,
+    required this.getFavUsersUseCase,
+    required this.getUsersUseCase,
+    required this.getOtherUsersUseCase,
+  }) : super(UserInitial());
 
   Future<void> getUsers({required AnimalEntity user}) async {
     emit(UserLoading());
     try {
       final streamResponse = getUsersUseCase.call(user);
+      streamResponse.listen((users) {
+        emit(UserLoaded(users: users));
+      });
+    } on SocketException catch (_) {
+      emit(UserFailure());
+    } catch (_) {
+      emit(UserFailure());
+    }
+  }
+
+  Future<void> getOtherUser({required String uid}) async {
+    emit(UserLoading());
+    try {
+      final streamResponse = getOtherUsersUseCase.call(uid);
       streamResponse.listen((users) {
         emit(UserLoaded(users: users));
       });
@@ -55,10 +72,9 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> getFavUsers(
-      {required BuildContext context, required AnimalEntity user}) async {
+  Future<void> getFavUsers({required AnimalEntity user}) async {
     try {
-      await getFavUsersUseCase.call(context, user);
+      await getFavUsersUseCase.call(user);
     } on SocketException catch (_) {
       emit(UserFailure());
     } catch (_) {

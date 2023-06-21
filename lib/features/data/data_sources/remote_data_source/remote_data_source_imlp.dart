@@ -125,8 +125,21 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   Stream<List<AnimalEntity>> getUsers(AnimalEntity user) {
     final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
     return userCollection.snapshots().map(
-      (querySnapsoht) {
-        return querySnapsoht.docs.map((e) => AnimalModel.fromSnapshot(e)).toList();
+      (querySnapshot) {
+        return querySnapshot.docs.map((e) => AnimalModel.fromSnapshot(e)).toList();
+      },
+    );
+  }
+
+  @override
+  Stream<List<AnimalEntity>> getOtherUsers(String userId) {
+    final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
+    return userCollection.snapshots().map(
+      (querySnapshot) {
+        return querySnapshot.docs
+            .where((doc) => doc.id != userId) // Benim UID'me sahip olan dökümanı filtrele
+            .map((doc) => AnimalModel.fromSnapshot(doc))
+            .toList();
       },
     );
   }
@@ -723,7 +736,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   }
 
   @override
-  Future<void> getFavUsers(BuildContext context, AnimalEntity user) async {
+  Future<bool> getFavUsers(AnimalEntity user) async {
     final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
 
     final myDocRef = await userCollection.doc(user.uid).get();
@@ -734,18 +747,17 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
       List otherUserFavoriteList = otherUserDocRef.get("favorites");
 
       // My Favorites List
-      if (myfavoriteList.contains(user.otherUid)) {
-        if (myfavoriteList.contains(user.otherUid) && otherUserFavoriteList.contains(user.uid)) {
-          Navigator.pushNamed(context, PageConsts.matchedPage, arguments: user.otherUid);
-        } else {}
+
+      if (myfavoriteList.contains(user.otherUid) && otherUserFavoriteList.contains(user.uid)) {
+        return true;
       } else {
         userCollection.doc(user.uid).update({
           "favorites": FieldValue.arrayUnion([user.otherUid])
-        }).then((value) {
-          final userCollection = firebaseFirestore.collection(FirebaseConsts.users).doc(user.uid);
         });
+        return false;
       }
     }
+    return false;
   }
 
   Future<void> createAdoption(AdoptionEntity adoption) async {

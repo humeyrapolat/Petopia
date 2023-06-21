@@ -25,10 +25,12 @@ class _MatchPageState extends State<MatchPage> {
     di.sl<GetCurrentUidUseCase>().call().then((value) {
       setState(() {
         _currentUid = value;
+        print("current : $_currentUid");
       });
     });
 
     BlocProvider.of<UserCubit>(context).getUsers(user: const AnimalEntity());
+
     super.initState();
   }
 
@@ -57,6 +59,10 @@ class _MatchPageState extends State<MatchPage> {
           builder: (context, userState) {
             if (userState is UserLoaded) {
               final List<AnimalEntity> users = userState.users;
+              print("users = $users ");
+              users.removeWhere((element) => element.uid == _currentUid);
+              print("users = $users ");
+
               if (users.isEmpty) {
                 return const Center(
                   child: Text('No users available.'),
@@ -80,9 +86,7 @@ class _MatchPageState extends State<MatchPage> {
                               const SizedBox(height: 16.0),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.pushNamed(
-                                      context, PageConsts.singleUserProfilePage,
-                                      arguments: animal.uid);
+                                  Navigator.pushNamed(context, PageConsts.singleUserProfilePage, arguments: animal.uid);
                                 },
                                 child: Container(
                                   width: 200,
@@ -90,8 +94,7 @@ class _MatchPageState extends State<MatchPage> {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(16),
                                     image: DecorationImage(
-                                      image:
-                                          NetworkImage(animal.profileUrl ?? ''),
+                                      image: NetworkImage(animal.profileUrl ?? ''),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -111,8 +114,7 @@ class _MatchPageState extends State<MatchPage> {
                                     ),
                                     const SizedBox(height: 8.0),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         const Icon(Icons.pets, size: 16),
                                         const SizedBox(width: 4.0),
@@ -148,23 +150,19 @@ class _MatchPageState extends State<MatchPage> {
                               onPressed: () {
                                 changeUser((currentIndex + 1) % users.length);
                               },
-                              icon:
-                                  const Icon(Icons.clear, color: Colors.green),
+                              icon: const Icon(Icons.clear, color: Colors.green),
                             ),
                             IconButton(
                               onPressed: () {
-                                if (animal.uid != _currentUid) {
-                                  BlocProvider.of<UserCubit>(context)
-                                      .getFavUsers(
-                                          context: context,
-                                          user: AnimalEntity(
-                                              uid: _currentUid,
-                                              otherUid: animal.uid));
-                                  changeUser((currentIndex + 1) % users.length);
-                                }
+                                BlocProvider.of<UserCubit>(context)
+                                    .getFavUsers(user: AnimalEntity(uid: _currentUid, otherUid: animal.uid))
+                                    .then((value) {
+                                  Navigator.pushNamed(context, PageConsts.matchedPage, arguments: animal.uid);
+                                });
+
+                                changeUser((currentIndex + 1) % users.length);
                               },
-                              icon:
-                                  const Icon(Icons.favorite, color: Colors.red),
+                              icon: const Icon(Icons.favorite, color: Colors.red),
                             ),
                           ],
                         ),

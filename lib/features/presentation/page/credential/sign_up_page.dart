@@ -654,6 +654,7 @@ class _SignUpPageState extends State<SignUpPage> {
             totalFollowers: 0,
             website: "",
             following: [],
+            favorites: [],
             lostPosts: [],
             adoptionPosts: [],
             name: _nameController.text,

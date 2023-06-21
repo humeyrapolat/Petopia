@@ -4,28 +4,23 @@ import 'package:iconsax/iconsax.dart';
 import 'package:petopia/util/consts.dart';
 
 import '../../../domain/entities/animal/animal_entity.dart';
+import '../../cubit/user/get_single_other_user/get_single_other_user_cubit.dart';
 import '../../cubit/user/user_cubit.dart';
 
 class MatchedPage extends StatefulWidget {
-  const MatchedPage({super.key});
+  const MatchedPage({super.key, required this.otherUserId});
+  final String otherUserId;
 
   @override
-  State<MatchedPage> createState() => _MatchedPageState();
+  _MatchedPageState createState() => _MatchedPageState();
 }
 
 class _MatchedPageState extends State<MatchedPage> {
-  int currentIndex = 0;
-
   @override
   void initState() {
-    BlocProvider.of<UserCubit>(context).getUsers(user: const AnimalEntity());
+    BlocProvider.of<GetSingleOtherUserCubit>(context)
+        .getSingleOtherUser(otherUid: widget.otherUserId);
     super.initState();
-  }
-
-  void changeUser(int index) {
-    setState(() {
-      currentIndex = index;
-    });
   }
 
   @override
@@ -36,33 +31,24 @@ class _MatchedPageState extends State<MatchedPage> {
           backgroundColor: darkBlueColor,
           title: const Text("Matched"),
           leading: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: const Icon(
-                Icons.arrow_back,
-                size: 32,
-              )),
+            onTap: () => Navigator.pop(context),
+            child: const Icon(
+              Icons.arrow_back,
+              size: 32,
+            ),
+          ),
         ),
         backgroundColor: lightBlueColor,
-        body: BlocBuilder<UserCubit, UserState>(
+        body: BlocBuilder<GetSingleOtherUserCubit, GetSingleOtherUserState>(
           builder: (context, userState) {
-            if (userState is UserLoaded) {
-              final List<AnimalEntity> users = userState.users;
-              if (users.isEmpty) {
-                return const Center(
-                  child: Text('No users available.'),
-                );
-              }
-              final AnimalEntity user = users[currentIndex];
+            if (userState is GetSingleOtherUserLoaded) {
+              final singleUser = userState.otherUser;
               return Center(
                 child: SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       children: [
-                        const Text(
-                          "YOU ARE MATCHED",
-                          style: TextStyle(color: darkBlueColor, fontSize: 30),
-                        ),
                         Card(
                           elevation: 5,
                           shape: RoundedRectangleBorder(
@@ -70,13 +56,31 @@ class _MatchedPageState extends State<MatchedPage> {
                           ),
                           child: Column(
                             children: [
+                              const SizedBox(height: 16.0),
+                              Text(
+                                "YOU ARE MATCHED",
+                                style: TextStyle(
+                                  color: darkBlueColor,
+                                  fontSize: 20,
+                                  shadows: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.5),
+                                      spreadRadius: 2,
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 16.0),
                               Container(
                                 width: 200,
                                 height: 250,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(16),
                                   image: DecorationImage(
-                                    image: NetworkImage(user.profileUrl ?? ''),
+                                    image: NetworkImage(
+                                        singleUser.profileUrl ?? ''),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -87,56 +91,39 @@ class _MatchedPageState extends State<MatchedPage> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
-                                      user.username ?? '',
+                                      singleUser.username ?? '',
                                       style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
                                     const SizedBox(height: 8.0),
-                                    Text(
-                                      user.name ?? '',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        color: Colors.grey[600],
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8.0),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        GestureDetector(
-                                          onTap: () {
+                                        TextButton.icon(
+                                          icon: const Icon(Iconsax.message),
+                                          label: const Text('Send Message'),
+                                          onPressed: () {
                                             Navigator.pushNamed(
-                                                context, PageConsts.chatPage);
+                                              context,
+                                              PageConsts.chatPage,
+                                            );
                                           },
-                                          child: const Icon(
-                                            Iconsax.message,
-                                            color: darkPinkColor,
-                                          ),
                                         ),
-                                        const SizedBox(width: 4.0),
-                                        const Text("SEND MESSAGE"),
                                       ],
                                     ),
-                                    const SizedBox(height: 8.0),
                                     Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.pushNamed(
-                                                context, PageConsts.matchPage);
-                                          },
-                                          child: const Icon(
-                                            Iconsax.arrow5,
-                                            color: darkPinkColor,
-                                          ),
+                                        TextButton.icon(
+                                          icon: const Icon(Iconsax.arrow5),
+                                          label: const Text('Keep Swiping'),
+                                          onPressed: () =>
+                                              Navigator.pop(context),
                                         ),
-                                        const SizedBox(width: 4.0),
-                                        const Text("KEEP SWIPPING"),
                                       ],
                                     ),
                                   ],

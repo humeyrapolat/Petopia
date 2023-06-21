@@ -44,6 +44,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         website: user.website,
         profileUrl: profileUrl,
         followers: user.followers,
+        favorites: user.favorites,
         type: user.type,
         gender: user.gender,
         breed: user.breed,
@@ -124,8 +125,21 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   Stream<List<AnimalEntity>> getUsers(AnimalEntity user) {
     final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
     return userCollection.snapshots().map(
-      (querySnapsoht) {
-        return querySnapsoht.docs.map((e) => AnimalModel.fromSnapshot(e)).toList();
+      (querySnapshot) {
+        return querySnapshot.docs.map((e) => AnimalModel.fromSnapshot(e)).toList();
+      },
+    );
+  }
+
+  @override
+  Stream<List<AnimalEntity>> getOtherUsers(String userId) {
+    final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
+    return userCollection.snapshots().map(
+      (querySnapshot) {
+        return querySnapshot.docs
+            .where((doc) => doc.id != userId) // Benim UID'me sahip olan dökümanı filtrele
+            .map((doc) => AnimalModel.fromSnapshot(doc))
+            .toList();
       },
     );
   }
@@ -212,6 +226,9 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     }
     if (user.followers != null) {
       userInformation["followers"] = user.followers;
+    }
+    if (user.favorites != null) {
+      userInformation["favorites"] = user.favorites;
     }
     if (user.following != null) {
       userInformation["following"] = user.following;
@@ -719,6 +736,30 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   }
 
   @override
+  Future<bool> getFavUsers(AnimalEntity user) async {
+    final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
+
+    final myDocRef = await userCollection.doc(user.uid).get();
+    final otherUserDocRef = await userCollection.doc(user.otherUid).get();
+
+    if (myDocRef.exists && otherUserDocRef.exists) {
+      List myfavoriteList = myDocRef.get("favorites");
+      List otherUserFavoriteList = otherUserDocRef.get("favorites");
+
+      // My Favorites List
+
+      if (myfavoriteList.contains(user.otherUid) && otherUserFavoriteList.contains(user.uid)) {
+        return true;
+      } else {
+        userCollection.doc(user.uid).update({
+          "favorites": FieldValue.arrayUnion([user.otherUid])
+        });
+        return false;
+      }
+    }
+    return false;
+  }
+
   Future<void> createAdoption(AdoptionEntity adoption) async {
     final adoptionCollection = firebaseFirestore.collection(FirebaseConsts.adoption);
 

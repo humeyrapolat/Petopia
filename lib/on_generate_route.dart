@@ -190,9 +190,13 @@ class OnGenerateRoute {
 
       case PageConsts.matchedPage:
         {
-          return routeBuilder(
-            const MatchedPage(),
-          );
+          if (args is String) {
+            return routeBuilder(MatchedPage(
+              otherUserId: args,
+            ));
+          } else {
+            return routeBuilder(const NoPageFound());
+          }
         }
 
       case PageConsts.profilePage:

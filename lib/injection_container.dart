@@ -22,6 +22,8 @@ import 'package:petopia/features/domain/usecases/firebase_usecases/resetPassword
 import 'package:petopia/features/domain/usecases/firebase_usecases/storage/upload_image_to_storage_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/create_user_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/get_current_uid_usecase.dart';
+import 'package:petopia/features/domain/usecases/firebase_usecases/user/get_fav_users_usecase.dart';
+import 'package:petopia/features/domain/usecases/firebase_usecases/user/get_other_user_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/get_single_user_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/get_users_usecase.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/is_sign_in_usecase.dart';
@@ -74,7 +76,13 @@ Future<void> init() async {
   );
 
   sl.registerFactory(
-    () => UserCubit(updateUserUseCase: sl.call(), getUsersUseCase: sl.call(), followUnfollowUseCase: sl.call()),
+    () => UserCubit(
+      updateUserUseCase: sl.call(),
+      getUsersUseCase: sl.call(),
+      getFavUsersUseCase: sl.call(),
+      followUnfollowUseCase: sl.call(),
+      getOtherUsersUseCase: sl.call(),
+    ),
   );
 
   sl.registerFactory(
@@ -151,7 +159,9 @@ Future<void> init() async {
   sl.registerLazySingleton(() => SignUpUserUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => SignInUserUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => UpdateUserUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => GetFavUsersUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => GetUsersUseCase(repository: sl.call()));
+  sl.registerLazySingleton(() => GetOtherUsersUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => CreateUserUserCase(repository: sl.call()));
   sl.registerLazySingleton(() => GetSingleUserUseCase(repository: sl.call()));
   sl.registerLazySingleton(() => ResetPasswordUseCase(repository: sl.call()));

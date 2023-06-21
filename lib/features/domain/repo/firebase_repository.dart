@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/widgets.dart';
 import 'package:petopia/features/domain/entities/adoption/adoption_entity.dart';
 import 'package:petopia/features/domain/entities/comment/comment_entity.dart';
 import 'package:petopia/features/domain/entities/lost/lost_entity.dart';
@@ -17,12 +18,15 @@ abstract class FirebaseRepository {
 
   //User
   Stream<List<AnimalEntity>> getUsers(AnimalEntity user); //canli veriler olacagi icin Stream kullaniyoz
+  Stream<List<AnimalEntity>> getOtherUsers(String uid);
   Stream<List<AnimalEntity>> getSingleUsers(String uid);
   Stream<List<AnimalEntity>> getSingleOtherUser(String otherUid);
   Future<String> getCurrentUid();
   Future<void> createUser(AnimalEntity user);
   Future<void> updateUser(AnimalEntity user);
   Future<void> followUnfollowUser(AnimalEntity user);
+  // Match
+  Future<bool> getFavUsers(AnimalEntity user);
 
   //Cloud Storage
   Future<String> uploadImageToStorage(File? file, bool isPost, String childName);

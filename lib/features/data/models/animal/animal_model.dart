@@ -17,6 +17,7 @@ class AnimalModel extends AnimalEntity {
   final String? profileUrl;
   final List? followers;
   final List? following;
+  final List? favorites;
   final num? totalFollowers;
   final num? totalFollowing;
   final num? totalPosts;
@@ -40,6 +41,7 @@ class AnimalModel extends AnimalEntity {
       this.profileUrl,
       this.followers,
       this.following,
+      this.favorites,
       this.totalFollowers,
       this.totalFollowing,
       this.likedPosts,
@@ -62,6 +64,7 @@ class AnimalModel extends AnimalEntity {
           profileUrl: profileUrl,
           followers: followers,
           following: following,
+          favorites: favorites,
           likedPosts: likedPosts,
           totalFollowers: totalFollowers,
           totalFollowing: totalFollowing,
@@ -74,30 +77,23 @@ class AnimalModel extends AnimalEntity {
     var snapshot = snap.data() as Map<String, dynamic>;
 
     return AnimalModel(
-      uid: snapshot['uid'],
-      username: snapshot['username'],
-      name: snapshot['name'],
-      bio: snapshot['bio'],
-      website: snapshot['website'],
-      email: snapshot['email'],
-      city: snapshot['city'],
-      district: snapshot['district'],
-      birthdate: snapshot['birthdate'],
-      breed: snapshot['breed'],
-      gender: snapshot['gender'],
-      type: snapshot['type'],
-      profileUrl: snapshot['profileUrl'],
-      likedPosts: List.from(snap.get('likedPosts')),
-      followers: List.from(snap.get('followers')),
-      following: List.from(snap.get('following')),
-      totalFollowers: snapshot['totalFollowers'],
-      totalFollowing: snapshot['totalFollowing'],
-      totalPosts: snapshot['totalPosts'],
-      lostPosts: List.from(snap.get('lostPosts')),
-      adoptionPosts: List.from(
-        snap.get('adoptionPosts'),
-      ),
-    );
+        uid: snapshot['uid'],
+        username: snapshot['username'],
+        name: snapshot['name'],
+        bio: snapshot['bio'],
+        website: snapshot['website'],
+        email: snapshot['email'],
+        birthdate: snapshot['birthdate'],
+        breed: snapshot['breed'],
+        gender: snapshot['gender'],
+        type: snapshot['type'],
+        profileUrl: snapshot['profileUrl'],
+        followers: List.from(snap.get('followers')),
+        following: List.from(snap.get('following')),
+        favorites: List.from(snap.get('favorites')),
+        totalFollowers: snapshot['totalFollowers'],
+        totalFollowing: snapshot['totalFollowing'],
+        totalPosts: snapshot['totalPosts']);
   }
 
   Map<String, dynamic> toJson() {
@@ -118,6 +114,7 @@ class AnimalModel extends AnimalEntity {
       'likedPosts': likedPosts,
       'followers': followers,
       'following': following,
+      'favorites': favorites,
       'totalFollowers': totalFollowers,
       'totalFollowing': totalFollowing,
       'totalPosts': totalPosts,

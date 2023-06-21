@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/widgets.dart';
 import 'package:petopia/features/data/data_sources/remote_data_source/remote_data_source.dart';
 import 'package:petopia/features/domain/entities/adoption/adoption_entity.dart';
 import 'package:petopia/features/domain/entities/comment/comment_entity.dart';
@@ -22,6 +23,8 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
 
   @override
   Stream<List<AnimalEntity>> getUsers(AnimalEntity user) => remoteDataSource.getUsers(user);
+
+  Stream<List<AnimalEntity>> getOtherUsers(String userId) => remoteDataSource.getOtherUsers(userId);
 
   @override
   Future<bool> isSignIn() async => await remoteDataSource.isSignIn();
@@ -101,6 +104,9 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
 
   @override
   Stream<List<AnimalEntity>> getSingleOtherUser(String otherUid) => remoteDataSource.getSingleOtherUser(otherUid);
+
+  @override
+  Future<bool> getFavUsers(AnimalEntity user) async => remoteDataSource.getFavUsers(user);
 
   @override
   Future<void> createAdoption(AdoptionEntity adoption) async => remoteDataSource.createAdoption(adoption);

@@ -44,6 +44,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         website: user.website,
         profileUrl: profileUrl,
         followers: user.followers,
+        favorites: user.favorites,
         type: user.type,
         gender: user.gender,
         breed: user.breed,
@@ -86,6 +87,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         type: user.type,
         gender: user.gender,
         breed: user.breed,
+        favorites: user.favorites,
         birthdate: user.birthdate,
         likedPosts: user.likedPosts,
         totalFollowers: user.totalFollowers,
@@ -205,6 +207,9 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     }
     if (user.profileUrl != "" && user.profileUrl != null) {
       userInformation["profileUrl"] = user.profileUrl;
+    }
+    if (user.favorites != "" && user.favorites != null) {
+      userInformation["favorites"] = user.favorites;
     }
     if (user.followers != null) {
       userInformation["followers"] = user.followers;
@@ -876,14 +881,24 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   }
 
   @override
-  Future<bool> getFavUsers(AnimalEntity user) {
-    // TODO: implement getFavUsers
-    throw UnimplementedError();
+  Future<bool> getFavUsers(AnimalEntity user) async {
+    final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
+    await userCollection.doc(user.uid).update({
+      "favorites": FieldValue.arrayUnion([user.otherUid])
+    });
+    return true;
   }
 
   @override
-  Stream<List<AnimalEntity>> getOtherUsers(String animalId) {
-    // TODO: implement getOtherUsers
-    throw UnimplementedError();
+  Stream<List<AnimalEntity>> getOtherUsers(String userId) {
+    final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
+    return userCollection.snapshots().map(
+      (querySnapshot) {
+        return querySnapshot.docs
+            .where((doc) => doc.id != userId) // Benim UID'me sahip olan dökümanı filtrele
+            .map((doc) => AnimalModel.fromSnapshot(doc))
+            .toList();
+      },
+    );
   }
 }

@@ -11,6 +11,8 @@ class AnimalModel extends AnimalEntity {
   final String? city;
   final String? district;
   final String? birthdate;
+  final List? favorites;
+
   final String? breed;
   final String? gender;
   final String? type;
@@ -34,6 +36,7 @@ class AnimalModel extends AnimalEntity {
       this.email,
       this.city,
       this.district,
+      this.favorites,
       this.birthdate,
       this.breed,
       this.gender,
@@ -63,6 +66,7 @@ class AnimalModel extends AnimalEntity {
           profileUrl: profileUrl,
           followers: followers,
           following: following,
+          favorites: favorites,
           likedPosts: likedPosts,
           totalFollowers: totalFollowers,
           totalFollowing: totalFollowing,
@@ -87,6 +91,7 @@ class AnimalModel extends AnimalEntity {
         breed: snapshot['breed'],
         gender: snapshot['gender'],
         type: snapshot['type'],
+        favorites: List.from(snap.get('favorites')),
         profileUrl: snapshot['profileUrl'],
         likedPosts: List.from(snap.get('likedPosts')),
         followers: List.from(snap.get('followers')),
@@ -112,6 +117,7 @@ class AnimalModel extends AnimalEntity {
       'breed': breed,
       'gender': gender,
       'type': type,
+      'favorites': favorites,
       'profileUrl': profileUrl,
       'likedPosts': likedPosts,
       'followers': followers,

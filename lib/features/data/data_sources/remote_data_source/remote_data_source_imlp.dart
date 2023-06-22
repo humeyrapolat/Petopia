@@ -39,6 +39,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         city: user.city,
         district: user.district,
         bio: user.bio,
+        phoneNumber: user.phoneNumber,
         following: user.following,
         username: user.username,
         website: user.website,
@@ -81,6 +82,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         district: user.district,
         uid: uid,
         bio: user.bio,
+        phoneNumber: user.phoneNumber,
         profileUrl: user.profileUrl,
         followers: user.followers,
         following: user.following,
@@ -89,6 +91,7 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
         type: user.type,
         gender: user.gender,
         breed: user.breed,
+        favorites: user.favorites,
         birthdate: user.birthdate,
         likedPosts: user.likedPosts,
         totalFollowers: user.totalFollowers,
@@ -217,6 +220,15 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     }
     if (user.bio != "" && user.bio != null) {
       userInformation["bio"] = user.bio;
+    }
+    if (user.city != "" && user.city != null) {
+      userInformation["city"] = user.city;
+    }
+    if (user.district != "" && user.district != null) {
+      userInformation["district"] = user.district;
+    }
+    if (user.phoneNumber != "" && user.phoneNumber != null) {
+      userInformation["phoneNumber"] = user.phoneNumber;
     }
     if (user.website != "" && user.website != null) {
       userInformation["website"] = user.website;

@@ -8,7 +8,7 @@
 ///
 ///
 ///
-/*
+
 extension EmailValidator on String {
   bool isValidEmail() {
     return RegExp(
@@ -17,9 +17,7 @@ extension EmailValidator on String {
   }
 
   bool isValidPassword() {
-    return RegExp(
-            r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$')
-        .hasMatch(this);
+    return RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$').hasMatch(this);
   }
 
   bool isContainUpperCase() {
@@ -91,4 +89,3 @@ class Validator {
     return null;
   }
 }
-*/

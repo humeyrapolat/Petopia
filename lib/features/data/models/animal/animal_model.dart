@@ -6,6 +6,7 @@ class AnimalModel extends AnimalEntity {
   final String? username;
   final String? name;
   final String? bio;
+  final String? phoneNumber;
   final String? website;
   final String? email;
   final String? city;
@@ -34,6 +35,7 @@ class AnimalModel extends AnimalEntity {
       this.email,
       this.city,
       this.district,
+      this.phoneNumber,
       this.birthdate,
       this.breed,
       this.gender,
@@ -54,6 +56,7 @@ class AnimalModel extends AnimalEntity {
           name: name,
           bio: bio,
           website: website,
+          phoneNumber: phoneNumber,
           email: email,
           city: city,
           district: district,
@@ -81,6 +84,9 @@ class AnimalModel extends AnimalEntity {
         username: snapshot['username'],
         name: snapshot['name'],
         bio: snapshot['bio'],
+        city: snapshot['city'],
+        district: snapshot['district'],
+        phoneNumber: snapshot['phoneNumber'],
         website: snapshot['website'],
         email: snapshot['email'],
         birthdate: snapshot['birthdate'],
@@ -106,6 +112,7 @@ class AnimalModel extends AnimalEntity {
       'email': email,
       'city': city,
       'district': district,
+      'phoneNumber': phoneNumber,
       'birthdate': birthdate,
       'breed': breed,
       'gender': gender,

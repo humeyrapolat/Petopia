@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:petopia/util/consts.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 import '../../../domain/entities/animal/animal_entity.dart';
 import '../../cubit/user/get_single_other_user/get_single_other_user_cubit.dart';
@@ -18,8 +19,7 @@ class MatchedPage extends StatefulWidget {
 class _MatchedPageState extends State<MatchedPage> {
   @override
   void initState() {
-    BlocProvider.of<GetSingleOtherUserCubit>(context)
-        .getSingleOtherUser(otherUid: widget.otherUserId);
+    BlocProvider.of<GetSingleOtherUserCubit>(context).getSingleOtherUser(otherUid: widget.otherUserId);
     super.initState();
   }
 
@@ -79,8 +79,7 @@ class _MatchedPageState extends State<MatchedPage> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(16),
                                   image: DecorationImage(
-                                    image: NetworkImage(
-                                        singleUser.profileUrl ?? ''),
+                                    image: NetworkImage(singleUser.profileUrl ?? ''),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -99,30 +98,24 @@ class _MatchedPageState extends State<MatchedPage> {
                                     ),
                                     const SizedBox(height: 8.0),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         TextButton.icon(
-                                          icon: const Icon(Iconsax.message),
-                                          label: const Text('Send Message'),
+                                          icon: const Icon(Iconsax.call),
+                                          label: const Text('Call '),
                                           onPressed: () {
-                                            Navigator.pushNamed(
-                                              context,
-                                              PageConsts.chatPage,
-                                            );
+                                            makePhoneCall(singleUser.phoneNumber!);
                                           },
                                         ),
                                       ],
                                     ),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         TextButton.icon(
                                           icon: const Icon(Iconsax.arrow5),
                                           label: const Text('Keep Swiping'),
-                                          onPressed: () =>
-                                              Navigator.pop(context),
+                                          onPressed: () => Navigator.pop(context),
                                         ),
                                       ],
                                     ),
@@ -145,5 +138,12 @@ class _MatchedPageState extends State<MatchedPage> {
         ),
       ),
     );
+  }
+
+  void makePhoneCall(String phoneNumber) async {
+    bool? res = await FlutterPhoneDirectCaller.callNumber(phoneNumber);
+    if (!res!) {
+      print('Arama başarısız oldu');
+    }
   }
 }

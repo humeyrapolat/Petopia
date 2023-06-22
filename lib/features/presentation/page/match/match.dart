@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:petopia/features/presentation/cubit/user/get_single_user/get_single_user_cubit.dart';
 import 'package:petopia/util/consts.dart';
 import 'package:petopia/injection_container.dart' as di;
 
@@ -18,18 +19,14 @@ class MatchPage extends StatefulWidget {
 class _MatchPageState extends State<MatchPage> {
   int currentIndex = 0;
   String _currentUid = "";
-  Set<String?> dismissedUsers = Set<String?>();
 
   @override
   void initState() {
     di.sl<GetCurrentUidUseCase>().call().then((value) {
       setState(() {
         _currentUid = value;
-        print("current : $_currentUid");
       });
     });
-
-    BlocProvider.of<UserCubit>(context).getUsers(user: const AnimalEntity());
 
     super.initState();
   }
@@ -59,9 +56,7 @@ class _MatchPageState extends State<MatchPage> {
           builder: (context, userState) {
             if (userState is UserLoaded) {
               final List<AnimalEntity> users = userState.users;
-              print("users = $users ");
               users.removeWhere((element) => element.uid == _currentUid);
-              print("users = $users ");
 
               if (users.isEmpty) {
                 return const Center(
@@ -179,6 +174,35 @@ class _MatchPageState extends State<MatchPage> {
           },
         ),
       ),
+    );
+  }
+
+//todo gece bak
+  showPhoneAlertDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('AlertDialog Title'),
+          content: const SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('This is a demo alert dialog.'),
+                Text('Would you like to approve of this message?'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Approve'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

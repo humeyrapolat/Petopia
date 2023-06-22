@@ -8,6 +8,7 @@ class AnimalEntity extends Equatable {
   final String? name;
   final String? bio;
   final String? website;
+  final String? phoneNumber;
   final String? city;
   final String? district;
   final String? email;
@@ -37,6 +38,7 @@ class AnimalEntity extends Equatable {
     this.name,
     this.bio,
     this.website,
+    this.phoneNumber,
     this.city,
     this.district,
     this.email,
@@ -67,6 +69,7 @@ class AnimalEntity extends Equatable {
         bio,
         website,
         email,
+        phoneNumber,
         city,
         district,
         birthdate,

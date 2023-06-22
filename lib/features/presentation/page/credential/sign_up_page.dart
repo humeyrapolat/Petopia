@@ -24,6 +24,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
 
@@ -74,6 +75,7 @@ class _SignUpPageState extends State<SignUpPage> {
     _nameController.dispose();
     _dateController.dispose();
     _genderController.dispose();
+    _phoneNumberController.dispose();
     super.dispose();
   }
 
@@ -504,7 +506,16 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 sizeHorizontal(15),
-                Container(
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.45,
+                  height: MediaQuery.of(context).size.height * 0.08,
+                  child: FormContainerWidget(
+                    controller: _phoneNumberController,
+                    hintText: 'Phone Number',
+                    inputType: TextInputType.number,
+                  ),
+                ),
+                /* Container(
                   width: MediaQuery.of(context).size.width * 0.45,
                   height: MediaQuery.of(context).size.height * 0.08,
                   child: Row(
@@ -538,7 +549,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ],
                   ),
-                ),
+                ),*/
               ],
             ),
             const SizedBox(height: 15),
@@ -640,6 +651,7 @@ class _SignUpPageState extends State<SignUpPage> {
             email: _emailController.text,
             password: _passwordController.text,
             bio: "",
+            phoneNumber: _phoneNumberController.text,
             username: _usernameController.text,
             totalPosts: 0,
             birthdate: _dateController.text,

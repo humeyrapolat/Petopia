@@ -23,6 +23,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _genderController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
@@ -72,6 +73,7 @@ class _SignUpPageState extends State<SignUpPage> {
     _emailController.dispose();
     _passwordController.dispose();
     _nameController.dispose();
+    _passwordController.dispose();
     _dateController.dispose();
     _genderController.dispose();
     super.dispose();
@@ -81,7 +83,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Future selectImage() async {
     try {
-      final pickedFile = await ImagePicker.platform.getImage(source: ImageSource.gallery);
+      final pickedFile =
+          await ImagePicker.platform.getImage(source: ImageSource.gallery);
       setState(() {
         if (pickedFile != null) {
           _image = File(pickedFile.path);
@@ -504,39 +507,13 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 sizeHorizontal(15),
-                Container(
+                SizedBox(
                   width: MediaQuery.of(context).size.width * 0.45,
                   height: MediaQuery.of(context).size.height * 0.08,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Date",
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                      sizeHorizontal(8),
-                      Text(_dateTime.toString().substring(0, 10),
-                          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500)),
-                      sizeHorizontal(1),
-                      IconButton(
-                        onPressed: () {
-                          /*  DatePicker.showDatePicker(context,
-                              showTitleActions: true,
-                              minTime: DateTime(2018, 3, 5),
-                              maxTime: DateTime(2050, 12, 31), onChanged: (date) {
-                            setState(() {
-                              _dateTime = date;
-                              _dateController.text =
-                                  date.toString().substring(0, 10);
-                            });
-                          }, onConfirm: (date) {
-                            _dateTime = date;
-                          }, currentTime: _dateTime, locale: LocaleType.tr);
-                        },*/
-                        },
-                        icon: const Icon(Icons.calendar_today),
-                      ),
-                    ],
+                  child: FormContainerWidget(
+                    controller: _phoneNumberController,
+                    hintText: 'Phone Number',
+                    inputType: TextInputType.name,
                   ),
                 ),
               ],
@@ -574,7 +551,8 @@ class _SignUpPageState extends State<SignUpPage> {
               },
               style: ButtonStyle(
                 elevation: MaterialStateProperty.all<double>(5),
-                backgroundColor: MaterialStateProperty.all<Color>(darkPinkColor),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(darkPinkColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -599,11 +577,13 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.pushNamedAndRemoveUntil(context, PageConsts.signInPage, (route) => false);
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, PageConsts.signInPage, (route) => false);
                   },
                   child: const Text(
                     "Sign In.",
-                    style: TextStyle(fontWeight: FontWeight.bold, color: darkPinkColor),
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold, color: darkPinkColor),
                   ),
                 ),
               ],
@@ -614,7 +594,10 @@ class _SignUpPageState extends State<SignUpPage> {
                     children: [
                       const Text(
                         "Please wait",
-                        style: TextStyle(color: black, fontSize: 16, fontWeight: FontWeight.w400),
+                        style: TextStyle(
+                            color: black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400),
                       ),
                       sizeHorizontal(10),
                       const CircularProgressIndicator()
@@ -646,6 +629,7 @@ class _SignUpPageState extends State<SignUpPage> {
             type: selectedType,
             city: selectedCity,
             district: selectedDistrict,
+            phoneNumber: _phoneNumberController.text,
             gender: _genderController.text,
             breed: selectedBreed,
             totalFollowing: 0,
@@ -654,6 +638,7 @@ class _SignUpPageState extends State<SignUpPage> {
             totalFollowers: 0,
             website: "",
             following: [],
+            favorites: [],
             lostPosts: [],
             adoptionPosts: [],
             name: _nameController.text,

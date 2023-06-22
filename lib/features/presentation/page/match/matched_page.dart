@@ -5,6 +5,7 @@ import 'package:petopia/util/consts.dart';
 
 import '../../../domain/entities/animal/animal_entity.dart';
 import '../../cubit/user/user_cubit.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MatchedPage extends StatefulWidget {
   const MatchedPage({super.key});
@@ -26,6 +27,14 @@ class _MatchedPageState extends State<MatchedPage> {
     setState(() {
       currentIndex = index;
     });
+  }
+
+  Future<void> _makePhoneCall(String? phoneNumber) async {
+    final Uri launchUri = Uri(
+      scheme: 'tel',
+      path: phoneNumber,
+    );
+    await launchUrl(launchUri);
   }
 
   @override
@@ -108,16 +117,15 @@ class _MatchedPageState extends State<MatchedPage> {
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            Navigator.pushNamed(
-                                                context, PageConsts.chatPage);
+                                            _makePhoneCall(user.phoneNumber);
                                           },
                                           child: const Icon(
-                                            Iconsax.message,
+                                            Iconsax.call,
                                             color: darkPinkColor,
                                           ),
                                         ),
                                         const SizedBox(width: 4.0),
-                                        const Text("SEND MESSAGE"),
+                                        const Text("CALL ME"),
                                       ],
                                     ),
                                     const SizedBox(height: 8.0),

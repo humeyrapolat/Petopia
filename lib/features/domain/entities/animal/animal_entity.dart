@@ -18,10 +18,11 @@ class AnimalEntity extends Equatable {
   final String? profileUrl;
   final List? followers;
   final List? following;
+  final List? favorites;
   final num? totalFollowers;
   final num? totalFollowing;
   final num? totalPosts;
-  final List? favorites;
+  final String? phoneNumber;
   final List<String>? likedPosts;
   final List<String>? lostPosts;
   final List<String>? adoptionPosts;
@@ -42,12 +43,13 @@ class AnimalEntity extends Equatable {
     this.email,
     this.birthdate,
     this.breed,
-    this.favorites,
     this.gender,
     this.type,
     this.profileUrl,
+    this.phoneNumber,
     this.followers,
     this.following,
+    this.favorites,
     this.totalFollowers,
     this.totalFollowing,
     this.totalPosts,
@@ -74,9 +76,10 @@ class AnimalEntity extends Equatable {
         gender,
         type,
         profileUrl,
-        favorites,
         followers,
+        phoneNumber,
         following,
+        favorites,
         totalFollowers,
         totalFollowing,
         totalPosts,

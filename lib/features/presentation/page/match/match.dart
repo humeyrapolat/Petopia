@@ -59,9 +59,7 @@ class _MatchPageState extends State<MatchPage> {
           builder: (context, userState) {
             if (userState is UserLoaded) {
               final List<AnimalEntity> users = userState.users;
-              print("users = $users ");
               users.removeWhere((element) => element.uid == _currentUid);
-              print("users = $users ");
 
               if (users.isEmpty) {
                 return const Center(
@@ -155,11 +153,10 @@ class _MatchPageState extends State<MatchPage> {
                             IconButton(
                               onPressed: () {
                                 BlocProvider.of<UserCubit>(context)
-                                    .getFavUsers(user: AnimalEntity(uid: _currentUid, otherUid: animal.uid))
-                                    .then((value) {
+                                    .getFavUsers(user: AnimalEntity(uid: _currentUid, otherUid: animal.uid));
+                                if (animal.favorites!.contains(_currentUid)) {
                                   Navigator.pushNamed(context, PageConsts.matchedPage, arguments: animal.uid);
-                                });
-
+                                }
                                 changeUser((currentIndex + 1) % users.length);
                               },
                               icon: const Icon(Icons.favorite, color: Colors.red),

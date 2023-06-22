@@ -143,11 +143,17 @@ class OnGenerateRoute {
 
       case PageConsts.homePage:
         {
+          if (args is AnimalEntity) {
+            return routeBuilder(
+              HomePage(
+                currentUser: args,
+              ),
+            );
+          }
           return routeBuilder(
-            const HomePage(),
+            const NoPageFound(),
           );
         }
-
       case PageConsts.commentPage:
         {
           if (args is AppEntity) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:petopia/features/domain/entities/animal/animal_entity.dart';
 import 'package:petopia/features/presentation/page/home_page/post/widgets/single_post_card_widget.dart';
 import 'package:petopia/injection_container.dart' as di;
 
@@ -9,7 +10,8 @@ import '../../../domain/entities/post/post_entity.dart';
 import '../../cubit/post/post_cubit.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final AnimalEntity currentUser;
+  const HomePage({Key? key, required this.currentUser}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +51,13 @@ class HomePage extends StatelessWidget {
               return postState.posts.isEmpty
                   ? _noPostsYetWidget()
                   : ListView.builder(
-                      itemCount: postState.posts.length,
+                      itemCount: postState.posts.where((element) => (element.isPrivate == false)).toList().length,
                       itemBuilder: (context, index) {
-                        final post = postState.posts.where((element) => element!.isPrivate == false).toList()[index];
+                        final post = postState.posts
+                            .where(
+                              (element) => ((element.isPrivate == false)),
+                            )
+                            .toList()[index];
 
                         return BlocProvider(
                           create: (context) => di.sl<PostCubit>(),

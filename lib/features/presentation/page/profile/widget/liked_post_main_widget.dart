@@ -22,9 +22,7 @@ class _likedPostMainWidgetState extends State<likedPostMainWidget> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<GetSingleUserCubit>(context).getSingleUser(uid: widget.currentUser.uid!);
 
-    print("******${widget.currentUser}");
     BlocProvider.of<PostCubit>(context).getPosts(post: PostEntity());
   }
 
@@ -33,11 +31,12 @@ class _likedPostMainWidgetState extends State<likedPostMainWidget> {
     return BlocBuilder<GetSingleUserCubit, GetSingleUserState>(
       builder: (context, userState) {
         if (userState is GetSingleUserLoaded) {
-          final likedPost = userState.user.likedPosts;
+          final likedPost = widget.currentUser.likedPosts;
+          print("buradasın liked post ******$likedPost");
           return BlocBuilder<PostCubit, PostState>(
             builder: (context, postState) {
               if (postState is PostLoaded) {
-                final posts = postState.posts.where((post) => likedPost!.contains(post!.postId)).toList();
+                final posts = postState.posts.where((post) => likedPost!.contains(post.postId)).toList();
                 return GridView.builder(
                     itemCount: posts.length,
                     physics: const ScrollPhysics(),

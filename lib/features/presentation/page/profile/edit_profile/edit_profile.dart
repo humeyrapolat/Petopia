@@ -46,14 +46,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     "Others",
   ];
 
-  final List<String> dogBreeds = [
-    "Labrador Retriever",
-    "Golden Retriever",
-    "Bulldog",
-    "Poodle",
-    "Terrier",
-    "Others"
-  ];
+  final List<String> dogBreeds = ["Labrador Retriever", "Golden Retriever", "Bulldog", "Poodle", "Terrier", "Others"];
 
   final List<String> rabbitBreeds = [
     "Alaska",
@@ -66,10 +59,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
   @override
   void initState() {
     _nameController = TextEditingController(text: widget.currentUser.name);
-    _usernameController =
-        TextEditingController(text: widget.currentUser.username);
-    _websiteController =
-        TextEditingController(text: widget.currentUser.website);
+    _usernameController = TextEditingController(text: widget.currentUser.username);
+    _websiteController = TextEditingController(text: widget.currentUser.website);
     _typeController = TextEditingController(text: widget.currentUser.type);
     _genderController = TextEditingController(text: widget.currentUser.gender);
     _breedController = TextEditingController(text: widget.currentUser.breed);
@@ -83,8 +74,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Future selectImage() async {
     try {
-      final pickedFile =
-          await ImagePicker.platform.getImage(source: ImageSource.gallery);
+      final pickedFile = await ImagePicker.platform.getImage(source: ImageSource.gallery);
 
       setState(() {
         if (pickedFile != null) {
@@ -136,8 +126,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   height: 100,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(50),
-                    child: profileWidget(
-                        imageUrl: widget.currentUser.profileUrl, image: _image),
+                    child: profileWidget(imageUrl: widget.currentUser.profileUrl, image: _image),
                   ),
                 ),
               ),
@@ -147,33 +136,14 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   onTap: selectImage,
                   child: const Text(
                     "Change profile photo",
-                    style: TextStyle(
-                        color: black,
-                        fontSize: 20,
-                        fontWeight: FontWeight.w400),
+                    style: TextStyle(color: black, fontSize: 20, fontWeight: FontWeight.w400),
                   ),
                 ),
               ),
               sizeVertical(15),
               ProfileFormWidget(title: "Name", controller: _nameController),
               sizeVertical(15),
-              ProfileFormWidget(
-                  title: "Username", controller: _usernameController),
-              sizeVertical(15),
-              ProfileDropdownWidget(
-                  title: "Type", controller: _typeController, list: typeItems),
-              sizeVertical(15),
-              ProfileDropdownWidget(
-                title: "Breed",
-                controller: _breedController,
-                list: _getSelectedBreedsList(),
-              ),
-              sizeVertical(10),
-              ProfileDropdownWidget(
-                title: "Gender",
-                controller: _genderController,
-                list: genderItems,
-              ),
+              ProfileFormWidget(title: "Username", controller: _usernameController),
               sizeVertical(10),
               ProfileFormWidget(title: "Add Bio", controller: _bioController),
               sizeVertical(15),
@@ -218,10 +188,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     if (_image == null) {
       _updateUserProfile("");
     } else {
-      di
-          .sl<UploadImageToStorageUseCase>()
-          .call(_image!, false, "profileImages")
-          .then((profileUrl) {
+      di.sl<UploadImageToStorageUseCase>().call(_image!, false, "profileImages").then((profileUrl) {
         _updateUserProfile(profileUrl);
       });
     }
@@ -233,9 +200,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
             user: AnimalEntity(
                 uid: widget.currentUser.uid,
                 username: _usernameController!.text,
-                type: _typeController!.text,
-                gender: _genderController!.text,
-                breed: _breedController!.text,
                 website: _websiteController!.text,
                 name: _nameController!.text,
                 bio: _bioController!.text,

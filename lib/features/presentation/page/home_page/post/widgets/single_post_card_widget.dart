@@ -199,12 +199,11 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
         context: context,
         builder: (context) {
           return Container(
+            color: lightPurpleColor,
             height: 150,
-            decoration: const BoxDecoration(
-              color: lightBlueColor,
-            ),
             child: SingleChildScrollView(
               child: Container(
+                color: lightPurpleColor,
                 margin: const EdgeInsets.symmetric(
                   vertical: 10,
                 ),
@@ -213,7 +212,7 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
                     padding: EdgeInsets.only(left: 10),
                     child: Text(
                       "More Options",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: white),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: black),
                     ),
                   ),
                   sizeVertical(10),
@@ -232,7 +231,7 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
                       },
                       child: const Text(
                         "Delete Post ",
-                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: white),
+                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: black),
                       ),
                     ),
                   ),
@@ -250,7 +249,7 @@ class _SinglePagePostCardWidgetState extends State<SinglePagePostCardWidget> {
                       },
                       child: const Text(
                         "Update Post ",
-                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: white),
+                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: black),
                       ),
                     ),
                   ),

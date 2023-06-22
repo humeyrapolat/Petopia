@@ -47,7 +47,9 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
                   _image = null;
                 }),
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
                   child: const Icon(
                     Icons.close,
                   ),
@@ -73,8 +75,7 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
                       height: 80,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(40),
-                        child: profileWidget(
-                            imageUrl: widget.currentUser.profileUrl!),
+                        child: profileWidget(imageUrl: widget.currentUser.profileUrl!),
                       ),
                     ),
                     sizeVertical(10),
@@ -150,8 +151,7 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
 
   Future selectImage() async {
     try {
-      final pickedFile =
-          await ImagePicker.platform.getImage(source: ImageSource.gallery);
+      final pickedFile = await ImagePicker.platform.getImage(source: ImageSource.gallery);
 
       setState(() {
         if (pickedFile != null) {
@@ -169,10 +169,7 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
     setState(() {
       isUploading = true;
     });
-    di
-        .sl<UploadImageToStorageUseCase>()
-        .call(_image!, true, "posts")
-        .then((value) {
+    di.sl<UploadImageToStorageUseCase>().call(_image!, true, "posts").then((value) {
       _createSubmitPost(image: value);
     });
   }
@@ -205,6 +202,7 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
       isUploading = false;
       isPrivate = false;
     });
+    Navigator.pop(context);
   }
 
   uploadPostWidget() {
@@ -218,9 +216,8 @@ class _UploadPostMainWidgetState extends State<UploadPostMainWidget> {
           child: Container(
             width: 150,
             height: 150,
-            decoration: BoxDecoration(
-                color: darkPinkColor.withOpacity(.3), shape: BoxShape.circle),
-            child: Center(
+            decoration: BoxDecoration(color: darkPinkColor.withOpacity(.3), shape: BoxShape.circle),
+            child: const Center(
               child: Icon(
                 Icons.upload,
                 color: darkPinkColor,

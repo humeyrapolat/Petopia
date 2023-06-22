@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:petopia/features/domain/usecases/firebase_usecases/user/get_current_uid_usecase.dart';
 import 'package:petopia/util/consts.dart';
 import 'package:petopia/injection_container.dart' as di;
@@ -42,8 +43,9 @@ class _MatchPageState extends State<MatchPage> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: lightPurpleColor,
         appBar: AppBar(
-          backgroundColor: darkBlueColor,
+          backgroundColor: darkPurpleColor,
           title: const Text("Match"),
           leading: GestureDetector(
               onTap: () => Navigator.pop(context),
@@ -51,22 +53,7 @@ class _MatchPageState extends State<MatchPage> {
                 Icons.arrow_back,
                 size: 32,
               )),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, PageConsts.matchedPage);
-                },
-                child: const Icon(
-                  Icons.done,
-                  color: lightPinkColor,
-                ),
-              ),
-            ),
-          ],
         ),
-        backgroundColor: lightBlueColor,
         body: BlocBuilder<UserCubit, UserState>(
           builder: (context, userState) {
             if (userState is UserLoaded) {
@@ -87,6 +74,7 @@ class _MatchPageState extends State<MatchPage> {
                     child: Column(
                       children: [
                         Card(
+                          color: white,
                           elevation: 5,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
@@ -160,7 +148,7 @@ class _MatchPageState extends State<MatchPage> {
                               onPressed: () {
                                 changeUser((currentIndex + 1) % users.length);
                               },
-                              icon: const Icon(Icons.clear, color: Colors.green),
+                              icon: const Icon(Iconsax.close_circle, color: darkBlueGreenColor, size: 32),
                             ),
                             IconButton(
                               onPressed: () {
@@ -171,7 +159,7 @@ class _MatchPageState extends State<MatchPage> {
                                 }
                                 changeUser((currentIndex + 1) % users.length);
                               },
-                              icon: const Icon(Icons.favorite, color: Colors.red),
+                              icon: const Icon(Iconsax.like, color: Colors.red, size: 32),
                             ),
                           ],
                         ),

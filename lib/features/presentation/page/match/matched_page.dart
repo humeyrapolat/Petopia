@@ -42,7 +42,7 @@ class _MatchedPageState extends State<MatchedPage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: darkBlueColor,
+          backgroundColor: darkPurpleColor,
           title: const Text("Matched"),
           leading: GestureDetector(
               onTap: () => Navigator.pop(context),
@@ -51,7 +51,7 @@ class _MatchedPageState extends State<MatchedPage> {
                 size: 32,
               )),
         ),
-        backgroundColor: lightBlueColor,
+        backgroundColor: lightPurpleColor,
         body: BlocBuilder<UserCubit, UserState>(
           builder: (context, userState) {
             if (userState is UserLoaded) {
@@ -70,7 +70,7 @@ class _MatchedPageState extends State<MatchedPage> {
                       children: [
                         const Text(
                           "YOU ARE MATCHED",
-                          style: TextStyle(color: darkBlueColor, fontSize: 30),
+                          style: TextStyle(color: black, fontSize: 30),
                         ),
                         Card(
                           elevation: 5,
@@ -79,14 +79,18 @@ class _MatchedPageState extends State<MatchedPage> {
                           ),
                           child: Column(
                             children: [
-                              Container(
-                                width: 200,
-                                height: 250,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(16),
-                                  image: DecorationImage(
-                                    image: NetworkImage(user.profileUrl ?? ''),
-                                    fit: BoxFit.cover,
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20),
+                                child: Container(
+                                  width: 200,
+                                  height: 250,
+                                  decoration: BoxDecoration(
+                                    color: white,
+                                    borderRadius: BorderRadius.circular(16),
+                                    image: DecorationImage(
+                                      image: NetworkImage(user.profileUrl ?? ''),
+                                      fit: BoxFit.cover,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -96,14 +100,6 @@ class _MatchedPageState extends State<MatchedPage> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
                                     Text(
-                                      user.username ?? '',
-                                      style: const TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8.0),
-                                    Text(
                                       user.name ?? '',
                                       style: TextStyle(
                                         fontSize: 16,
@@ -112,8 +108,7 @@ class _MatchedPageState extends State<MatchedPage> {
                                     ),
                                     const SizedBox(height: 8.0),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         GestureDetector(
                                           onTap: () {
@@ -130,13 +125,11 @@ class _MatchedPageState extends State<MatchedPage> {
                                     ),
                                     const SizedBox(height: 8.0),
                                     Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         GestureDetector(
                                           onTap: () {
-                                            Navigator.pushNamed(
-                                                context, PageConsts.matchPage);
+                                            Navigator.pushNamed(context, PageConsts.matchPage);
                                           },
                                           child: const Icon(
                                             Iconsax.arrow5,

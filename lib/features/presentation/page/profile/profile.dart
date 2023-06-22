@@ -21,14 +21,11 @@ class ProfilePage extends StatelessWidget {
         backgroundColor: white,
         appBar: AppBar(
           centerTitle: true,
-          backgroundColor: darkBlueGreenColor,
+          backgroundColor: darkPurpleColor,
           elevation: 0,
           title: Text(
             "${currentUser.username}".toUpperCase(),
             style: const TextStyle(color: black),
-          ),
-          leading: const Icon(
-            Ionicons.ios_megaphone,
           ),
           actions: [
             Padding(

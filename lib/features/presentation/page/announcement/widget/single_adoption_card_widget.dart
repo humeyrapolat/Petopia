@@ -13,16 +13,13 @@ import 'package:url_launcher/url_launcher.dart';
 class SinglePageAdoptionCardWidget extends StatefulWidget {
   final AdoptionEntity adoption;
 
-  const SinglePageAdoptionCardWidget({Key? key, required this.adoption})
-      : super(key: key);
+  const SinglePageAdoptionCardWidget({Key? key, required this.adoption}) : super(key: key);
 
   @override
-  _SinglePageAdoptionCardWidgetState createState() =>
-      _SinglePageAdoptionCardWidgetState();
+  _SinglePageAdoptionCardWidgetState createState() => _SinglePageAdoptionCardWidgetState();
 }
 
-class _SinglePageAdoptionCardWidgetState
-    extends State<SinglePageAdoptionCardWidget> {
+class _SinglePageAdoptionCardWidgetState extends State<SinglePageAdoptionCardWidget> {
   String _currentUUid = '';
 
   @override
@@ -70,10 +67,7 @@ class _SinglePageAdoptionCardWidgetState
                           sizeVertical(10),
                           Text(
                             widget.adoption.type!,
-                            style: const TextStyle(
-                                color: black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16),
+                            style: const TextStyle(color: black, fontWeight: FontWeight.bold, fontSize: 16),
                           ),
                           const SizedBox(height: 8.0),
                           Row(
@@ -86,9 +80,7 @@ class _SinglePageAdoptionCardWidgetState
                               sizeHorizontal(8),
                               Text(
                                 widget.adoption.city!,
-                                style: const TextStyle(
-                                    color: Colors.grey,
-                                    fontWeight: FontWeight.bold),
+                                style: const TextStyle(color: Colors.grey, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -112,8 +104,7 @@ class _SinglePageAdoptionCardWidgetState
                     widget.adoption.creatorUid == singleUser.uid
                         ? GestureDetector(
                             onTap: () {
-                              final adoption = _makePhoneCall(
-                                  singleUser.phoneNumber); //"05319902497"
+                              final adoption = _makePhoneCall(singleUser.phoneNumber); //"05319902497"
                             },
                             child: const Icon(
                               Iconsax.call,
@@ -122,8 +113,7 @@ class _SinglePageAdoptionCardWidgetState
                           )
                         : GestureDetector(
                             onTap: () {
-                              final adoption = _makePhoneCall(
-                                  singleUser.phoneNumber); //"05319902497"
+                              final adoption = _makePhoneCall(singleUser.phoneNumber); //"05319902497"
                             },
                             child: const Icon(
                               Iconsax.call,
@@ -145,9 +135,6 @@ class _SinglePageAdoptionCardWidgetState
 
   deleteAdoption() {
     BlocProvider.of<AdoptionCubit>(context)
-        .deleteAdoption(
-            adoption:
-                AdoptionEntity(adoptionPostId: widget.adoption.adoptionPostId))
-        .whenComplete(() => Navigator.pop(context));
+        .deleteAdoption(adoption: AdoptionEntity(adoptionPostId: widget.adoption.adoptionPostId));
   }
 }

@@ -20,8 +20,7 @@ import 'package:petopia/injection_container.dart' as di;
 class CommentMainWidget extends StatefulWidget {
   final AppEntity appEntity;
 
-  const CommentMainWidget({Key? key, required this.appEntity})
-      : super(key: key);
+  const CommentMainWidget({Key? key, required this.appEntity}) : super(key: key);
 
   @override
   State<CommentMainWidget> createState() => _CommentMainWidgetState();
@@ -30,14 +29,11 @@ class CommentMainWidget extends StatefulWidget {
 class _CommentMainWidgetState extends State<CommentMainWidget> {
   @override
   void initState() {
-    BlocProvider.of<GetSingleUserCubit>(context)
-        .getSingleUser(uid: widget.appEntity.uid!);
+    BlocProvider.of<GetSingleUserCubit>(context).getSingleUser(uid: widget.appEntity.uid!);
 
-    BlocProvider.of<GetSinglePostCubit>(context)
-        .getSinglePost(postId: widget.appEntity.postId!);
+    BlocProvider.of<GetSinglePostCubit>(context).getSinglePost(postId: widget.appEntity.postId!);
 
-    BlocProvider.of<CommentCubit>(context)
-        .getComments(postId: widget.appEntity.postId!);
+    BlocProvider.of<CommentCubit>(context).getComments(postId: widget.appEntity.postId!);
 
     super.initState();
   }
@@ -56,7 +52,7 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
       backgroundColor: white,
       appBar: AppBar(
         backgroundColor: darkPurpleColor,
-        title: Text("Comments"),
+        title: const Text("Comments"),
       ),
       body: BlocBuilder<GetSingleUserCubit, GetSingleUserState>(
         builder: (context, singleUserState) {
@@ -73,8 +69,7 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 10.0, vertical: 10),
+                              padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -84,33 +79,27 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                                         width: 40,
                                         height: 40,
                                         child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(20),
-                                          child: profileWidget(
-                                              imageUrl:
-                                                  singlePost.userProfileUrl),
+                                          borderRadius: BorderRadius.circular(20),
+                                          child: profileWidget(imageUrl: singlePost.userProfileUrl),
                                         ),
                                       ),
                                       sizeHorizontal(10),
                                       Text(
                                         "${singlePost.username}",
-                                        style: TextStyle(
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                            color: black),
+                                        style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: black),
                                       ),
                                     ],
                                   ),
                                   sizeVertical(10),
                                   Text(
                                     "${singlePost.description}",
-                                    style: TextStyle(color: black),
+                                    style: const TextStyle(color: black),
                                   ),
                                 ],
                               ),
                             ),
                             sizeVertical(10),
-                            Divider(
+                            const Divider(
                               color: darkPurpleColor,
                             ),
                             sizeVertical(10),
@@ -118,8 +107,7 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                               child: ListView.builder(
                                   itemCount: commentState.comments.length,
                                   itemBuilder: (context, index) {
-                                    final singleComment =
-                                        commentState.comments[index];
+                                    final singleComment = commentState.comments[index];
                                     return BlocProvider(
                                       create: (context) => di.sl<ReplayCubit>(),
                                       child: SingleCommentWidget(
@@ -128,14 +116,11 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                                         onLongPressListener: () {
                                           _openBottomModalSheet(
                                             context: context,
-                                            comment:
-                                                commentState.comments[index],
+                                            comment: commentState.comments[index],
                                           );
                                         },
                                         onLikePressListener: () {
-                                          _likeComment(
-                                              comment:
-                                                  commentState.comments[index]);
+                                          _likeComment(comment: commentState.comments[index]);
                                         },
                                       ),
                                     );
@@ -145,19 +130,19 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                           ],
                         );
                       }
-                      return Center(
+                      return const Center(
                         child: CircularProgressIndicator(),
                       );
                     },
                   );
                 }
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               },
             );
           }
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         },
@@ -186,11 +171,9 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
             Expanded(
                 child: TextFormField(
               controller: _descriptionController,
-              style: TextStyle(color: white),
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Add a comment...",
-                  hintStyle: TextStyle(color: white)),
+              style: const TextStyle(color: white),
+              decoration: const InputDecoration(
+                  border: InputBorder.none, hintText: "Add a comment...", hintStyle: TextStyle(color: white)),
             )),
             InkWell(
               onTap: () {
@@ -198,10 +181,7 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
               },
               child: const Text(
                 "Post",
-                style: TextStyle(
-                    color: darkPurpleColor,
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold),
+                style: TextStyle(color: darkPurpleColor, fontSize: 15, fontWeight: FontWeight.bold),
               ),
             )
           ],
@@ -215,7 +195,7 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
         .createComment(
             comment: CommentEntity(
       totalReplays: 0,
-      commentId: Uuid().v1(),
+      commentId: const Uuid().v1(),
       createAt: Timestamp.now(),
       likes: [],
       username: currentUser.username,
@@ -231,8 +211,7 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
     });
   }
 
-  _openBottomModalSheet(
-      {required BuildContext context, required CommentEntity comment}) {
+  _openBottomModalSheet({required BuildContext context, required CommentEntity comment}) {
     return showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -241,49 +220,41 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
             decoration: BoxDecoration(color: darkPurpleColor.withOpacity(.8)),
             child: SingleChildScrollView(
               child: Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
+                margin: const EdgeInsets.symmetric(vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 10.0),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 10.0),
                       child: Text(
                         "More Options",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                            color: lightPurpleColor),
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: lightPurpleColor),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
-                    Divider(
+                    const Divider(
                       thickness: 1,
                       color: lightPurpleColor,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 10.0),
                       child: GestureDetector(
                         onTap: () {
-                          _deleteComment(
-                              commentId: comment.commentId!,
-                              postId: comment.postId!);
+                          _deleteComment(commentId: comment.commentId!, postId: comment.postId!);
                         },
-                        child: Text(
+                        child: const Text(
                           "Delete Comment",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: lightPurpleColor),
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: lightPurpleColor),
                         ),
                       ),
                     ),
                     sizeVertical(7),
-                    Divider(
+                    const Divider(
                       thickness: 1,
                       color: lightPurpleColor,
                     ),
@@ -292,18 +263,13 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
                       padding: const EdgeInsets.only(left: 10.0),
                       child: GestureDetector(
                         onTap: () {
-                          Navigator.pushNamed(
-                              context, PageConsts.updateCommentPage,
-                              arguments: comment);
+                          Navigator.pushNamed(context, PageConsts.updateCommentPage, arguments: comment);
 
                           // Navigator.push(context, MaterialPageRoute(builder: (context) => UpdatePostPage()));
                         },
-                        child: Text(
+                        child: const Text(
                           "Update Comment",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: lightPurpleColor),
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: lightPurpleColor),
                         ),
                       ),
                     ),
@@ -317,13 +283,11 @@ class _CommentMainWidgetState extends State<CommentMainWidget> {
   }
 
   _deleteComment({required String commentId, required String postId}) {
-    BlocProvider.of<CommentCubit>(context).deleteComment(
-        comment: CommentEntity(commentId: commentId, postId: postId));
+    BlocProvider.of<CommentCubit>(context).deleteComment(comment: CommentEntity(commentId: commentId, postId: postId));
   }
 
   _likeComment({required CommentEntity comment}) {
-    BlocProvider.of<CommentCubit>(context).likeComment(
-        comment: CommentEntity(
-            commentId: comment.commentId, postId: comment.postId));
+    BlocProvider.of<CommentCubit>(context)
+        .likeComment(comment: CommentEntity(commentId: comment.commentId, postId: comment.postId));
   }
 }

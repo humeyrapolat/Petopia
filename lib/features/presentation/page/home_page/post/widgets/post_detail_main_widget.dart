@@ -26,8 +26,7 @@ class _PostDetailMainWidgetState extends State<PostDetailMainWidget> {
 
   @override
   void initState() {
-    BlocProvider.of<GetSinglePostCubit>(context)
-        .getSinglePost(postId: widget.postId);
+    BlocProvider.of<GetSinglePostCubit>(context).getSinglePost(postId: widget.postId);
 
     di.sl<GetCurrentUidUseCase>().call().then((value) {
       setState(() {
@@ -42,6 +41,7 @@ class _PostDetailMainWidgetState extends State<PostDetailMainWidget> {
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
+        backgroundColor: darkPurpleColor,
         title: const Text("Post Detail"),
       ),
       body: BlocBuilder<GetSinglePostCubit, GetSinglePostState>(
@@ -63,15 +63,13 @@ class _PostDetailMainWidgetState extends State<PostDetailMainWidget> {
                             height: 30,
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(15),
-                              child: profileWidget(
-                                  imageUrl: "${getSinglePost.userProfileUrl}"),
+                              child: profileWidget(imageUrl: "${getSinglePost.userProfileUrl}"),
                             ),
                           ),
                           sizeHorizontal(10),
                           Text(
                             getSinglePost.username!,
-                            style: const TextStyle(
-                                color: black, fontWeight: FontWeight.bold),
+                            style: const TextStyle(color: black, fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
@@ -80,8 +78,7 @@ class _PostDetailMainWidgetState extends State<PostDetailMainWidget> {
                               onTap: () {
                                 _openModalBottomSheet(context, getSinglePost);
                               },
-                              child:
-                                  const Icon(Icons.more_vert, color: darkGrey),
+                              child: const Icon(Icons.more_vert, color: darkGrey),
                             )
                           : Container(),
                     ],
@@ -100,8 +97,7 @@ class _PostDetailMainWidgetState extends State<PostDetailMainWidget> {
                         SizedBox(
                           width: double.infinity,
                           height: MediaQuery.of(context).size.height * 0.30,
-                          child: profileWidget(
-                              imageUrl: "${getSinglePost.postImageUrl}"),
+                          child: profileWidget(imageUrl: "${getSinglePost.postImageUrl}"),
                         ),
                         AnimatedOpacity(
                           duration: const Duration(milliseconds: 200),
@@ -132,19 +128,14 @@ class _PostDetailMainWidgetState extends State<PostDetailMainWidget> {
                           GestureDetector(
                             onTap: _likePost,
                             child: Icon(
-                              getSinglePost.likes!.contains(_currentUid)
-                                  ? Icons.favorite
-                                  : Icons.favorite_outline,
-                              color: getSinglePost.likes!.contains(_currentUid)
-                                  ? Colors.red
-                                  : darkGrey,
+                              getSinglePost.likes!.contains(_currentUid) ? Icons.favorite : Icons.favorite_outline,
+                              color: getSinglePost.likes!.contains(_currentUid) ? Colors.red : darkGrey,
                             ),
                           ),
                           sizeHorizontal(10),
                           GestureDetector(
                             onTap: () {
-                              Navigator.pushNamed(
-                                  context, PageConsts.commentPage,
+                              Navigator.pushNamed(context, PageConsts.commentPage,
                                   arguments: AppEntity(
                                     uid: _currentUid,
                                     postId: getSinglePost.postId,
@@ -154,11 +145,6 @@ class _PostDetailMainWidgetState extends State<PostDetailMainWidget> {
                               Feather.message_circle,
                               color: darkGrey,
                             ),
-                          ),
-                          sizeHorizontal(10),
-                          const Icon(
-                            Feather.send,
-                            color: darkGrey,
                           ),
                         ],
                       ),
@@ -171,8 +157,7 @@ class _PostDetailMainWidgetState extends State<PostDetailMainWidget> {
                   sizeVertical(10),
                   Text(
                     "${getSinglePost.totalLikes} likes",
-                    style: const TextStyle(
-                        color: black, fontWeight: FontWeight.bold),
+                    style: const TextStyle(color: black, fontWeight: FontWeight.bold),
                   ),
                   sizeVertical(10),
                   Row(
@@ -180,8 +165,7 @@ class _PostDetailMainWidgetState extends State<PostDetailMainWidget> {
                     children: [
                       Text(
                         "${getSinglePost.username}",
-                        style: const TextStyle(
-                            color: black, fontWeight: FontWeight.bold),
+                        style: const TextStyle(color: black, fontWeight: FontWeight.bold),
                       ),
                       sizeHorizontal(10),
                       Text(
@@ -208,8 +192,7 @@ class _PostDetailMainWidgetState extends State<PostDetailMainWidget> {
                   ),
                   sizeVertical(10),
                   Text(
-                    DateFormat('dd MMM yyyy')
-                        .format(getSinglePost.createAt!.toDate()),
+                    DateFormat('dd MMM yyyy').format(getSinglePost.createAt!.toDate()),
                     style: const TextStyle(color: black),
                   ),
                 ],
@@ -229,94 +212,77 @@ class _PostDetailMainWidgetState extends State<PostDetailMainWidget> {
         context: context,
         builder: (context) {
           return Container(
+            color: lightPurpleColor,
             height: 150,
-            decoration: const BoxDecoration(
-              color: lightBlueColor,
-            ),
             child: SingleChildScrollView(
               child: Container(
+                color: lightPurpleColor,
                 margin: const EdgeInsets.symmetric(
                   vertical: 10,
                 ),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(
-                          "More Options",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: white),
-                        ),
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Text(
+                      "More Options",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: black),
+                    ),
+                  ),
+                  sizeVertical(10),
+                  const Divider(
+                    thickness: 1,
+                    color: black,
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: GestureDetector(
+                      onTap: () {
+                        _deletePost();
+                      },
+                      child: const Text(
+                        "Delete Post ",
+                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: black),
                       ),
-                      sizeVertical(10),
-                      const Divider(
-                        thickness: 1,
-                        color: black,
+                    ),
+                  ),
+                  sizeVertical(7),
+                  const Divider(
+                    thickness: 1,
+                    color: black,
+                  ),
+                  sizeVertical(7),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(context, PageConsts.updatePostPage, arguments: post);
+                      },
+                      child: const Text(
+                        "Update Post ",
+                        style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: black),
                       ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: GestureDetector(
-                          onTap: () {
-                            _deletePost();
-                          },
-                          child: const Text(
-                            "Delete Post ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16,
-                                color: white),
-                          ),
-                        ),
-                      ),
-                      sizeVertical(7),
-                      const Divider(
-                        thickness: 1,
-                        color: black,
-                      ),
-                      sizeVertical(7),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 10),
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, PageConsts.updatePostPage,
-                                arguments: post);
-                          },
-                          child: const Text(
-                            "Update Post ",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16,
-                                color: white),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      sizeVertical(7),
-                      const Divider(
-                        thickness: 1,
-                        color: black,
-                      ),
-                      sizeVertical(7),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Text(
-                          "Logout",
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: white),
-                        ),
-                      )
-                    ]),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  sizeVertical(7),
+                  const Divider(
+                    thickness: 1,
+                    color: black,
+                  ),
+                  sizeVertical(7),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Text(
+                      "Logout",
+                      style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: white),
+                    ),
+                  )
+                ]),
               ),
             ),
           );
@@ -324,12 +290,10 @@ class _PostDetailMainWidgetState extends State<PostDetailMainWidget> {
   }
 
   _deletePost() {
-    BlocProvider.of<PostCubit>(context)
-        .deletePost(post: PostEntity(postId: widget.postId));
+    BlocProvider.of<PostCubit>(context).deletePost(post: PostEntity(postId: widget.postId));
   }
 
   _likePost() {
-    BlocProvider.of<PostCubit>(context)
-        .likePost(post: PostEntity(postId: widget.postId));
+    BlocProvider.of<PostCubit>(context).likePost(post: PostEntity(postId: widget.postId));
   }
 }

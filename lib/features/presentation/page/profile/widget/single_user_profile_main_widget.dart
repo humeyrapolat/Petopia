@@ -58,9 +58,6 @@ class _SingleUserProfileMainWigdetState extends State<SingleUserProfileMainWigde
                   "${singleUser.username}".toUpperCase(),
                   style: const TextStyle(color: black),
                 ),
-                leading: const Icon(
-                  Ionicons.ios_megaphone,
-                ),
                 actions: [
                   _currentUid == singleUser.uid
                       ? Padding(

@@ -26,19 +26,7 @@ class HomePage extends StatelessWidget {
                 Navigator.pushNamed(context, PageConsts.matchPage);
               },
               child: const Icon(
-                Iconsax.star,
-                color: lightPinkColor,
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 10.0),
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(context, PageConsts.chatPage);
-              },
-              child: const Icon(
-                Iconsax.message,
+                Iconsax.arrow_swap_horizontal,
                 color: lightPinkColor,
               ),
             ),

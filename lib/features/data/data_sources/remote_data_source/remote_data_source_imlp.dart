@@ -874,4 +874,16 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
     // TODO: implement updateLost
     throw UnimplementedError();
   }
+
+  @override
+  Future<bool> getFavUsers(AnimalEntity user) {
+    // TODO: implement getFavUsers
+    throw UnimplementedError();
+  }
+
+  @override
+  Stream<List<AnimalEntity>> getOtherUsers(String animalId) {
+    // TODO: implement getOtherUsers
+    throw UnimplementedError();
+  }
 }

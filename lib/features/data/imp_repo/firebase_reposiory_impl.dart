@@ -134,4 +134,10 @@ class FirebaseRepositoryImpl implements FirebaseRepository {
 
   @override
   Future<void> updateLost(LostEntity lost) async => remoteDataSource.updateLost(lost);
+
+  @override
+  Future<bool> getFavUsers(AnimalEntity user) => remoteDataSource.getFavUsers(user);
+
+  @override
+  Stream<List<AnimalEntity>> getOtherUsers(String uid) => remoteDataSource.getOtherUsers(uid);
 }

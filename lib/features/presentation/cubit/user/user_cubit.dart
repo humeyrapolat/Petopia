@@ -72,13 +72,16 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> getFavUsers({required AnimalEntity user}) async {
+  Future<bool> getFavUsers({required AnimalEntity user}) async {
     try {
       await getFavUsersUseCase.call(user);
+      return true;
     } on SocketException catch (_) {
       emit(UserFailure());
+      return false;
     } catch (_) {
       emit(UserFailure());
+      return false;
     }
   }
 }

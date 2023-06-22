@@ -750,26 +750,10 @@ class FirebaseRemoteDataSourceImpl implements FirebaseRemoteDataSource {
   @override
   Future<bool> getFavUsers(AnimalEntity user) async {
     final userCollection = firebaseFirestore.collection(FirebaseConsts.users);
-
-    final myDocRef = await userCollection.doc(user.uid).get();
-    final otherUserDocRef = await userCollection.doc(user.otherUid).get();
-
-    if (myDocRef.exists && otherUserDocRef.exists) {
-      List myfavoriteList = myDocRef.get("favorites");
-      List otherUserFavoriteList = otherUserDocRef.get("favorites");
-
-      // My Favorites List
-
-      if (myfavoriteList.contains(user.otherUid) && otherUserFavoriteList.contains(user.uid)) {
-        return true;
-      } else {
-        userCollection.doc(user.uid).update({
-          "favorites": FieldValue.arrayUnion([user.otherUid])
-        });
-        return false;
-      }
-    }
-    return false;
+    await userCollection.doc(user.uid).update({
+      "favorites": FieldValue.arrayUnion([user.otherUid])
+    });
+    return true;
   }
 
   Future<void> createAdoption(AdoptionEntity adoption) async {

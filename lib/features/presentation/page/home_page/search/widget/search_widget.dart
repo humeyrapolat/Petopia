@@ -16,7 +16,7 @@ class SearchWidget extends StatelessWidget {
       ),
       child: TextFormField(
         controller: controller,
-        style: const TextStyle(color: lightBlueColor),
+        style: const TextStyle(color: black),
         decoration: const InputDecoration(
             border: InputBorder.none,
             prefixIcon: Icon(

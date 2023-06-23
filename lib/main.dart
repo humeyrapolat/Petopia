@@ -72,7 +72,7 @@ class MyApp extends StatelessWidget {
               },
             ),
             splashTransition: SplashTransition.fadeTransition,
-            backgroundColor: darkBlueGreenColor),
+            backgroundColor: darkPurpleColor),
       ),
     );
   }

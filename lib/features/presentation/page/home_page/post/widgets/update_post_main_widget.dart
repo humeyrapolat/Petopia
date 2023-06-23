@@ -24,8 +24,7 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
 
   @override
   void initState() {
-    _descriptionController =
-        TextEditingController(text: widget.post.description);
+    _descriptionController = TextEditingController(text: widget.post.description);
     super.initState();
   }
 
@@ -39,8 +38,7 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
   bool? _uploading = false;
   Future selectImage() async {
     try {
-      final pickedFile =
-          await ImagePicker.platform.getImage(source: ImageSource.gallery);
+      final pickedFile = await ImagePicker.platform.getImage(source: ImageSource.gallery);
 
       setState(() {
         if (pickedFile != null) {
@@ -59,16 +57,16 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
     return Scaffold(
       backgroundColor: white,
       appBar: AppBar(
-        backgroundColor: white,
-        title: Text("Edit Post"),
+        backgroundColor: darkPurpleColor,
+        title: const Text("Edit Post"),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 10.0),
             child: GestureDetector(
                 onTap: _updatePost,
-                child: Icon(
+                child: const Icon(
                   Icons.done,
-                  color: darkPinkColor,
+                  color: white,
                   size: 28,
                 )),
           )
@@ -90,8 +88,7 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
               sizeVertical(10),
               Text(
                 "${widget.post.username}",
-                style: TextStyle(
-                    color: black, fontSize: 16, fontWeight: FontWeight.bold),
+                style: const TextStyle(color: black, fontSize: 16, fontWeight: FontWeight.bold),
               ),
               sizeVertical(10),
               Stack(
@@ -99,8 +96,7 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
                   Container(
                     width: double.infinity,
                     height: 200,
-                    child: profileWidget(
-                        imageUrl: widget.post.postImageUrl, image: _image),
+                    child: profileWidget(imageUrl: widget.post.postImageUrl, image: _image),
                   ),
                   Positioned(
                     top: 15,
@@ -110,10 +106,8 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
                       child: Container(
                         width: 30,
                         height: 30,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(15)),
-                        child: Icon(
+                        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(15)),
+                        child: const Icon(
                           Icons.edit,
                           color: darkPinkColor,
                         ),
@@ -132,12 +126,12 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        const Text(
                           "Updating...",
                           style: TextStyle(color: Colors.white),
                         ),
                         sizeHorizontal(10),
-                        CircularProgressIndicator()
+                        const CircularProgressIndicator()
                       ],
                     )
                   : Container(
@@ -158,10 +152,7 @@ class _UpdatePostMainWidgetState extends State<UpdatePostMainWidget> {
     if (_image == null) {
       _submitUpdatePost(image: widget.post.postImageUrl!);
     } else {
-      di
-          .sl<UploadImageToStorageUseCase>()
-          .call(_image!, true, "posts")
-          .then((imageUrl) {
+      di.sl<UploadImageToStorageUseCase>().call(_image!, true, "posts").then((imageUrl) {
         _submitUpdatePost(image: imageUrl);
       });
     }

@@ -183,8 +183,8 @@ class ProfilePage extends StatelessWidget {
         builder: (context) {
           return Container(
               height: 150,
-              decoration: BoxDecoration(
-                color: white.withOpacity(.8),
+              decoration: const BoxDecoration(
+                color: lightPurpleColor,
               ),
               child: ListView(
                 children: [

@@ -83,8 +83,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Future selectImage() async {
     try {
-      final pickedFile =
-          await ImagePicker.platform.getImage(source: ImageSource.gallery);
+      final pickedFile = await ImagePicker.platform.getImage(source: ImageSource.gallery);
       setState(() {
         if (pickedFile != null) {
           _image = File(pickedFile.path);
@@ -100,7 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: lightPinkColor,
+      backgroundColor: white,
       body: BlocConsumer<CredentialCubit, CredentialState>(
         listener: (context, credentialState) {
           if (credentialState is CredentialSuccess) {
@@ -551,8 +550,7 @@ class _SignUpPageState extends State<SignUpPage> {
               },
               style: ButtonStyle(
                 elevation: MaterialStateProperty.all<double>(5),
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(darkPinkColor),
+                backgroundColor: MaterialStateProperty.all<Color>(darkPurpleColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -577,13 +575,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, PageConsts.signInPage, (route) => false);
+                    Navigator.pushNamedAndRemoveUntil(context, PageConsts.signInPage, (route) => false);
                   },
                   child: const Text(
                     "Sign In.",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, color: darkPinkColor),
+                    style: TextStyle(fontWeight: FontWeight.bold, color: darkPurpleColor),
                   ),
                 ),
               ],
@@ -594,10 +590,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     children: [
                       const Text(
                         "Please wait",
-                        style: TextStyle(
-                            color: black,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400),
+                        style: TextStyle(color: black, fontSize: 16, fontWeight: FontWeight.w400),
                       ),
                       sizeHorizontal(10),
                       const CircularProgressIndicator()

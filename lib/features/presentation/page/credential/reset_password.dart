@@ -29,11 +29,9 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
       appBar: AppBar(
         backgroundColor: darkPurpleColor,
         title: const Text('Reset Password'),
-        leading: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: const Icon(Icons.arrow_back)),
+        leading: GestureDetector(onTap: () => Navigator.pop(context), child: const Icon(Icons.arrow_back)),
       ),
-      backgroundColor: lightPurpleColor,
+      backgroundColor: white,
       body: BlocConsumer<ResetPasswordCubit, ResetPasswordState>(
         listener: (context, resetPasswordState) {
           if (resetPasswordState is ResetPasswordSuccess) {
@@ -42,8 +40,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
               context: context,
               builder: (context) => AlertDialog(
                 title: const Text('Password Reset'),
-                content:
-                    const Text('Password reset link sent! Check your email.'),
+                content: const Text('Password reset link sent! Check your email.'),
                 actions: [
                   ElevatedButton(
                     onPressed: () {
@@ -87,7 +84,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               'Enter your email address to reset your password',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -95,21 +92,20 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             FormContainerWidget(
               controller: _emailController,
               hintText: 'Email',
               inputType: TextInputType.emailAddress,
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 _resetPassword();
               },
               style: ButtonStyle(
                 elevation: MaterialStateProperty.all<double>(5),
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(darkPurpleColor),
+                backgroundColor: MaterialStateProperty.all<Color>(darkPurpleColor),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),

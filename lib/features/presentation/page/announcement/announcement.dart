@@ -93,7 +93,7 @@ class _AnnouncementState extends State<Announcement> with SingleTickerProviderSt
         builder: (context) {
           return Container(
             height: 140,
-            decoration: BoxDecoration(color: lightBlueGreenColor),
+            decoration: BoxDecoration(color: lightPurpleColor),
             child: SingleChildScrollView(
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 10),
@@ -104,7 +104,7 @@ class _AnnouncementState extends State<Announcement> with SingleTickerProviderSt
                       padding: EdgeInsets.only(left: 10.0),
                       child: Text(
                         "Create Announcement",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: darkBlueGreenColor),
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: black),
                       ),
                     ),
                     const Divider(
@@ -127,7 +127,7 @@ class _AnnouncementState extends State<Announcement> with SingleTickerProviderSt
                           },
                           child: const Text(
                             "Lost animal",
-                            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: darkPurpleColor),
+                            style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: black),
                           ),
                         ),
                       ),
@@ -149,7 +149,7 @@ class _AnnouncementState extends State<Announcement> with SingleTickerProviderSt
                         },
                         child: const Text(
                           "Adoption Animal",
-                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: darkPurpleColor),
+                          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: black),
                         ),
                       ),
                     ),

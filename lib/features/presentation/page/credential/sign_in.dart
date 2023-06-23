@@ -71,7 +71,7 @@ class _SignInPageState extends State<SignInPage> {
           Flexible(flex: 2, child: Container()),
           const Text(
             'Petopia',
-            style: TextStyle(color: darkPinkColor, fontSize: 30, fontWeight: FontWeight.bold),
+            style: TextStyle(color: darkPurpleColor, fontSize: 30, fontWeight: FontWeight.bold),
           ),
           sizeVertical(30),
           FormContainerWidget(
@@ -105,7 +105,7 @@ class _SignInPageState extends State<SignInPage> {
           ElevatedButton(
             onPressed: () => _signIn(),
             style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all<Color>(darkPinkColor),
+              backgroundColor: MaterialStateProperty.all<Color>(darkPurpleColor),
               elevation: MaterialStateProperty.all<double>(5),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
@@ -137,7 +137,7 @@ class _SignInPageState extends State<SignInPage> {
                 },
                 child: const Text(" Sign Up",
                     style: TextStyle(
-                      color: darkPinkColor,
+                      color: darkPurpleColor,
                       fontWeight: FontWeight.bold,
                     )),
               ),
